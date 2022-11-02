@@ -1,0 +1,16 @@
+name = "Random"
+description = "Random Gates and Notes"
+outputs = 1
+tags = [
+    "minimalism"
+]
+type = "randomStep"
+
+[LengthOfNote]
+length = "Rand()"
+
+[NoteToPlay]
+note = "Rand()"
+
+[TriggerWhen]
+trigger = "Rand()"

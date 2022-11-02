@@ -1,0 +1,14 @@
+name = "OffBeatFour"
+description = "Play a beat every 4 notes, but not on the first beat."
+length = 16
+outputs = 1
+tags = ["house", "trance", "edm"]
+type = "step"
+
+[NoteToPlay]
+note = "C4"
+
+parameters = ["beat_repeats", "beat_offset"]
+
+[TriggerWhen]
+trigger = "every 4 steps on 2"

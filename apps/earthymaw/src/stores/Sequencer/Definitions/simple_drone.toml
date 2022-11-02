@@ -1,0 +1,12 @@
+name = "Simple Drone"
+description = "Simple Droning"
+length = 3
+outputs = 1
+tags = [ "minimalism", "drone" ]
+type = "drone"
+
+[NoteToPlay]
+play = "C4" # This is the note
+
+[TriggerWhen]
+trigger = "every 64 steps on 1"

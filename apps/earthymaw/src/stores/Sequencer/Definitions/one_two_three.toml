@@ -1,0 +1,12 @@
+name = "One Two"
+description = "Two note repeating interval"
+length = 16
+outputs = 1
+type = "step"
+
+[NoteToPlay]
+note = "C4" # This is the note
+
+[TriggerWhen]
+trigger = "every 4 steps"
+
