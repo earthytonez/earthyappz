@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 
-import BaseArp from "./BaseArp";
+import BaseArp from "./BaseArp.js";
 
 export default class DownArp extends BaseArp {
   public arpType: string = "down";

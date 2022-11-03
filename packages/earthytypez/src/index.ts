@@ -1,9 +1,9 @@
-import IMusicChord from "./types/IMusicChord";
-import IMusicKey from "./types/IMusicKey";
-import IMusicScale from "./types/IMusicScale";
-import IPlayParams from "./types/IPlayParams";
-import IToneJSDuration from "./types/IToneJSDuration";
-import IToneJSNote from "./types/IToneJSNote";
+import IMusicChord from "./types/IMusicChord.js";
+import IMusicKey from "./types/IMusicKey.js";
+import IMusicScale from "./types/IMusicScale.js";
+import IPlayParams from "./types/IPlayParams.js";
+import IToneJSDuration from "./types/IToneJSDuration.js";
+import IToneJSNote from "./types/IToneJSNote.js";
 
 export {
   IMusicChord,

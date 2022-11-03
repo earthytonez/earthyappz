@@ -1,4 +1,4 @@
-import DoubleLengthArp from "./DoubleLengthArp";
+import DoubleLengthArp from "./DoubleLengthArp.js";
 
 export default class UpDownIncArp extends DoubleLengthArp {
   chordNotes(): string[] {

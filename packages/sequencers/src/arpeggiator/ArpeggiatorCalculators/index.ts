@@ -1,20 +1,20 @@
-import BaseArp from "./BaseArp";
-import UpDownArp from "./UpDownArp";
-import DownUpIncArp from "./DownUpIncArp";
-import UpArp from "./UpArp";
-import DownArp from "./DownArp";
-import DownUpArp from "./DownUpArp";
-import UpDownIncArp from "./UpDownIncArp";
-import RandomArp from "./Random";
+import BaseArp from "./BaseArp.js";
+import UpDownArp from "./UpDownArp.js";
+import DownUpIncArp from "./DownUpIncArp.js";
+import UpArp from "./UpArp.js";
+import DownArp from "./DownArp.js";
+import DownUpArp from "./DownUpArp.js";
+import UpDownIncArp from "./UpDownIncArp.js";
+import RandomArp from "./Random.js";
 
-import TopLineUpArp from "./TopLineUpArp";
-import TopLineDownArp from "./TopLineDownArp";
-import BottomLineUpArp from "./BottomLineUpArp";
-import BottomLineDownArp from "./BottomLineDownArp";
-// import TopLineUpInversedArp from "./TopLineUpInversedArp";
-// import TopLineDownInversedArp from "./TopLineDownInversedArp";
-// import BottomLineUpInversedArp from "./BottomLineUpInversedArp";
-// import BottomLineDownInversedArp from "./BottomLineDownInversedArp";
+import TopLineUpArp from "./TopLineUpArp.js";
+import TopLineDownArp from "./TopLineDownArp.js";
+import BottomLineUpArp from "./BottomLineUpArp.js";
+import BottomLineDownArp from "./BottomLineDownArp.js";
+// import TopLineUpInversedArp from "./TopLineUpInversedArp.js";
+// import TopLineDownInversedArp from "./TopLineDownInversedArp.js";
+// import BottomLineUpInversedArp from "./BottomLineUpInversedArp.js";
+// import BottomLineDownInversedArp from "./BottomLineDownInversedArp.js";
 
 export {
   BaseArp,

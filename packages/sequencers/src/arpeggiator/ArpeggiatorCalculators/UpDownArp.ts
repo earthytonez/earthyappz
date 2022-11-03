@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import DoubleLengthArp from "./DoubleLengthArp";
+import DoubleLengthArp from "./DoubleLengthArp.js";
 
 export default class UpDownArp extends DoubleLengthArp {
   arpType: string = "up-down";

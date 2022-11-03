@@ -6,7 +6,7 @@ import * as Tone from "tone";
 
 import { Chord } from "@tonaljs/tonal";
 
-import { IArpeggiatorParams } from "./ArpeggiatorCalculators/BaseArp";
+import { IArpeggiatorParams } from "./ArpeggiatorCalculators/BaseArp.js";
 
 import {
   BaseArp,
@@ -25,7 +25,7 @@ import {
   // TopLineDownInversedArp,
   // BottomLineUpInversedArp,
   // BottomLineDownInversedArp,
-} from "./ArpeggiatorCalculators";
+} from "./ArpeggiatorCalculators/index.js";
 
 type ArpeggiatorStyle =
   | "up"

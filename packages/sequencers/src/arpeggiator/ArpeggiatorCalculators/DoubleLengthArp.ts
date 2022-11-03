@@ -1,4 +1,4 @@
-import BaseArp, { IArpeggiatorParams } from "./BaseArp";
+import BaseArp, { IArpeggiatorParams } from "./BaseArp.js";
 
 export default class DoubleLengthArp extends BaseArp {
   measureBeat: number;

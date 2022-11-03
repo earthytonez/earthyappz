@@ -2,8 +2,9 @@
   "name": "@earthytonez/earthytypez",
   "version": "0.0.1",
   "description": "",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "jest --watchAll",
     "build": "tsc"

@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 
-import DoubleLengthArp from "./DoubleLengthArp";
+import DoubleLengthArp from "./DoubleLengthArp.js";
 
 export default class TopLineUpArp extends DoubleLengthArp {
   note(step: number) {

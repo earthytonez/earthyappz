@@ -1,7 +1,7 @@
 import * as Tone from "tone";
-import DoubleLengthArp from "./DoubleLengthArp";
+import DoubleLengthArp from "./DoubleLengthArp.js";
 
-import { IArpeggiatorParams } from "./BaseArp";
+import { IArpeggiatorParams } from "./BaseArp.js";
 
 export default class DownUpIncArp extends DoubleLengthArp {
   note: any;

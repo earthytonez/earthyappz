@@ -1,4 +1,4 @@
-import BaseArp from "./BaseArp";
+import BaseArp from "./BaseArp.js";
 
 export default class RandomArp extends BaseArp {
   note(_step: number): string {

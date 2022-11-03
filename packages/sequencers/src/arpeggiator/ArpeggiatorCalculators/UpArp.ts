@@ -1,5 +1,5 @@
 import { ORDERED_NOTE_NUMBERS } from "@earthytonez/earthyutilz";
-import BaseArp from "./BaseArp";
+import BaseArp from "./BaseArp.js";
 
 import * as Tone from "tone";
 

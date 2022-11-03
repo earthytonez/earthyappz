@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import DoubleLengthArp from "./DoubleLengthArp";
+import DoubleLengthArp from "./DoubleLengthArp.js";
 
 import { IIntervalCalculatorParams } from "../IntervalCalculator";
 
