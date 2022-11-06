@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST={"../layouts/Baseof.js -> feeder-react-feedback/dist/Feedback":{id:6664,files:["static/chunks/664.d708ec86613e43fd.js"]}};
