@@ -2,8 +2,6 @@ import { ChordType, Scale } from "@tonaljs/tonal";
 import { IMusicChord, IMusicKey } from "@earthytonez/earthytypez";
 import Arpeggiator from "./index";
 
-// import { IArpeggiatorParams } from "./ArpeggiatorCalculators/BaseArp";
-
 function calculateArpNote(note: string, index: number, aic: Arpeggiator) {
   let arpNote = aic.noteForStep(index);
   expect(arpNote.toNote()).toBe(note);

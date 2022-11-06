@@ -161,3 +161,7 @@ Sequencer Modifiers (Midi Effects)
 
 
 http://nexus-js.github.io/ui/
+
+
+UI -- 
+// https://www.cssscript.com/canvas-javascript-knob-dial-component/
