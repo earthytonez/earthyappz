@@ -1,0 +1,97 @@
+{
+  "main": [
+    {
+      "name": "Themes",
+      "url": "/"
+    },
+    {
+      "name": "Resources",
+      "url": "/resources"
+    },
+    {
+      "name": "About",
+      "url": "/about"
+    }
+  ],
+  "footer": [
+    {
+      "name": "EarthyResources",
+      "pages": [
+        {
+          "page": "themes",
+          "url": "/"
+        },
+        {
+          "page": "resources",
+          "url": "/resources"
+        },
+        {
+          "page": "about",
+          "url": "/about"
+        },
+        {
+          "page": "disclaimer",
+          "url": "/disclaimer"
+        }
+      ]
+    },
+    {
+      "name": "Themes",
+      "pages": [
+        {
+          "page": "astro themes",
+          "url": "/astro-themes"
+        },
+        {
+          "page": "hugo themes",
+          "url": "/hugo-themes"
+        },
+        {
+          "page": "nextjs templates",
+          "url": "/nextjs-templates"
+        },
+        {
+          "page": "gatsby themes",
+          "url": "/gatsby-themes"
+        },
+        {
+          "page": "jekyll themes",
+          "url": "/jekyll-themes"
+        }
+      ]
+    },
+    {
+      "name": "Resources",
+      "pages": [
+        {
+          "page": "chat",
+          "url": "/jamstack-chat"
+        },
+        {
+          "page": "ecommerce",
+          "url": "/jamstack-ecommerce"
+        },
+        {
+          "page": "feedback",
+          "url": "/jamstack-feedback"
+        },
+        {
+          "page": "form",
+          "url": "/jamstack-forms"
+        },
+        {
+          "page": "helper",
+          "url": "/jamstack-helper"
+        },
+        {
+          "page": "hosting",
+          "url": "/jamstack-hosting"
+        },
+        {
+          "page": "search",
+          "url": "/jamstack-search"
+        }
+      ]
+    }
+  ]
+}
