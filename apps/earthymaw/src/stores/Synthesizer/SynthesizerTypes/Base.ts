@@ -1,8 +1,8 @@
 import { observable, makeObservable, action } from "mobx";
 import * as Tone from "tone";
 
-import { ISequencerGate } from "../../Sequencer/SequencerRunner/SequencerGate";
-import IPlayParams from "../../../Types/IPlayParams";
+import { IGatePlayParams } from "../../GateSequencer/IGatePlayParams";
+import { ISequencerPlayParams } from "../../Sequencer/ISequencerPlayParams";
 import ISynthDefinition from "../SynthLoader/ISynthDefinition";
 import BaseParameter from "../../Parameter/Base";
 import BasePlugin, { IPluginNode } from "../../Plugins/Base";
@@ -55,6 +55,12 @@ export default class BaseSynthesizer {
     this.loading = loading;
   }
 
+  findParameterPlugin(pluginSlug: string) {
+    return this.pluginNodes.find((plugin: any) => {
+      return plugin.ToneJSNode.name === pluginSlug;
+    });
+  }
+
   changeParameter(parameterSlug: string, value: any) {
     if (!this._parameters) {
       throw new Error("No Parameters");
@@ -83,9 +89,7 @@ export default class BaseSynthesizer {
 
     parameter.setValue(value);
     if (parameter && parameter.plugin) {
-      let plugin = this.pluginNodes.find((plugin: any) => {
-        return plugin.ToneJSNode.name == parameter!.plugin;
-      });
+      let plugin = this.findParameterPlugin(parameter!.plugin);
       if (plugin) {
         let vals: any = {};
         vals[parameter.slug] = parameter.val;
@@ -214,7 +218,7 @@ export default class BaseSynthesizer {
     return this.parameterValue(slug) as string;
   }
 
-  play(_gate: ISequencerGate, params: IPlayParams) {
+  play(_gate: IGatePlayParams, params: ISequencerPlayParams) {
     // this.numericParameter("pitch")
     // this.numericParameter("pitch")
     let pitch = params.note;

@@ -58,6 +58,10 @@ export default class TrackStore {
     );
   }
 
+  fromID(track_id: string): Track | undefined {
+    return this.tracks.find((track) => track.id === track_id);
+  }
+
   saveTracks() {
     if (this.emptyTracks()) {
       debug("TRACK_STORE_LOAD", "Tried to save empty 'tracks'");

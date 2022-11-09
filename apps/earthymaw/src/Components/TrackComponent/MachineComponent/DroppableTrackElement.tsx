@@ -8,7 +8,9 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+
 import LaunchIcon from "@mui/icons-material/Launch";
+import SearchIcon from "@mui/icons-material/Search";
 
 import FullGridIconButton from "../../TightBorderedGrid/FullGridIconButton";
 import GridBottomRightCorner from "../../TightBorderedGrid/GridBottomRightCorner";
@@ -20,16 +22,15 @@ import MachinePlaceholder from "./MachinePlaceholder";
 
 import { UniqueColors } from "../../Decorations";
 import { useUIStore } from "../../../stores/UI/useUIStore";
+import { useStore } from "../../../stores/useStore";
+
+import { IMachineTypeSlug } from "../../../stores/Machines/MachineTypes/IMachineType";
+
+import SearchPopover from "./SearchPopover";
 
 interface DroppableTrackElementProps {
-  title: "Synthesizer" | "Sequencer" | "Arranger";
-  slug:
-    | "sequencer"
-    | "modulator"
-    | "synthesizer"
-    | "arranger"
-    | "musicFeature"
-    | undefined;
+  title: "Synthesizer" | "Sequencer" | "Arranger" | "Gate Sequencer";
+  slug: IMachineTypeSlug;
   track_id: string;
   machine: any;
 }
@@ -48,13 +49,7 @@ const LoadingPlaceHolder = observer(
   }: {
     machine: any;
     placeholder: any;
-    slug:
-      | "sequencer"
-      | "modulator"
-      | "synthesizer"
-      | "arranger"
-      | "musicFeature"
-      | undefined;
+    slug: IMachineTypeSlug;
   }): React.ReactElement => {
     return machine && machine.loading ? (
       <Box>Loading...</Box>
@@ -67,9 +62,34 @@ const LoadingPlaceHolder = observer(
 const DroppableTrackElement = observer(
   ({ track_id, machine, title, slug }: DroppableTrackElementProps) => {
     const uiStore = useUIStore();
+    const stores = useStore();
+
     const { toggleObjectEdit } = uiStore;
 
     let placeholder = `Drop ${title} Here`;
+
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+      null
+    );
+
+    const toggleSearchPopover = (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
+      console.log("Toggle Search Popover");
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    const handleChange = (_ev: any, value: any) => {
+      setAnchorEl(null);
+      let track = stores.trackStore.fromID(track_id);
+      if (track && value) {
+        track.assignMachine(slug, value.slug);
+      }
+    };
 
     return (
       <Droppable
@@ -147,7 +167,32 @@ const DroppableTrackElement = observer(
                 ) : (
                   ""
                 )}
-                <Presets />
+                {slug !== undefined ? (
+                  <Grid container>
+                    <GridBottomLeftCorner item xs={10}>
+                      <Presets />
+                    </GridBottomLeftCorner>
+                    <GridBottomRightCorner item xs={2}>
+                      <FullGridIconButton
+                        aria-label={`Search`}
+                        size="small"
+                        onClick={toggleSearchPopover}
+                      >
+                        <SearchIcon fontSize="small" />
+                      </FullGridIconButton>
+                      <SearchPopover
+                        title={title}
+                        type={slug}
+                        open={Boolean(anchorEl)}
+                        anchorEl={anchorEl}
+                        handleChange={handleChange}
+                        handleClose={handleClose}
+                      />
+                    </GridBottomRightCorner>
+                  </Grid>
+                ) : (
+                  <div></div>
+                )}
               </CardContent>
             </Card>
           </TightBorderedPaper>

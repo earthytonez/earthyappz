@@ -1,5 +1,4 @@
 import TriggerWhen from "./TriggerWhen";
-import GateLengths from "./GateLengths";
 import { INoteToPlayDefinition } from "./NoteToPlay";
 import ISequencerType from "./ISequencerType";
 
@@ -19,10 +18,6 @@ export default interface IParsedSequencerTOML {
   total_length: number;
   type: ISequencerType;
   NoteToPlay: INoteToPlayDefinition;
-  GateLengths: GateLengths;
-  GateLengthsList: {
-    list: number[][];
-  };
   TriggerWhen: TriggerWhen;
   TriggerWhenList: {
     list: number[][];

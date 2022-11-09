@@ -87,6 +87,10 @@ export default abstract class BaseParameter {
     this.field = params.name.replaceAll(" ", "").toLowerCase();
   }
 
+  increment() {}
+
+  decrement() {}
+
   /*
    * value gets the actual parameter data which should be decided based on three
    * values.

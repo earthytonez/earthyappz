@@ -16,6 +16,8 @@ import {
   MIDI_NOTE_RANGE_MIN,
 } from "config/constants/parameters";
 import SequencerDefinition from "./Sequencer/SequencerLoader/SequencerDefinition";
+import GateSequencerDefinition from "./GateSequencer/GateSequencerLoader/GateSequencerDefinition";
+
 /*
  * Defines Parameters not associated with a plugin.
  */
@@ -290,6 +292,7 @@ export default class ParameterStore {
       });
     },
     beat_offset: (
+      // Can be reused for Euclidean Sequencer
       trackID: string,
       _options: { [key: string]: number | string }
     ) => {
@@ -301,6 +304,28 @@ export default class ParameterStore {
         min: 0,
         max: 3,
         description: "When will note be played after downbeat.",
+      });
+    },
+    pulses: (trackID: string, _options: { [key: string]: number | string }) => {
+      return new NumericParameter({
+        userParameterStore: this.rootStore!.userParameterStore,
+        name: "Pulses", // chosenGateParameterSet
+        key: this.parameterKey("pulses", trackID),
+        default: 1,
+        min: 0,
+        max: 64,
+        description: "The numebr of beats to be played in a Euclidean Sequence",
+      });
+    },
+    steps: (trackID: string, _options: { [key: string]: number | string }) => {
+      return new NumericParameter({
+        userParameterStore: this.rootStore!.userParameterStore,
+        name: "Steps", // chosenGateParameterSet
+        key: this.parameterKey("steps", trackID),
+        default: 1,
+        min: 0,
+        max: 64,
+        description: "How many steps in the section.",
       });
     },
   };
@@ -367,6 +392,61 @@ export default class ParameterStore {
     });
   }
 
+  makeGateSequencerParameterList(
+    gateSequencer: GateSequencerDefinition
+  ): ParameterSlug[] {
+    let retVal: ParameterSlug[] = [];
+
+    if (gateSequencer.parameters) {
+      retVal = retVal.concat(
+        gateSequencer.parameters.map((parameter: string) => {
+          return { Slug: parameter, Options: {} };
+        })
+      );
+    }
+
+    // if (gateSequencer.type === "step") {
+    //   retVal.push({ Slug: "trigger_set", Options: {} });
+    //   retVal.push({ Slug: "gate_set", Options: {} });
+    // }
+
+    if (gateSequencer.type === "drone" || gateSequencer.type === "randomStep") {
+      retVal.push({ Slug: "min_gate", Options: {} });
+      retVal.push({ Slug: "max_gate", Options: {} });
+      retVal.push({ Slug: "min_interval", Options: {} });
+      retVal.push({ Slug: "max_interval", Options: {} });
+    }
+
+    if (gateSequencer.type === "fixedStep") {
+      retVal.push({ Slug: "step_pitch_shift", Options: {} });
+      retVal.push({ Slug: "step_pitch_shift_direction", Options: {} });
+      retVal.push({ Slug: "step_gate_array", Options: {} });
+    }
+
+    console.log(gateSequencer);
+    if (
+      gateSequencer.triggerWhen.parameterSets[0]?.triggerType === "stepInterval"
+    ) {
+      retVal.push({ Slug: "step_interval", Options: {} });
+    }
+
+    if (
+      gateSequencer?.triggerWhen?.parameterSets[0]?.fillList &&
+      gateSequencer?.triggerWhen?.parameterSets[0]?.fillList.length > 0
+    ) {
+      retVal.push({
+        Slug: "selected_fill",
+        Options: {
+          min: 0,
+          max: gateSequencer?.triggerWhen?.parameterSets[0]?.fillList.length,
+        },
+      });
+    }
+    return retVal.filter((parameter: ParameterSlug | undefined) => {
+      return parameter !== undefined;
+    });
+  }
+
   makeSynthParameterList(synthesizer: SynthesizerDefinition): ParameterSlug[] {
     let retVal: ParameterSlug[] = [];
 
@@ -389,9 +469,33 @@ export default class ParameterStore {
     let parametersToGet = this.makeSequencerParameterList(sequencer);
 
     let parameters = parametersToGet.map((parameter: ParameterSlug) => {
-      return this.parameters[parameter.Slug]!(trackID, parameter.Options);
+      let p = this.parameters[parameter.Slug];
+      if (p) {
+        return p!(trackID, parameter.Options);
+      } else {
+        console.error(`p is undefined parameter.Slug = ${parameter.Slug}`);
+        return undefined;
+      }
     });
-    return parameters!;
+    return parameters.filter((p) => p !== undefined)! as BaseParameter[];
+  }
+
+  fetchForGateSequencer(
+    gateSequencer: GateSequencerDefinition,
+    trackID: string
+  ): BaseParameter[] {
+    let parametersToGet = this.makeGateSequencerParameterList(gateSequencer);
+
+    let parameters = parametersToGet.map((parameter: ParameterSlug) => {
+      let p = this.parameters[parameter.Slug];
+      if (p) {
+        return p!(trackID, parameter.Options);
+      } else {
+        console.error(`p is undefined parameter.Slug = ${parameter.Slug}`);
+        return undefined;
+      }
+    });
+    return parameters.filter((p) => p !== undefined)! as BaseParameter[];
   }
 
   fetchForSynth(

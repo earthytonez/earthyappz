@@ -14,7 +14,7 @@ const style = {
   p: 4,
 };
 
-export default ({
+const AboutModal = ({
   open,
   handleClose,
 }: {
@@ -35,13 +35,27 @@ export default ({
           What is the Earthy Maw?
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Earthy Maw is two things<br />
+          Earthy Maw is two things
           <br />
-          1: It's a generative music maker. Earthy Maw can be used to make (and eventually share) generative songs<br />
           <br />
-          2: It's an experiment in predictable, customizable modulatable sequencers.  Sequencing generally fits into two categories. The first is step sequencers, which let you control every note that is played.  Length, pitch, volume, etc.  The second is random or algorithmic sequencers.  These tend to be less tangibly predictable and more likely to produce "happy accidents", though they can be easy to adjust for live performance.  I hope to create something in between.  Sequencers that although they are individually less flexible, are easier to understand what they do, and what will happen when you change them.<br />
+          1: It's a generative music maker. Earthy Maw can be used to make (and
+          eventually share) generative songs
+          <br />
+          <br />
+          2: It's an experiment in predictable, customizable modulatable
+          sequencers. Sequencing generally fits into two categories. The first
+          is step sequencers, which let you control every note that is played.
+          Length, pitch, volume, etc. The second is random or algorithmic
+          sequencers. These tend to be less tangibly predictable and more likely
+          to produce "happy accidents", though they can be easy to adjust for
+          live performance. I hope to create something in between. Sequencers
+          that although they are individually less flexible, are easier to
+          understand what they do, and what will happen when you change them.
+          <br />
         </Typography>
       </Box>
     </Modal>
   );
 };
+
+export default AboutModal;

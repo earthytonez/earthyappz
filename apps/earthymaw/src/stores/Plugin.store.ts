@@ -19,7 +19,7 @@ export default class PluginStore {
       if (pluginDef.includes("<")) {
         splitPluginDef = pluginDef.split("<");
         plugin = splitPluginDef[0]!;
-        subType = splitPluginDef[1]!.replace(/\>$/, "");
+        subType = splitPluginDef[1]!.replace(/>$/, "");
       } else {
         plugin = pluginDef;
         subType = undefined;

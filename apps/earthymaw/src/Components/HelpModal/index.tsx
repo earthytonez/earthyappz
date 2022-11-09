@@ -14,7 +14,7 @@ const style = {
   p: 4,
 };
 
-export default ({
+const HelpModal = ({
   open,
   handleClose,
 }: {
@@ -35,11 +35,18 @@ export default ({
           Help
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          <b>Why don't my changes to keys/scales/chords change right away?</b><br />
+          <b>Why don't my changes to keys/scales/chords change right away?</b>
           <br />
-          <p>These changes are made to take effect musically, that means they won't change until the end of a section.  By default sections are of 64 steps in length, but this can be changed in the top bar.</p>
+          <br />
+          <p>
+            These changes are made to take effect musically, that means they
+            won't change until the end of a section. By default sections are of
+            64 steps in length, but this can be changed in the top bar.
+          </p>
         </Typography>
       </Box>
     </Modal>
   );
 };
+
+export default HelpModal;

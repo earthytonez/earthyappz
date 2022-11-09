@@ -20,7 +20,10 @@ const TrackListComponent = observer((_props: TrackListComponentProps) => {
       <Grid container spacing={1} direction="column">
         {tracks.map((track: Track, i: number) => (
           <React.Fragment key={i}>
-            <TrackComponent track={track}></TrackComponent>
+            <TrackComponent
+              track={track}
+              sectionLength={stores.musicFeaturesStore.musicSectionLength.val}
+            ></TrackComponent>
             <Divider light />
           </React.Fragment>
         ))}
@@ -56,8 +59,13 @@ const TrackListComponent = observer((_props: TrackListComponentProps) => {
               height: "100%",
             }}
           >
-            <Grid item xs={5} sx={{ mt: '10px'}}>
-              <Button color="secondary" variant="outlined" onClick={stores.trackStore.addTrack} size="large">
+            <Grid item xs={5} sx={{ mt: "10px" }}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={stores.trackStore.addTrack}
+                size="large"
+              >
                 Add Track
               </Button>
             </Grid>

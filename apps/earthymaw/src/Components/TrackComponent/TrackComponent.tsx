@@ -9,9 +9,11 @@ import Track from "../../stores/Track";
 
 import DroppableTrackElement from "./MachineComponent/DroppableTrackElement";
 import TrackSettingsComponent from "./TrackSettings/TrackSettingsComponent";
+import StepSequencerAnimation from "./StepSequencerAnimation";
 
 interface TrackComponentProps {
   track: Track;
+  sectionLength: number;
 }
 
 const TRACK_GRID_STYLE = {
@@ -32,12 +34,12 @@ const TRACK_GRID_SX = {
 };
 
 const TrackComponent = observer(
-  ({ track }: TrackComponentProps): React.ReactElement => {
+  ({ track, sectionLength }: TrackComponentProps): React.ReactElement => {
     return (
       <Grid
         container
         direction="row"
-        spacing={2}
+        spacing={1}
         p={2}
         style={{
           backgroundColor: "#333",
@@ -65,6 +67,15 @@ const TrackComponent = observer(
         <Grid item style={TRACK_GRID_STYLE} sx={TRACK_GRID_SX}>
           <DroppableTrackElement
             track_id={track.id!}
+            machine={track.gateSequencer}
+            slug="gateSequencer"
+            title="Gate Sequencer"
+          ></DroppableTrackElement>
+        </Grid>
+
+        <Grid item style={TRACK_GRID_STYLE} sx={TRACK_GRID_SX}>
+          <DroppableTrackElement
+            track_id={track.id!}
             machine={track.sequencer}
             slug="sequencer"
             title="Sequencer"
@@ -78,6 +89,14 @@ const TrackComponent = observer(
             slug="synthesizer"
             title="Synthesizer"
           ></DroppableTrackElement>
+        </Grid>
+        <Grid item style={TRACK_GRID_STYLE} sx={TRACK_GRID_SX}>
+          <StepSequencerAnimation
+            gateSequencer={track.gateSequencer}
+            sequencer={track.sequencer}
+            synthesizer={track.synthesizer}
+            sectionLength={sectionLength}
+          />
         </Grid>
         <Divider sx={{ m: 0 }} />
       </Grid>

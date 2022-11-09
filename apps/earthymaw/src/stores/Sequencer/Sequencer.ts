@@ -8,9 +8,6 @@ import { debug, info } from "../../Util/logger";
 import SequencerType from "./SequencerType";
 
 import SequencerDefinition from "./SequencerLoader/SequencerDefinition";
-import PlayEveryX from "./SequencerRunner/PlayEveryX";
-import RandomTrigger from "./SequencerRunner/RandomTrigger";
-import { ISequencerGate } from "./SequencerRunner/SequencerGate";
 import ISequencerParameters from "./SequencerRunner/ISequencerParameters";
 
 import MusicFeaturesStore from "../MusicFeatures.store";
@@ -19,14 +16,14 @@ import { BeatMarker } from "../MusicFeatures/BeatMarker";
 import BaseSynthesizer from "../Synthesizer/SynthesizerTypes/Base";
 import BaseParameter from "../Parameter/Base";
 
-import { IMusicChord, IMusicKey, IMusicScale } from "Types";
-import { ITriggerParameters } from "./SequencerLoader/TriggerWhen";
+import { IMusicChord, IMusicKey, IMusicScale, IMusicProgression } from "Types";
 
-import TriggerWhen from "./SequencerLoader/TriggerWhen";
-import GateLengths from "./SequencerLoader/GateLengths";
 import NoteToPlay from "./SequencerLoader/NoteToPlay";
 import VolumeToPlay from "./SequencerLoader/VolumeToPlay";
 import IntervalToPlay from "./SequencerLoader/IntervalToPlay";
+import { IGatePlayParams } from "../GateSequencer/IGatePlayParams";
+
+import { ISequencerPlayParams } from "./ISequencerPlayParams";
 
 interface IIntervalsToPlay {
   interval_length: number;
@@ -39,8 +36,6 @@ interface IIntervalsToPlay {
 export default class Sequencer extends SequencerType {
   slug: string;
 
-  randomTriggerRunner?: RandomTrigger;
-  playEveryXRunner?: PlayEveryX;
   /*
    * A parameter set determines when a sequence is triggered.
    * There can be multiple parameter sets for a given sequencer, in order to have
@@ -78,7 +73,6 @@ export default class Sequencer extends SequencerType {
 
   tags?: string[];
   description?: string = "";
-  gateLengths: GateLengths = new GateLengths();
   intervalToPlay: IntervalToPlay = new IntervalToPlay();
   intervalsToPlay?: IIntervalsToPlay;
   noteToPlay: NoteToPlay = new NoteToPlay();
@@ -86,11 +80,8 @@ export default class Sequencer extends SequencerType {
   volumeToPlay: VolumeToPlay = new VolumeToPlay();
   rhythm_length?: number = undefined;
   totalLength: number;
-  triggerWhen: TriggerWhen = new TriggerWhen();
 
   /* TODO: Deprecate and remove */
-  minGate: number = 0;
-  maxGate: number = 0;
   minInterval: number = 0;
   maxInterval: number = 0;
 
@@ -113,12 +104,8 @@ export default class Sequencer extends SequencerType {
 
     this.intervalToPlay = sequencerDefinition.intervalToPlay;
     this.noteToPlay = sequencerDefinition.noteToPlay;
-    this.triggerWhen = sequencerDefinition.triggerWhen;
-    this.gateLengths = sequencerDefinition.gateLengths;
     this.volumeToPlay = sequencerDefinition.volumeToPlay;
     this.totalLength = sequencerDefinition.totalLength;
-
-    this.loadRunners(sequencerDefinition.rhythm_length!);
 
     makeObservable(this, {
       bindSynth: action,
@@ -127,7 +114,6 @@ export default class Sequencer extends SequencerType {
       play: action,
       resetBeatsSinceLastNote: action.bound,
       toJSON: action.bound,
-      randomTrigger: action.bound,
     });
   }
 
@@ -174,25 +160,11 @@ export default class Sequencer extends SequencerType {
   }
 
   incrementParameter(parameter: string) {
-    switch (parameter) {
-      case "minGate":
-        this.minGate++;
-        break;
-      case "maxGate":
-        this.maxGate++;
-        break;
-    }
+    return parameter;
   }
 
   decrementParameter(parameter: string) {
-    switch (parameter) {
-      case "minGate":
-        this.minGate--;
-        break;
-      case "maxGate":
-        this.maxGate--;
-        break;
-    }
+    return parameter;
   }
 
   changeParameter(parameterSlug: string, value: any) {
@@ -219,37 +191,6 @@ export default class Sequencer extends SequencerType {
     return Array.from(this._parameters!.values());
   }
 
-  /*
-   *
-   */
-  private async loadRunners(rhythm_length: number) {
-    this.playEveryXRunner = new PlayEveryX(rhythm_length);
-    this.randomTriggerRunner = new RandomTrigger(rhythm_length);
-  }
-
-  /*
-   * This is a simple step sequencer, that enables you to sequence based on either a list or a mathematical formula.
-   * This is only for triggers/gates it does not determine what note to play.
-   */
-  playEveryX(
-    beatMarker: number,
-    parameters: ITriggerParameters
-  ): ISequencerGate {
-    try {
-      return this.playEveryXRunner!.run(
-        beatMarker,
-        parameters,
-        this._parameters
-      );
-    } catch (err) {
-      console.error(err, parameters);
-    }
-
-    return {
-      triggered: false,
-    };
-  }
-
   /* Here we have parameters, how does the data get back to the plugin, or wherever it 
      is supposed to go?  I think you change the userdata and everything pulls from that.
      */
@@ -266,70 +207,6 @@ export default class Sequencer extends SequencerType {
     });
 
     return this;
-  }
-
-  /*
-   * This is a simple step sequencer, that enables you to sequence based on either a list or a mathematical formula.
-   * This is only for triggers/gates it does not determine what note to play.
-   */
-  randomTrigger(
-    beatMarker: number,
-    parameters: ITriggerParameters
-  ): ISequencerGate {
-    try {
-      return this.randomTriggerRunner!.run(
-        beatMarker,
-        this.beatsSinceLastNote,
-        this.resetBeatsSinceLastNote,
-        parameters,
-        this._parameters
-      );
-    } catch (err) {
-      console.error(err, parameters);
-    }
-    return {
-      triggered: false,
-    };
-  }
-
-  /*
-   * For a given step, this determines if the the step should trigger the synthesizer.  This will mainly call different
-   * kinds of sequencers, such as a step sequencer to determine if it should play.
-   *
-   * Step Sequencer
-   * Euclidian Sequencer
-   * Drone Sequencer?
-   */
-  gateAndNote(beatMarker: BeatMarker): ISequencerGate {
-    if (!this.boundSynthesizer || !this.triggerWhen) {
-      return {
-        triggered: false,
-      };
-    }
-
-    let parameters =
-      this.triggerWhen.parameterSets[this.chosenTriggerParameterSet];
-    if (parameters) {
-      parameters.gateList =
-        this.gateLengths?.parameterSets[this.chosenGateParameterSet]?.gateList;
-    }
-
-    if (!parameters) {
-      throw new Error(
-        `parameters for random sequencer ${this.chosenTriggerParameterSet} must be defined`
-      );
-    }
-
-    switch (this.triggerWhen.type) {
-      case "random":
-        return this.randomTrigger(beatMarker.num, parameters);
-      case "everyX":
-        return this.playEveryX(beatMarker.num, parameters);
-      default:
-        return {
-          triggered: true,
-        };
-    }
   }
 
   /* 
@@ -501,7 +378,7 @@ export default class Sequencer extends SequencerType {
     chord: IMusicChord,
     beatMarker: BeatMarker,
     time: any
-  ): IPlayParams {
+  ): ISequencerPlayParams {
     return {
       volume: this.volume(beatMarker),
       note: this.note(key, scale, chord, beatMarker),
@@ -515,42 +392,34 @@ export default class Sequencer extends SequencerType {
 
   /* This action is triggered externall to possibly play a sequencer */
   async play(
+    gateParams: IGatePlayParams,
     key: IMusicKey,
     scale: IMusicScale,
     chord: IMusicChord,
+    _progression: IMusicProgression,
     beatMarker: BeatMarker,
     time: any
-  ) {
+  ): Promise<ISequencerPlayParams> {
     this.beatsSinceLastNote++;
 
-    if (!this.boundSynthesizer) {
-      return; // debug("SEQUENCER", "No Bound Synthesizer");
+    let params: ISequencerPlayParams;
+
+    if (!gateParams.triggered) {
+      return this.playParams(key, scale, chord, beatMarker, time);
     }
 
-    let gate: ISequencerGate = this.gateAndNote(beatMarker);
-
-    if (gate.triggered) {
-      if (this.sequencerType() === "drone") {
-        console.log("sequencerType Drone");
-        let params = this.droneParams(key, scale, chord, beatMarker, time);
-        this.boundSynthesizer.play(gate, params);
-        return (this.lastParams = params);
-      }
-
-      if (this.sequencerType() === "arpeggiator") {
-        console.log(`sequencerType Arpeggiator ${beatMarker}`);
-        let params = this.arpParams(key, scale, chord, beatMarker, time);
-        this.boundSynthesizer.play(gate, params);
-        return (this.lastParams = params);
-      }
-
-      let params = this.playParams(key, scale, chord, beatMarker, time);
-      this.boundSynthesizer.play(
-        gate,
-        this.playParams(key, scale, chord, beatMarker, time)
-      );
-      return (this.lastParams = params);
+    if (this.sequencerType() === "drone") {
+      console.log("sequencerType Drone");
+      params = this.droneParams(key, scale, chord, beatMarker, time);
+    } else if (this.sequencerType() === "arpeggiator") {
+      console.log(`sequencerType Arpeggiator ${beatMarker}`);
+      params = this.arpParams(key, scale, chord, beatMarker, time);
+    } else {
+      params = this.playParams(key, scale, chord, beatMarker, time);
     }
+
+    this.lastParams = params;
+    return params;
   }
 }
 

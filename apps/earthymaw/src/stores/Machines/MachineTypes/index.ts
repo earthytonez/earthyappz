@@ -1,0 +1,1 @@
+export { IMachineTypeSlug } from "./IMachineType";

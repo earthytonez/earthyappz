@@ -3,9 +3,12 @@ import * as Tone from "tone";
 
 import Arranger from "./Arranger/Arranger";
 import Sequencer from "./Sequencer";
+import GateSequencer from "./GateSequencer";
 import BaseSynthesizer from "./Synthesizer/SynthesizerTypes/Base";
+
 import { getSynthesizer } from "./Synthesizer/SynthesizerFactory";
 import { getSequencer } from "./Sequencer/SequencerFactory";
+import GateSequencerFactory from "./GateSequencer/GateSequencerFactory";
 
 import { BeatMarker } from "./MusicFeatures/BeatMarker";
 import MusicFeaturesStore from "./MusicFeatures.store";
@@ -20,6 +23,8 @@ import TrackVolume from "./Track/TrackVolume";
 
 import { debug, error } from "../Util/logger";
 
+import { IMachineTypeSlug } from "./Machines/MachineTypes";
+
 interface ITrackFeatures {
   octaves: TrackOctaves;
   volume: TrackVolume;
@@ -28,6 +33,7 @@ interface ITrackFeatures {
 export default class Track {
   arranger?: Arranger;
   sequencer?: Sequencer;
+  gateSequencer?: GateSequencer;
   synthesizer?: BaseSynthesizer;
 
   private musicFeaturesStore: MusicFeaturesStore;
@@ -66,6 +72,8 @@ export default class Track {
   ) {
     Tone.setContext(audioContext);
 
+    this.loadTrackGateSequencer("fixed_step");
+
     this.musicFeaturesStore = rootStore.musicFeaturesStore;
     this.userParameterStore = rootStore.userParameterStore;
     this.parameterStore = rootStore.parameterStore;
@@ -95,6 +103,7 @@ export default class Track {
 
     makeObservable(this, {
       arranger: observable,
+      gateSequencer: observable,
       id: observable,
       slug: observable,
       sequencer: observable,
@@ -110,22 +119,77 @@ export default class Track {
   };
 
   async tick(beatMarker: BeatMarker, time: number) {
-    if (!this.sequencer) return;
-    if (!this.musicFeaturesStore) {
-      return error("Track", "this.musicFeaturesStore is not set");
+    if (this.sequencer === undefined) {
+      console.error(`No Sequencer Set`);
+      return;
     }
 
-    await this.sequencer.play(
-      this.musicFeaturesStore.musicKey.value(),
-      this.musicFeaturesStore.musicScale.value(),
-      this.musicFeaturesStore.musicChord.value(),
+    if (this.gateSequencer === undefined) {
+      console.error(`No Gate Sequencer Set`);
+      return false;
+    }
+
+    if (this.synthesizer === undefined) {
+      console.error(`No Synthesizer Set`);
+      return false;
+    }
+
+    if (!this.musicFeaturesStore) {
+      console.error(`musicFeaturesStore Not Set`);
+      return;
+    }
+
+    /* Here is what it takes to play a note from gate to synth */
+    let key = this.musicFeaturesStore.musicKey.value();
+    let scale = this.musicFeaturesStore.musicScale.value();
+    let chord = this.musicFeaturesStore.musicChord.value();
+    let progression = this.musicFeaturesStore.musicChordProgression.value();
+
+    /* TODO: Make arrangement work */
+    // let arrangementParams = this.arranger?.play(beatMarker, time);
+    // if (!arrangementParams) {
+    //   return false;
+    // }
+
+    let arrangementParams = {
+      play: true,
+    };
+    debug(`TRACK_TICK`, `Arrangement Params: `, arrangementParams);
+
+    let gateParams = await this.gateSequencer?.play(
+      arrangementParams,
       beatMarker,
       time
     );
 
+    if (!gateParams) {
+      return false;
+    }
+
+    debug(`TRACK_TICK`, `Gate Params: `, gateParams);
+
+    let playParams = await this.sequencer.play(
+      gateParams,
+      key,
+      scale,
+      chord,
+      progression,
+      beatMarker,
+      time
+    );
+
+    if (!playParams) {
+      return false;
+    }
+
+    debug(`TRACK_TICK`, `Play Params: `, gateParams);
+
+    this.synthesizer?.play(gateParams, playParams);
+
     if (beatMarker.num % 10 === 0) {
       this.trackStore?.saveTracks();
     }
+    return;
   }
 
   audioContext() {
@@ -141,6 +205,18 @@ export default class Track {
       synthSlug,
       this.id
     );
+  }
+
+  gateSequencerFromSlug(gateSequencerSlug: string) {
+    console.log(
+      "TRACK::SEQUENCER_FROM_SLUG",
+      `Sequencer Slug: ${gateSequencerSlug}`
+    );
+    let gateSequencerFactory = new GateSequencerFactory(
+      this.parameterStore,
+      this.musicFeaturesStore
+    );
+    return gateSequencerFactory.getGateSequencer(gateSequencerSlug, this.id);
   }
 
   sequencerFromSlug(sequencerSlug: string) {
@@ -164,31 +240,28 @@ export default class Track {
     return new Arranger(arrangerSlug, Tone.getContext());
   }
 
-  newMachine(
-    machineType: "synthesizer" | "sequencer" | "arranger",
-    machineSlug: string
-  ) {
+  newMachine(machineType: IMachineTypeSlug, machineSlug: string) {
     switch (machineType) {
       case "synthesizer":
         return this.synthFromSlug(machineSlug);
+      case "gateSequencer":
+        return this.gateSequencerFromSlug(machineSlug);
       case "sequencer":
         return this.sequencerFromSlug(machineSlug);
       case "arranger":
         return this.arrangerFromSlug(machineSlug);
     }
+    return;
   }
 
-  async assignMachine(
-    machineType: "synthesizer" | "sequencer" | "arranger",
-    machineSlug: any
-  ) {
+  async assignMachine(machineType: IMachineTypeSlug, machineSlug: any) {
+    console.log(`Assigning Machine ${machineType}`);
     let machine = await this.newMachine(machineType, machineSlug);
 
     this[machineType as keyof this] = machine;
 
-    if (this.sequencer && this.synthesizer) {
-      this.sequencer.bindSynth(this.synthesizer);
-    }
+    console.log(machineType);
+    console.log(this[machineType as keyof this]);
 
     if (machineType === "synthesizer") {
       this.synthesizer?.attachVolume(this.trackFeatures.volume.vol);
@@ -201,6 +274,17 @@ export default class Track {
         name: this.sequencer.name,
         slug: this.sequencer.slug,
         type: this.sequencer.type,
+      };
+    }
+    return undefined;
+  }
+
+  gateSequencerJSON() {
+    if (this.gateSequencer) {
+      return {
+        name: this.gateSequencer.name,
+        slug: this.gateSequencer.slug,
+        type: this.gateSequencer.type,
       };
     }
     return undefined;
@@ -224,6 +308,7 @@ export default class Track {
       slug: this.slug,
       arranger: this.arranger,
       sequencer: this.sequencerJSON(),
+      gateSequencer: this.gateSequencerJSON(),
       synthesizer: this.synthesizerJSON(),
     };
     return retVal;
@@ -235,94 +320,88 @@ export default class Track {
     if (this.synthesizer !== undefined) this.synthesizer.setLoading(loading);
   }
 
-  // async loadTrackFeatures(trackData: any) {
-  //   if (trackData.trackFeatures) {
-  //     if (trackData.trackFeatures.volume) {
-  //       this.trackFeatures.volume.load(trackData.trackFeatures.volume);
-  //     }
-  //     if (trackData.trackFeatures.octaves) {
-  //       this.trackFeatures.octaves.load(trackData.trackFeatures.octaves);
-  //     }
-  //   }
-  // }
-
-  async loadTrackArranger(trackData: any) {
-    if (trackData.arranger) {
-      this.arranger = new Arranger(trackData.arranger, Tone.getContext());
+  async loadTrackArranger(arrangerData: any) {
+    if (!arrangerData) {
+      return (this.arranger = undefined);
     }
-  }
-
-  async loadTrackSequencer(sequencer: any) {
-    if (!sequencer) return;
-    this.sequencer = await this.sequencerFromSlug(sequencer.slug);
-  }
-
-  async loadTrackSynthesizer(synthesizer: BaseSynthesizer) {
-    debug("TRACK", "LOAD TRACK SYNTHESIZER", synthesizer);
-
-    if (!synthesizer || !synthesizer.slug) return;
-
-    this.synthesizer = await getSynthesizer(
-      this.userParameterStore,
-      this.parameterStore,
-      this.pluginStore,
-      synthesizer.slug,
-      this.id
-    );
-
-    // this.synthesizer!.loadParameters(synthesizer);
-
-    if (this.sequencer && this.synthesizer) {
-      this.sequencer.bindSynth(this.synthesizer);
-      debug("TRACK_LOADED_SEQUENCER", this.sequencer.toJSON());
-      this.synthesizer.attachVolume(this.trackFeatures.volume.vol);
-    }
-  }
-
-  async load(trackData: any) {
-    // try { // Don't need to load track features any more, all happens through user parameters
-    //   await this.loadTrackFeatures(trackData);
-    // } catch(err: any) {
-    //   error("TRACK_LOAD_FEATURES_ERROR", err);
-    // }
     try {
-      await this.loadTrackArranger(trackData);
+      if (arrangerData) {
+        this.arranger = new Arranger(arrangerData, Tone.getContext());
+      }
     } catch (err: any) {
       error("TRACK_LOAD_FEATURES_ERROR_ARRANGER", err.stack);
     }
+    return undefined;
+  }
+
+  async loadTrackSequencer(sequencer: any) {
+    if (!sequencer) {
+      return (this.sequencer = undefined);
+    }
+
     try {
-      if (trackData.sequencer) {
-        await this.loadTrackSequencer(trackData.sequencer);
-      }
+      this.sequencer = await this.sequencerFromSlug(sequencer.slug);
     } catch (err: any) {
       error("TRACK_LOAD_FEATURES_ERROR_SEQUENCER", err.stack);
     }
+    return undefined;
+  }
+
+  async loadTrackGateSequencer(gateSequencer: any) {
+    if (!gateSequencer || !gateSequencer.slug) {
+      return (this.gateSequencer = undefined);
+    }
+
     try {
-      if (trackData.synthesizer) {
-        await this.loadTrackSynthesizer(trackData.synthesizer);
-      }
+      this.gateSequencer = await this.gateSequencerFromSlug(gateSequencer.slug);
+    } catch (err: any) {
+      error("TRACK_LOAD_GATE_SEQUENCER_ERROR_SEQUENCER", err.stack);
+    }
+    return undefined;
+  }
+
+  async loadTrackSynthesizer(synthesizer: BaseSynthesizer) {
+    if (!synthesizer || !synthesizer.slug) {
+      return (this.synthesizer = undefined);
+    }
+    try {
+      debug("TRACK", "LOAD TRACK SYNTHESIZER", synthesizer);
+
+      this.synthesizer = await getSynthesizer(
+        this.userParameterStore,
+        this.parameterStore,
+        this.pluginStore,
+        synthesizer.slug,
+        this.id
+      );
+
+      this.synthesizer?.attachVolume(this.trackFeatures.volume.vol);
     } catch (err: any) {
       error("TRACK_LOAD_FEATURES_ERROR_SYNTHESIZER", err.stack);
     }
+    return undefined;
+  }
 
+  async load(trackData: any) {
     debug("TRACK_LOADER", `Loading track from trackdata`, trackData);
+
+    await this.loadTrackArranger(trackData.arranger);
+    await this.loadTrackSequencer(trackData.sequencer);
+    await this.loadTrackGateSequencer(trackData.gateSequencer);
+    await this.loadTrackSynthesizer(trackData.synthesizer);
 
     this.setLoading(false);
   }
 
   private initializeMachines(trackMachines: any) {
-    this.arranger = undefined;
-    if (trackMachines?.sequencer) {
-      this.loadTrackSequencer(trackMachines.sequencer);
-    } else {
-      this.sequencer = undefined;
-    }
+    debug("TRACK_LOADER", `Initializing Machines from trackMachines: `);
 
-    if (trackMachines?.synth) {
-      this.loadTrackSynthesizer(trackMachines.synth);
-    } else {
-      this.synthesizer = undefined;
-    }
+    this.arranger = undefined;
+
+    this.loadTrackGateSequencer(trackMachines.gateSequencer);
+    this.loadTrackSequencer(trackMachines.sequencer);
+    this.loadTrackSynthesizer(trackMachines.synth);
+
     this.setLoading(false);
   }
 }

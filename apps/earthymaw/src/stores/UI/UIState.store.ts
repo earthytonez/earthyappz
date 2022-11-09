@@ -1,60 +1,31 @@
 import { makeObservable, action, observable } from "mobx";
-
-type MachineType =
-  | "sequencer"
-  | "modulator"
-  | "synthesizer"
-  | "arranger"
-  | undefined;
+import { IMachineTypeSlug } from "stores/Machines/MachineTypes/IMachineType";
 
 export default class UIStateStore {
   objectEditIsOpen: boolean = false;
   objectEditing: string | undefined = "";
-  objectEditType:
-    | "sequencer"
-    | "modulator"
-    | "synthesizer"
-    | "arranger"
-    | "musicFeature"
-    | undefined;
+  objectEditType: IMachineTypeSlug | undefined = undefined;
   objectEditTrack: string | "musicFeature" | undefined;
 
   machineBrowserOpen: boolean = false;
-  machinesBrowsing:
-    | "sequencer"
-    | "modulator"
-    | "synthesizer"
-    | "arranger"
-    | "musicFeature"
-    | undefined = undefined;
+  machinesBrowsing: IMachineTypeSlug | undefined = undefined;
 
   closeMachineBrowser() {
     this.machineBrowserOpen = false;
     this.machinesBrowsing = undefined;
   }
 
-  setMachinesBrowsing(
-    machineType:
-      | "sequencer"
-      | "modulator"
-      | "synthesizer"
-      | "arranger"
-      | "musicFeature"
-      | undefined
-  ) {
+  setMachinesBrowsing(machineType: IMachineTypeSlug) {
     this.machinesBrowsing = machineType;
   }
 
   browseMachines(
-    machineType:
-      | "sequencer"
-      | "modulator"
-      | "synthesizer"
-      | "arranger"
-      | "musicFeature"
-      | undefined,
+    machineType: IMachineTypeSlug | undefined,
     machineBrowserOpen?: boolean
   ) {
+    if (machineType === undefined) {
+      machineBrowserOpen = false;
+    }
     this.machineBrowserOpen = true;
     if (machineBrowserOpen === false) {
       this.machineBrowserOpen = false;
@@ -65,7 +36,7 @@ export default class UIStateStore {
   toggleObjectEdit(
     open: boolean,
     machineTrack?: string | "musicFeature",
-    machineType?: MachineType | "musicFeature",
+    machineType?: IMachineTypeSlug,
     machineSlug?: string
   ) {
     if (!open) {

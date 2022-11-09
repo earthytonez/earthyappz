@@ -7,12 +7,14 @@ import { error, debug } from "../Util/logger";
 
 import * as Tone from "tone";
 
-import SynthTypeStore from "./MachineType/SynthType";
-import SequencerTypeStore from "./MachineType/SequencerType";
-import ArrangerTypeStore from "./MachineType/ArrangerType";
+import SynthTypeStore from "./Machines/MachineTypes/SynthType";
+import SequencerTypeStore from "./Machines/MachineTypes/SequencerType";
+import GateSequencerTypeStore from "./Machines/MachineTypes/GateSequencerType";
+import ArrangerTypeStore from "./Machines/MachineTypes/ArrangerType";
 import PluginStore from "./Plugin.store";
 import ParameterStore from "./Parameter.store";
 import ISequencerType from "./Sequencer/ISequencerType";
+import IGateSequencerType from "./GateSequencer/IGateSequencerType";
 // import { AudioContext } from 'standardized-audio-context';
 
 export default class RootStore {
@@ -22,6 +24,7 @@ export default class RootStore {
   parameterStore: ParameterStore;
   pluginStore: PluginStore;
   sequencerTypeStore: SequencerTypeStore;
+  gateSequencerTypeStore: GateSequencerTypeStore;
   synthTypeStore: SynthTypeStore;
   trackStore: TrackStore;
   userParameterStore: UserParameterStore = new UserParameterStore();
@@ -39,6 +42,7 @@ export default class RootStore {
 
     this.synthTypeStore = new SynthTypeStore();
     this.sequencerTypeStore = new SequencerTypeStore();
+    this.gateSequencerTypeStore = new GateSequencerTypeStore();
     this.arrangerTypeStore = new ArrangerTypeStore();
 
     /* Start Audio */
@@ -50,7 +54,6 @@ export default class RootStore {
   repeatLoop(time: number) {
     this.musicFeaturesStore.changeFeatures();
     const tracks = this.trackStore.tracks;
-
     if (tracks.length <= 0) return;
 
     tracks.forEach((track: Track, _i: number) => {
@@ -74,6 +77,10 @@ export default class RootStore {
 
   sequencerTypes(): ISequencerType[] {
     return this.sequencerTypeStore.getAll();
+  }
+
+  gateSequencerTypes(): IGateSequencerType[] {
+    return this.gateSequencerTypeStore.getAll();
   }
 
   arrangerTypes() {

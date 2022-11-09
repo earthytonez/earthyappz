@@ -1,20 +1,27 @@
 class BeatMarker {
-    num: number;
-  
-    increment() {
-      if (isNaN(this.num)) {
-        this.num = 0;
-      }
-      this.num++;
-    }
-    
-    toString(): number {
+  num: number;
+
+  measureBeat(sequencerLength: number | undefined) {
+    if (!sequencerLength) {
       return this.num;
     }
-
-    constructor(num: number) {
-      this.num = num;
-    }
+    return this.num % sequencerLength;
   }
 
-  export { BeatMarker };
+  increment() {
+    if (isNaN(this.num)) {
+      this.num = 0;
+    }
+    this.num++;
+  }
+
+  toString(): number {
+    return this.num;
+  }
+
+  constructor(num: number) {
+    this.num = num;
+  }
+}
+
+export { BeatMarker };

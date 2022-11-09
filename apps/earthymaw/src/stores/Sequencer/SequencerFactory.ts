@@ -44,7 +44,7 @@ export async function getSequencer(
 
   const sequencerTOML = await fetchTOML(sequencerSlug);
   if (!sequencerTOML) {
-    throw new Error("sequencerSlug undefined");
+    throw new Error(`sequencerSlug undefined: ${sequencerSlug}`);
   }
 
   const sequencerLoader = new SequencerLoader(sequencerTOML);

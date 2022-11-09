@@ -160,7 +160,7 @@ export default class NoteToPlay {
     if (_arrayStep !== 0 && lastParams && lastParams.note) {
       lastNote = lastParams.note._val;
     }
-    if (lastNote == undefined) {
+    if (lastNote === undefined) {
       lastNote = startNote;
     }
 

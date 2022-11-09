@@ -6,14 +6,10 @@ import RootStore from "./Root.store";
 import { info } from "../Util/logger";
 import { BeatMarker } from "./MusicFeatures/BeatMarker";
 
-// import IMusicScale from "../Types/IMusicScale"; // Change to Tune.js
-// import IMusicKey from "../Types/IMusicKey"; // Change to Tune.js
-// import { IMusicChord } from "Types";
-// import { ChordType, ScaleType } from "@tonaljs/tonal";
 import MusicChordParameter from "./Parameter/MusicChordParameter";
 import MusicScaleParameter from "./Parameter/MusicScaleParameter";
 import MusicKeyParameter from "./Parameter/MusicKeyParameter";
-import NumericSetParameter from "./Parameter/NumericSetParameter";
+import MusicProgressionParameter from "./Parameter/MusicProgressionParameter";
 import NumericParameter from "./Parameter/NumericParameter";
 
 export default class MusicFeaturesStore {
@@ -22,7 +18,7 @@ export default class MusicFeaturesStore {
   musicKey: MusicKeyParameter;
   // musicChord: IMusicChord = ChordType.get("major");
   musicScale: MusicScaleParameter;
-  musicChordProgression: NumericSetParameter;
+  musicChordProgression: MusicProgressionParameter;
 
   musicSectionLength: NumericParameter;
 
@@ -194,11 +190,11 @@ export default class MusicFeaturesStore {
       description: "Global Tempo in BPM",
     });
 
-    this.musicChordProgression = new NumericSetParameter({
+    this.musicChordProgression = new MusicProgressionParameter({
       name: "Chord Progression",
       key: "global.chord_progression",
       userParameterStore: this.rootStore.userParameterStore,
-      default: [1],
+      default: "I",
       changedAtSection: true,
       description:
         "A Global chord progression used in sequencers that involve chord progressions.",

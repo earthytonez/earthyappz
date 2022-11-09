@@ -34,11 +34,11 @@ export default class ArpeggiatorIntervalCalculator extends IntervalCalculator {
     let step: number = 0;
 
     length = params.chord.intervals.length;
-    step = Math.ceil((params.measureBeat / stepInterval) % length);
+    step = Math.ceil(params.measureBeat / stepInterval);
 
     debug(
       "INTERVAL_TO_PLAY",
-      `Getting interval for intervalType Arpeggiator ${params.chord} -- ${step} - ${params.measureBeat} - ${length} ${chordDef.notes[step]}`
+      `Getting interval for intervalType Arpeggiator ${this.intervalArp} ${params.chord} -- ${step} - ${params.measureBeat} - ${length} ${chordDef.notes[step]}`
     );
 
     let arpeggiator = new Arpeggiator(this.intervalArp, params);

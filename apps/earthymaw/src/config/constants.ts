@@ -20,6 +20,9 @@ import Sampler from "../stores/Synthesizer/SynthesizerTypes/Sampler";
 
 import ISynthesizerType from "../stores/Synthesizer/ISynthesizerType";
 import ISequencerType from "../stores/Sequencer/ISequencerType";
+import IGateSequencerType from "../stores/GateSequencer/IGateSequencerType";
+
+export const MUSIC_SECTION_LENGTH_DEFAULT = 64;
 
 export const NOTE_LETTERS = ["A", "B", "C", "D", "E", "F", "G"];
 export const OCTAVE_MIN = 0;
@@ -63,6 +66,27 @@ export const SYNTH_TYPES: ISynthesizerType[] = [
   { id: 4, name: "FMBells", slug: "fm_bells", machineType: "Synthesizer" },
   { id: 5, name: "FMDrone", slug: "fm_drone", machineType: "Synthesizer" },
   { id: 6, name: "Waveform", slug: "waveform", machineType: "Synthesizer" },
+];
+
+export const GATE_SEQUENCER_TYPES: IGateSequencerType[] = [
+  {
+    id: 0,
+    name: "Euclidean",
+    slug: "euclidean",
+    machineType: "Gate Sequencer",
+  },
+  {
+    id: 1,
+    name: "Fixed Step",
+    slug: "fixed_step",
+    machineType: "Gate Sequencer",
+  },
+  {
+    id: 2,
+    name: "Free Step",
+    slug: "free_step",
+    machineType: "Gate Sequencer",
+  },
 ];
 
 export const SEQUENCER_TYPES: ISequencerType[] = [

@@ -2,7 +2,6 @@ import toml from "toml";
 import { makeObservable, action, computed, observable } from "mobx";
 
 import TriggerWhen from "./TriggerWhen";
-import GateLengths from "./GateLengths";
 
 import { BeatMarker } from "../../MusicFeatures/BeatMarker";
 
@@ -39,10 +38,6 @@ export default class SequencerLoader {
     return this.sequencerCode;
   }
 
-  gateLengths(): GateLengths {
-    return this.sequencerHolder.gateLengths;
-  }
-
   triggerWhen(): TriggerWhen {
     return this.sequencerHolder.triggerWhen;
   }
@@ -64,7 +59,6 @@ export default class SequencerLoader {
 
       this.sequencerHolder.name = data.name;
       this.sequencerHolder.slug = data.name.replaceAll(" ", "_").toLowerCase();
-      console.log(this.sequencerHolder.slug);
       this.sequencerHolder.description = data.description;
       // this.sequencerHolder.outputs = data.outputs;
       this.sequencerHolder.rhythm_length = data.rhythm_length;
@@ -85,12 +79,6 @@ export default class SequencerLoader {
       }
       if (data.TriggerWhenList) {
         this.sequencerHolder.triggerWhen.parseList(data.TriggerWhenList.list);
-      }
-      if (data.GateLengths) {
-        this.sequencerHolder.gateLengths.parse(data.GateLengths);
-      }
-      if (data.GateLengthsList) {
-        this.sequencerHolder.gateLengths.parseList(data.GateLengthsList.list);
       }
       this.sequencerHolder.noteToPlay.parse(data.NoteToPlay);
       this.sequencerHolder.intervalToPlay.parse(data.IntervalsToPlay);

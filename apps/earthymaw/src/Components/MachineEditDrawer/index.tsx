@@ -47,6 +47,16 @@ const MachineEditDrawer = observer((): React.ReactElement => {
   if (objectEditTrack !== undefined && objectEditType && objectEditIsOpen) {
     let trackMachine;
     switch (objectEditType) {
+      case "arranger":
+        trackMachine = store.trackStore.tracks.find(
+          (track: Track) => track.id === objectEditTrack
+        )!.arranger;
+        break;
+      case "gateSequencer":
+        trackMachine = store.trackStore.tracks.find(
+          (track: Track) => track.id === objectEditTrack
+        )!.gateSequencer;
+        break;
       case "sequencer":
         trackMachine = store.trackStore.tracks.find(
           (track: Track) => track.id === objectEditTrack
@@ -56,11 +66,6 @@ const MachineEditDrawer = observer((): React.ReactElement => {
         trackMachine = store.trackStore.tracks.find(
           (track: Track) => track.id === objectEditTrack
         )!.synthesizer;
-        break;
-      case "arranger":
-        trackMachine = store.trackStore.tracks.find(
-          (track: Track) => track.id === objectEditTrack
-        )!.arranger;
         break;
     }
 

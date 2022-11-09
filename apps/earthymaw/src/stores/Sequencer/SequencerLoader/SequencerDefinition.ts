@@ -1,5 +1,4 @@
 import TriggerWhen from "./TriggerWhen";
-import GateLengths from "./GateLengths";
 import NoteToPlay from "./NoteToPlay";
 import VolumeToPlay from "./VolumeToPlay";
 import IntervalToPlay from "./IntervalToPlay";
@@ -22,7 +21,6 @@ export default class SequencerDefinition {
   type?: ISequencerType;
   tags?: string[];
   description?: string = "";
-  gateLengths: GateLengths = new GateLengths();
   intervalToPlay: IntervalToPlay = new IntervalToPlay();
   intervalsToPlay?: IIntervalsToPlay;
   rhythm_length?: number = undefined;
