@@ -40,7 +40,7 @@ let StepSequencerAnimation = observer(
             <StepCircle
               key={i}
               triggered={i == gateSequencer?.stepIsTriggered}
-              color={(noteMidi! / 72) * 360 || 1}
+              color={(noteMidi! / 127) * 360 || 1}
               volume={100}
             ></StepCircle>
           );
