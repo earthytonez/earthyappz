@@ -19,10 +19,8 @@ interface IStepCircleProps {
 
 const StepCircle = observer(
   ({ triggered, color, volume }: IStepCircleProps): React.ReactElement => {
-    console.log(triggered);
-    console.log(color);
-    console.log(volume);
-
+    let colorHSL = `hsl(${color}, ${volume}%, 50%)`;
+    console.log(`Color: ${color} -- ${colorHSL}`);
     //(Hue, Saturation, Value?)
     // let murmurHash = murmur(name);
     // let uniqueVal = murmurHash % Math.pow(NUM_COLORS, NUM_CIRCLES);
@@ -30,7 +28,7 @@ const StepCircle = observer(
     return (
       <CircleIcon
         fontSize="small"
-        sx={{ color: triggered ? "white" : "gray" }}
+        sx={{ color: triggered ? colorHSL : "gray" }}
       />
     );
   }

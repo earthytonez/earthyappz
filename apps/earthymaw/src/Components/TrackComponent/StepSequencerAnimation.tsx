@@ -7,6 +7,8 @@ import StepCircle from "../Decorations/StepCircle";
 
 import { observer } from "mobx-react-lite";
 
+import { Note } from "@tonaljs/tonal";
+
 interface StepSequencerAnimationParams {
   gateSequencer?: GateSequencer;
   sequencer?: Sequencer;
@@ -21,10 +23,15 @@ let StepSequencerAnimation = observer(
     synthesizer,
     sectionLength,
   }: StepSequencerAnimationParams) => {
-    console.log(gateSequencer);
-    console.log(sequencer);
-    console.log(synthesizer);
-    console.log(`StepSequencerAnimation: ${gateSequencer?.stepIsTriggered}`);
+    console.log(
+      `StepSequencerAnimation: Note: ${JSON.stringify(
+        sequencer?.lastParams?.note._val
+      )}`
+    );
+    console.log(synthesizer?.name);
+    let noteMidi = Note.midi(sequencer?.lastParams?.note._val);
+
+    console.log(sequencer?.lastParams?.volume);
     let range = [...Array(sectionLength).keys()];
     return (
       <React.Fragment>
@@ -33,8 +40,8 @@ let StepSequencerAnimation = observer(
             <StepCircle
               key={i}
               triggered={i == gateSequencer?.stepIsTriggered}
-              color={1}
-              volume={1}
+              color={(noteMidi! / 72) * 360 || 1}
+              volume={100}
             ></StepCircle>
           );
         })}

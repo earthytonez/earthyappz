@@ -1,7 +1,7 @@
 import * as Tone from "tone";
 import { Chord } from "@tonaljs/tonal";
 
-import { makeObservable, action, computed } from "mobx";
+import { makeObservable, observable, action, computed } from "mobx";
 
 import IPlayParams from "../../Types/IPlayParams";
 import { debug, info } from "../../Util/logger";
@@ -111,6 +111,7 @@ export default class Sequencer extends SequencerType {
       bindSynth: action,
       changeParameter: action.bound,
       editParameters: computed,
+      lastParams: observable,
       play: action,
       resetBeatsSinceLastNote: action.bound,
       toJSON: action.bound,

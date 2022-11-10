@@ -162,7 +162,7 @@ export default class Track {
       time
     );
 
-    if (!gateParams) {
+    if (!gateParams || !gateParams.triggered) {
       return false;
     }
 
