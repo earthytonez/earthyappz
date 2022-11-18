@@ -5,7 +5,6 @@ import { Droppable } from "react-beautiful-dnd";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
@@ -111,89 +110,87 @@ const DroppableTrackElement = observer(
                 borderBottom: 0,
               }}
             >
-              <CardContent sx={{ pl: 2, padding: 0 }}>
-                <Box>
-                  {machine &&
-                  machine.name !== "" &&
-                  machine.name !== undefined ? (
-                    <Grid container spacing={0}>
-                      <GridTopLeftCorner item xs={10}>
-                        <Typography
-                          color="neutral.500"
-                          fontWeight={700}
-                          sx={{
-                            fontSize: "12px",
-                            textTransform: "uppercase",
-                            letterSpacing: ".1rem",
-                          }}
-                        >
-                          {machine.name}
-                        </Typography>
-                      </GridTopLeftCorner>
-                      <GridTopRightCorner item xs={2}>
-                        <FullGridIconButton
-                          aria-label={`edit ${machine.name}`}
-                          size="small"
-                          onClick={() =>
-                            toggleObjectEdit(true, track_id, slug, machine.slug)
-                          }
-                        >
-                          <LaunchIcon fontSize="small" />
-                        </FullGridIconButton>
-                      </GridTopRightCorner>
-                    </Grid>
-                  ) : (
-                    <LoadingPlaceHolder
-                      machine={machine}
-                      placeholder={placeholder}
-                      slug={slug}
-                    />
-                  )}
-                  {provided.placeholder}
-                </Box>
-                {machine && machine.name !== "" ? (
-                  <Grid container>
-                    <GridBottomLeftCorner item xs>
-                      <UniqueColors
-                        name={`${machine.machineType}${machine.name}`}
-                      />
-                    </GridBottomLeftCorner>
-                    <GridBottomRightCorner item xs>
-                      <Typography style={{ fontFamily: "Source Code Pro" }}>
-                        {title}
-                      </Typography>
-                    </GridBottomRightCorner>
-                  </Grid>
-                ) : (
-                  ""
-                )}
-                {slug !== undefined ? (
-                  <Grid container>
-                    <GridBottomLeftCorner item xs={10}>
-                      <Presets />
-                    </GridBottomLeftCorner>
-                    <GridBottomRightCorner item xs={2}>
-                      <FullGridIconButton
-                        aria-label={`Search`}
-                        size="small"
-                        onClick={toggleSearchPopover}
+              <Box>
+                {machine &&
+                machine.name !== "" &&
+                machine.name !== undefined ? (
+                  <Grid container spacing={0}>
+                    <GridTopLeftCorner item xs={10}>
+                      <Typography
+                        color="neutral.500"
+                        fontWeight={700}
+                        sx={{
+                          fontSize: "12px",
+                          textTransform: "uppercase",
+                          letterSpacing: ".1rem",
+                        }}
                       >
-                        <SearchIcon fontSize="small" />
+                        {machine.name}
+                      </Typography>
+                    </GridTopLeftCorner>
+                    <GridTopRightCorner item xs={2}>
+                      <FullGridIconButton
+                        aria-label={`edit ${machine.name}`}
+                        size="small"
+                        onClick={() =>
+                          toggleObjectEdit(true, track_id, slug, machine.slug)
+                        }
+                      >
+                        <LaunchIcon fontSize="small" />
                       </FullGridIconButton>
-                      <SearchPopover
-                        title={title}
-                        type={slug}
-                        open={Boolean(anchorEl)}
-                        anchorEl={anchorEl}
-                        handleChange={handleChange}
-                        handleClose={handleClose}
-                      />
-                    </GridBottomRightCorner>
+                    </GridTopRightCorner>
                   </Grid>
                 ) : (
-                  <div></div>
+                  <LoadingPlaceHolder
+                    machine={machine}
+                    placeholder={placeholder}
+                    slug={slug}
+                  />
                 )}
-              </CardContent>
+                {provided.placeholder}
+              </Box>
+              {machine && machine.name !== "" ? (
+                <Grid container>
+                  <GridBottomLeftCorner item xs>
+                    <UniqueColors
+                      name={`${machine.machineType}${machine.name}`}
+                    />
+                  </GridBottomLeftCorner>
+                  <GridBottomRightCorner item xs>
+                    <Typography style={{ fontFamily: "Source Code Pro" }}>
+                      {title}
+                    </Typography>
+                  </GridBottomRightCorner>
+                </Grid>
+              ) : (
+                ""
+              )}
+              {slug !== undefined ? (
+                <Grid container>
+                  <GridBottomLeftCorner item xs={10}>
+                    <Presets />
+                  </GridBottomLeftCorner>
+                  <GridBottomRightCorner item xs={2}>
+                    <FullGridIconButton
+                      aria-label={`Search`}
+                      size="small"
+                      onClick={toggleSearchPopover}
+                    >
+                      <SearchIcon fontSize="small" />
+                    </FullGridIconButton>
+                    <SearchPopover
+                      title={title}
+                      type={slug}
+                      open={Boolean(anchorEl)}
+                      anchorEl={anchorEl}
+                      handleChange={handleChange}
+                      handleClose={handleClose}
+                    />
+                  </GridBottomRightCorner>
+                </Grid>
+              ) : (
+                <div></div>
+              )}
             </Card>
           </TightBorderedPaper>
         )}

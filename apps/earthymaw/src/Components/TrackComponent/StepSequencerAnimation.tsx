@@ -23,13 +23,16 @@ let StepSequencerAnimation = observer(
     synthesizer,
     sectionLength,
   }: StepSequencerAnimationParams) => {
-    console.log(
-      `StepSequencerAnimation: Note: ${JSON.stringify(
-        sequencer?.lastParams?.note._val
-      )}`
-    );
-    console.log(synthesizer?.name);
-    let noteMidi = Note.midi(sequencer?.lastParams?.note._val);
+    let noteMidi = 0;
+    if (sequencer?.lastParams?.note) {
+      console.log(
+        `StepSequencerAnimation: Note: ${JSON.stringify(
+          sequencer?.lastParams?.note._val
+        )}`
+      );
+      console.log(synthesizer?.name);
+      noteMidi = Note.midi(sequencer?.lastParams?.note._val) || 0;
+    }
 
     console.log(sequencer?.lastParams?.volume);
     let range = [...Array(sectionLength).keys()];

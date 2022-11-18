@@ -3,7 +3,7 @@ import { Chord } from "@tonaljs/tonal";
 
 import { makeObservable, observable, action, computed } from "mobx";
 
-import IPlayParams from "../../Types/IPlayParams";
+import IPlayAttributes from "../../Types/IPlayAttributes";
 import { debug, info } from "../../Util/logger";
 import SequencerType from "./SequencerType";
 
@@ -21,9 +21,9 @@ import { IMusicChord, IMusicKey, IMusicScale, IMusicProgression } from "Types";
 import NoteToPlay from "./SequencerLoader/NoteToPlay";
 import VolumeToPlay from "./SequencerLoader/VolumeToPlay";
 import IntervalToPlay from "./SequencerLoader/IntervalToPlay";
-import { IGatePlayParams } from "../GateSequencer/IGatePlayParams";
+import { IGatePlayAttributes } from "../GateSequencer/IGatePlayAttributes";
 
-import { ISequencerPlayParams } from "./ISequencerPlayParams";
+import { ISequencerPlayAttributes } from "./ISequencerPlayAttributes";
 
 interface IIntervalsToPlay {
   interval_length: number;
@@ -80,6 +80,8 @@ export default class Sequencer extends SequencerType {
   volumeToPlay: VolumeToPlay = new VolumeToPlay();
   rhythm_length?: number = undefined;
   totalLength: number;
+
+  stepInterval: number = 4;
 
   /* TODO: Deprecate and remove */
   minInterval: number = 0;
@@ -203,6 +205,8 @@ export default class Sequencer extends SequencerType {
     if (!parameters) {
       return this;
     }
+    info("SEQUENCER::REGISTER_PARAMETERS", "Hello", parameters);
+
     parameters.forEach((parameter: BaseParameter) => {
       this.registerParameter(parameter);
     });
@@ -233,7 +237,8 @@ export default class Sequencer extends SequencerType {
       this.measureBeat(beatMarker),
       this.intervalToPlay,
       this._parameters,
-      this.lastParams
+      this.lastParams,
+      this.stepInterval
     );
   }
 
@@ -270,7 +275,7 @@ export default class Sequencer extends SequencerType {
     chord: IMusicChord,
     beatMarker: BeatMarker,
     time: any
-  ): IPlayParams {
+  ): IPlayAttributes {
     return {
       volume: this.volume(beatMarker),
       note: this.note(key, scale, chord, beatMarker),
@@ -379,7 +384,7 @@ export default class Sequencer extends SequencerType {
     chord: IMusicChord,
     beatMarker: BeatMarker,
     time: any
-  ): ISequencerPlayParams {
+  ): ISequencerPlayAttributes {
     return {
       volume: this.volume(beatMarker),
       note: this.note(key, scale, chord, beatMarker),
@@ -392,23 +397,24 @@ export default class Sequencer extends SequencerType {
   }
 
   /* This action is triggered externall to possibly play a sequencer */
+  /* TODO: Add beatmarker to IGatePlayAttributes */
   async play(
-    gateParams: IGatePlayParams,
+    gateParams: IGatePlayAttributes,
     key: IMusicKey,
     scale: IMusicScale,
     chord: IMusicChord,
     _progression: IMusicProgression,
     beatMarker: BeatMarker,
     time: any
-  ): Promise<ISequencerPlayParams> {
+  ): Promise<ISequencerPlayAttributes> {
     this.beatsSinceLastNote++;
+    this.stepInterval = gateParams.stepInterval;
 
-    let params: ISequencerPlayParams;
+    let params: ISequencerPlayAttributes;
 
     if (!gateParams.triggered) {
       return this.playParams(key, scale, chord, beatMarker, time);
     }
-
     if (this.sequencerType() === "drone") {
       console.log("sequencerType Drone");
       params = this.droneParams(key, scale, chord, beatMarker, time);

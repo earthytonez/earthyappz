@@ -26,8 +26,8 @@ export default class ArpeggiatorIntervalCalculator extends IntervalCalculator {
     let chordDef = Chord.getChord(params.chord.name, params.key);
 
     let stepInterval = 4;
-    if (params.parameters.has("stepinterval")) {
-      stepInterval = params.parameters.get("stepinterval").val;
+    if (params.parameters.has("step_interval")) {
+      stepInterval = params.parameters.get("step_interval").val;
     }
 
     let length: number = 0;

@@ -6,6 +6,8 @@ import BaseParameter, {
 
 import { makeObservable, action, observable } from "mobx";
 
+import { info } from "../../Util/logger";
+
 interface IStringEnumParameterParams extends IBaseParameterParams {
   options: string[];
   default: string;
@@ -46,8 +48,10 @@ export default class StringEnumParameter extends BaseParameter {
   }
 
   setValue(newValue: string): boolean {
-    console.log(`String Enum Parameter ${this.name} setValue ${newValue}`);
+    info(`STRING_ENUM_PARAMETER`, `${this.name} setValue ${newValue}`);
     if (this.options.includes(newValue)) {
+      info(`STRING_ENUM_PARAMETER::setValue`, "hello", this.options);
+      info(`STRING_ENUM_PARAMETER::setValue`, newValue);
       this.userParameterStore.set(this.key, newValue);
       return true;
     }

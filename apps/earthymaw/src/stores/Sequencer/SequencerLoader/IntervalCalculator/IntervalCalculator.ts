@@ -1,5 +1,5 @@
 import { IMusicChord, IMusicKey, IMusicScale } from "Types";
-import { info } from "../../../../Util/logger";
+import { debug, info } from "../../../../Util/logger";
 
 import * as Tone from "tone";
 
@@ -16,7 +16,7 @@ export interface IIntervalCalculatorParams {
 }
 
 export default abstract class IntervalCalculator {
-  intervalType: "list" | "arpeggiator" | undefined = undefined;
+  intervalType: "scale" | "list" | "arpeggiator" | undefined = undefined;
   coinToss() {
     return Math.floor(Math.random() * 2) === 0;
   }
@@ -49,6 +49,10 @@ export default abstract class IntervalCalculator {
     startNote: string,
     lastNote: string
   ): number {
+    debug(
+      "INTERVAL_CALCULATOR::getCurrentIntervalFromScale",
+      `key=${key},scale_name=${scale.name},startNote=${startNote},lastNote=${lastNote}`
+    );
     let scaleDef = Scale.get(`${key} ${scale.name}`);
     let allOctavesScale: string[] = this.allOctavesScale(scaleDef);
     let last = allOctavesScale.indexOf(lastNote);

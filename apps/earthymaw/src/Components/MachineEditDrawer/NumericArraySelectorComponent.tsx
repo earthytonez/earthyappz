@@ -26,8 +26,6 @@ const NumericArraySelectorComponent = observer(
       return <Box></Box>;
     }
 
-    console.log(currentValue);
-
     return (
       <Grid container>
         {currentValue.map((value: number | string, i: number) => {

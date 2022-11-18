@@ -5,7 +5,7 @@ tags = [
 ]
 plugins = ["filter<lowpass>", "adsr"]
 
-parameters = ["synthesizer_pitch", "pitch_decay"]
+parameters = ["oscillator_pitch", "pitch_decay"]
 
 type = "MembraneSynth"
 

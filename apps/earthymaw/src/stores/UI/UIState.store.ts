@@ -10,6 +10,9 @@ export default class UIStateStore {
   machineBrowserOpen: boolean = false;
   machinesBrowsing: IMachineTypeSlug | undefined = undefined;
 
+  trackEditIsOpen: boolean = false;
+  trackEditID?: string = undefined;
+
   closeMachineBrowser() {
     this.machineBrowserOpen = false;
     this.machinesBrowsing = undefined;
@@ -31,6 +34,18 @@ export default class UIStateStore {
       this.machineBrowserOpen = false;
     }
     this.machinesBrowsing = machineType;
+  }
+
+  toggleTrackEdit(open: boolean, machineTrack?: string | "musicFeature") {
+    console.log("Toggling Track Edit");
+    if (!open) {
+      this.trackEditIsOpen = false;
+      this.trackEditID = undefined;
+      return;
+    }
+
+    this.trackEditID = machineTrack;
+    this.trackEditIsOpen = !this.trackEditIsOpen;
   }
 
   toggleObjectEdit(
@@ -55,11 +70,14 @@ export default class UIStateStore {
     makeObservable(this, {
       objectEditIsOpen: observable,
       objectEditing: observable,
+      trackEditID: observable,
+      trackEditIsOpen: observable,
       machineBrowserOpen: observable,
       machinesBrowsing: observable,
       browseMachines: action.bound,
       closeMachineBrowser: action.bound,
       toggleObjectEdit: action.bound,
+      toggleTrackEdit: action.bound,
       setMachinesBrowsing: action.bound,
     });
   }

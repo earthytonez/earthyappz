@@ -12,6 +12,7 @@ interface INumericParameterParams extends IBaseParameterParams {
   min: number;
   max: number;
   description: string;
+  fieldType?: string;
 }
 
 export default class NumericParameter extends BaseParameter {
@@ -28,6 +29,10 @@ export default class NumericParameter extends BaseParameter {
       description: params.description,
       style: params.style,
     });
+
+    if (params.fieldType) {
+      this.fieldType = params.fieldType as ParameterFieldTypes;
+    }
 
     this.fieldOptions = {
       min: params.min,

@@ -1,7 +1,7 @@
 import Synthesizer from "../Synthesizer";
 
 import * as Tone from "tone";
-import IPlayParams from "../../../Types/IPlayParams";
+import IPlayAttributes from "../../../Types/IPlayAttributes";
 
 import { debug } from "../../../Util/logger";
 
@@ -58,7 +58,7 @@ export default class Waveform extends Synthesizer {
     })
   }
 
-  play(gate: ISequencerGate, params: IPlayParams) {
+  play(gate: ISequencerGate, params: IPlayAttributes) {
     if (gate.length === 0) {
       return console.log("Gate Length must be greater than 0");
     }

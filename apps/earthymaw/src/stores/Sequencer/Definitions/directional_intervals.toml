@@ -6,9 +6,9 @@ outputs = 1
 tags = [
     "house", "trance", "edm"
 ]
-type = "fixedStep"
+type = "directional"
 
-parameters = ["step_gate_array", "step_pitch_shift_direction"]
+parameters = ["step_pitch_shift", "step_pitch_shift_direction"]
 
 [NoteToPlay]
 note = "IntervalParameter()"

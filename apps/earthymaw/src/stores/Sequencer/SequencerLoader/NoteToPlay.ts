@@ -114,8 +114,12 @@ export default class NoteToPlay {
     return interval + pitchShift;
   }
 
-  getArrayStep(measureBeat: number, stepInterval: number, steps: number) {
-    return (measureBeat / stepInterval - 1) % steps;
+  getArrayStep(
+    measureBeat: number,
+    stepInterval: number,
+    steps: number
+  ): number {
+    return Math.floor((measureBeat / stepInterval - 1) % steps);
   }
 
   getIntervalParameterNote({
@@ -126,6 +130,7 @@ export default class NoteToPlay {
     intervalToPlay,
     parameters,
     lastParams,
+    stepInterval,
   }: {
     key: IMusicKey;
     scale: IMusicScale;
@@ -134,21 +139,40 @@ export default class NoteToPlay {
     intervalToPlay: IntervalToPlay;
     parameters: any;
     lastParams: any;
+    stepInterval: number;
   }): Tone.FrequencyClass<number> {
+    let retVal = Tone.Frequency("C4");
+    console.log(parameters);
+    console.log(parameters);
+    console.log(parameters);
+    console.log(parameters);
+    if (
+      parameters.get("steppitchshift") === undefined ||
+      parameters.get("steppitchshiftdirection") === undefined
+    ) {
+      warn(
+        "NOTE_TO_PLAY",
+        "Can't run interval parameters because parameters are not set"
+      );
+      return retVal;
+    }
     let octaveToPlay = this.getOctave(octaves);
 
-    let stepInterval = parameters.get("stepinterval").val;
     let _arrayStep = this.getArrayStep(
       measureBeat,
       stepInterval,
-      parameters.get("steppitchshift").val.length
+      parameters.get("steppitchshift")?.val.length
     );
 
     let stepPitchShift = parseInt(
-      parameters.get("steppitchshift").val[_arrayStep]
+      parameters.get("steppitchshift")?.val[_arrayStep]
     ) as number;
 
-    console.log(parameters.get("steppitchshiftdirection").val);
+    console.log(
+      `NOTE_TO_PLAY::getIntervalParameterNote: ${_arrayStep} ${
+        parameters.get("steppitchshiftdirection").val
+      }`
+    );
 
     let stepPitchShiftDirection = parameters.get("steppitchshiftdirection").val[
       _arrayStep
@@ -160,9 +184,15 @@ export default class NoteToPlay {
     if (_arrayStep !== 0 && lastParams && lastParams.note) {
       lastNote = lastParams.note._val;
     }
+
     if (lastNote === undefined) {
       lastNote = startNote;
     }
+
+    debug(
+      "NOTE_TO_PLAY::getCurrentIntervalFromScale",
+      `key=${key},scale_name=${scale.name},startNote=${startNote},lastNote=${lastNote}`
+    );
 
     let interval = intervalToPlay.getCurrentIntervalFromScale(
       scale,
@@ -173,15 +203,16 @@ export default class NoteToPlay {
 
     info(
       "NOTE_TO_PLAY",
-      `interval ${measureBeat} ${stepInterval} ${_arrayStep} ${lastParams} ${lastNote} ${interval} ${stepPitchShift} ${stepPitchShiftDirection} ${startNote} ${startNoteMidi}`
+      `interval ${measureBeat} ${stepInterval} ${_arrayStep} ${lastParams} lastNote=${lastNote} interval=${interval} ${stepPitchShift} ${stepPitchShiftDirection} ${startNote} ${startNoteMidi}`
     );
 
-    let retVal = intervalToPlay.getScaleInterval(
+    retVal = intervalToPlay.getScaleInterval(
       scale,
       key,
       this.calcInterval(interval, stepPitchShiftDirection, stepPitchShift),
       octaveToPlay
     );
+
     info("NOTE_TO_PLAY", `retVal: ${retVal}`, retVal);
     return retVal;
   }
@@ -194,7 +225,8 @@ export default class NoteToPlay {
     measureBeat: number,
     intervalToPlay: IntervalToPlay,
     parameters: any,
-    lastParams: any
+    lastParams: any,
+    stepInterval: number
   ): Tone.FrequencyClass {
     if (intervalToPlay.intervalType === "arpeggiator") {
       this.noteChooser = "interval";
@@ -225,7 +257,7 @@ export default class NoteToPlay {
         console.log(`NOTE_TO_PLAY GET_INTERVAL_NOTE ${intervalNote}`);
         return intervalNote;
       case "interval_parameter":
-        return this.getIntervalParameterNote({
+        let intervalParameterNote = this.getIntervalParameterNote({
           key,
           scale,
           octaves,
@@ -233,7 +265,12 @@ export default class NoteToPlay {
           intervalToPlay,
           parameters,
           lastParams,
+          stepInterval,
         });
+        console.log(
+          `NOTE_TO_PLAY GET_INTERVAL_PARAMETER_NOTE ${intervalParameterNote}`
+        );
+        return intervalParameterNote;
     }
   }
 

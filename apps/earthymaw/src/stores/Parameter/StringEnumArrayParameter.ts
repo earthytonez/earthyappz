@@ -45,6 +45,7 @@ export default class StringEnumArrayParameter extends BaseParameter {
   }
 
   setValue(newValue: string[]): boolean {
+    console.log(`STRINGENUMARRAYPARAMETER ${newValue}`);
     this.userParameterStore.set(this.key, newValue);
     return true;
   }

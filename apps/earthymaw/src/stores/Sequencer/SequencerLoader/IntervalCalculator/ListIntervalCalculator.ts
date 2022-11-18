@@ -21,8 +21,8 @@ export default class ListIntervalCalculator extends IntervalCalculator {
     console.log(params.parameters);
 
     // let stepInterval = 4;
-    // if (parameters.has("stepinterval")) {
-    //   stepInterval = parameters.get("stepinterval").val;
+    // if (parameters.has("step_interval")) {
+    //   stepInterval = parameters.get("step_interval").val;
     // }
 
     debug(

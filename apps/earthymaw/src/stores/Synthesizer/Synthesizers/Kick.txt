@@ -5,7 +5,7 @@ import { Note } from "@tonaljs/tonal";
 import Synthesizer from "../Synthesizer";
 
 import { ISequencerGate } from '../../../stores/Sequencer/SequencerRunner/SequencerGate';
-import IPlayParams from "../../../Types/IPlayParams";
+import IPlayAttributes from "../../../Types/IPlayAttributes";
 import { debug } from '../../../Util/logger';
 
 
@@ -36,7 +36,7 @@ export default class Kick extends Synthesizer {
     }
   }
 
-  play(_gate: ISequencerGate, params: IPlayParams) {
+  play(_gate: ISequencerGate, params: IPlayAttributes) {
     this.synth.triggerAttackRelease(Note.fromMidi(this.pitch), "16n", params.time);
     debug("KICK", "Kick Context: ", this.synth);
     debug("KICK", `pitch: ${this.pitch}`);

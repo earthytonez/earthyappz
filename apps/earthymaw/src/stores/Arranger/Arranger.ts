@@ -1,6 +1,6 @@
 import { BeatMarker } from "stores/MusicFeatures/BeatMarker";
 import * as Tone from "tone";
-import { IArrangementPlayParams } from "./IArrangementParams";
+import { IArrangementPlayAttributes } from "./IArrangementPlayAttributes";
 
 export default class Arranger {
   type: string;
@@ -20,7 +20,7 @@ export default class Arranger {
     this[parameter as keyof this] = value;
   }
 
-  play(_beatMarker: BeatMarker, _time: number): IArrangementPlayParams {
+  play(_beatMarker: BeatMarker, _time: number): IArrangementPlayAttributes {
     return {
       play: true,
     };

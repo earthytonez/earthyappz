@@ -2,7 +2,7 @@ import * as Tone from "tone";
 
 
 import Synthesizer from "../Synthesizer";
-import IPlayParams from "../../../Types/IPlayParams";
+import IPlayAttributes from "../../../Types/IPlayAttributes";
 import { ISequencerGate } from '../../../stores/Sequencer/SequencerRunner/SequencerGate';
 import ISynthesizerEditableParams from '../ISynthEditableParams';
 import IOscillatorType from "../IOscillatorType";
@@ -29,7 +29,7 @@ export default class HiHat extends Synthesizer {
     }
 
 
-  play(_gate: ISequencerGate, params: IPlayParams) {
+  play(_gate: ISequencerGate, params: IPlayAttributes) {
     this.player.start(params.time);
 
     // this.hiHat.harmonicity = 3;

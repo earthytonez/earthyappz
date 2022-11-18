@@ -6,6 +6,10 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 
+import FullGridIconButton from "../../TightBorderedGrid/FullGridIconButton";
+
+import LaunchIcon from "@mui/icons-material/Launch";
+
 import OctaveComponent from "./OctaveComponent";
 import Track from "../../../stores/Track";
 
@@ -18,9 +22,13 @@ import GridTopLeftCorner from "../../TightBorderedGrid/GridTopLeftCorner";
 import GridTopMiddle from "../../TightBorderedGrid/GridTopMiddle";
 import GridTopRightCorner from "../../TightBorderedGrid/GridTopRightCorner";
 import TightBorderedPaper from "../../TightBorderedGrid/TightBorderedPaper";
+import GridBottomLeftCorner from "Components/TightBorderedGrid/GridBottomLeftCorner";
+import GridBottomRightCorner from "Components/TightBorderedGrid/GridBottomRightCorner";
+import GridBottomMiddle from "Components/TightBorderedGrid/GridBottomMiddle";
 
 interface ITrackSettingsComponentProps {
   track: Track;
+  toggleTrackEdit: Function;
 }
 
 const trackNameStyle = {
@@ -52,7 +60,10 @@ const trackNameStyle = {
 };
 
 const TrackSettingsComponent = observer(
-  ({ track }: ITrackSettingsComponentProps): React.ReactElement => {
+  ({
+    track,
+    toggleTrackEdit,
+  }: ITrackSettingsComponentProps): React.ReactElement => {
     return (
       <TightBorderedPaper
         sx={{ height: "100%", padding: 0, paddingBottom: "0px" }}
@@ -98,12 +109,26 @@ const TrackSettingsComponent = observer(
                 />
               </GridTopRightCorner>
             </Grid>
-            <Grid item xs={11}>
-              <Grid container sx={{ p: 0 }}>
+            <Grid container sx={{ p: 0 }}>
+              <GridBottomLeftCorner item xs={9}>
                 <OctaveComponent
                   trackOctave={track.trackFeatures.octaves}
                 ></OctaveComponent>
-              </Grid>
+              </GridBottomLeftCorner>
+              <GridBottomMiddle></GridBottomMiddle>
+              <GridBottomRightCorner
+                item
+                xs={2}
+                sx={{ float: "right", textAlign: "right" }}
+              >
+                <FullGridIconButton
+                  aria-label={`edit track`}
+                  size="small"
+                  onClick={() => toggleTrackEdit(true, track.id)}
+                >
+                  <LaunchIcon fontSize="small" />
+                </FullGridIconButton>
+              </GridBottomRightCorner>
             </Grid>
           </Grid>
         </Grid>

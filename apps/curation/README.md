@@ -43,3 +43,13 @@ Powered by [Nextjs](https://nextjs.org//), Deployed by [Vercel](https://vercel.c
 Stay up to date with all static site generator resources and engage with the community. <br>
 Follow us on Twitter: [EarthyResources](https://twitter.com/earthy_tonez)<br> Join Discord Community: [EarthyResources Discord Server](https://discord.gg/ph9z267TBZ)
 
+
+
+
+
+https://github.com/aguaviva/articles/blob/main/why_12_notes.ipynb
+https://arxiv.org/abs/2108.12290
+https://ernestmicklei.com/melrose/introduction_melrose/
+https://github.com/Music-and-Culture-Technology-Lab/omnizart
+https://www.musi-co.com/listen/streams
+https://digs.fm/

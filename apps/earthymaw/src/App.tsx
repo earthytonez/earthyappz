@@ -9,8 +9,10 @@ import Box from "@mui/material/Box";
 import BottomBar from "./Components/BottomBar/index";
 import TopBar from "./Components/TopBar/index";
 import TrackList from "./Components/TrackComponent/TrackListComponent";
+import TrackEditModal from "./Components/TrackComponent/TrackEditModal";
 
 import { useStore } from "./stores/useStore";
+import { useUIStore } from "./stores/UI/useUIStore";
 
 import MachineEditDrawer from "./Components/MachineEditDrawer/index";
 import Track from "./stores/Track";
@@ -18,6 +20,7 @@ import Track from "./stores/Track";
 import { PropagateLoader } from "react-spinners";
 
 const App = observer(() => {
+  const uiStore = useUIStore();
   const store = useStore();
 
   const ARRANGER_TYPE_INITIAL_STATE = store.arrangerTypes();
@@ -29,6 +32,8 @@ const App = observer(() => {
   const [sequencerTypes] = React.useState(SEQUENCER_TYPE_INITIAL_STATE);
 
   let tracks = store.trackStore.tracks;
+
+  const { trackEditIsOpen } = uiStore;
 
   // Tone.setContext(store.audioContext);
   /*
@@ -95,7 +100,7 @@ const App = observer(() => {
       <TopBar />
       <Box sx={{ marginTop: "72px" }}>
         <React.Suspense fallback={<PropagateLoader color="#36d7b7" />}>
-          <TrackList />
+          {trackEditIsOpen ? <TrackEditModal /> : <TrackList />}
         </React.Suspense>
       </Box>
       <BottomBar

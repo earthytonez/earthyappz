@@ -4,7 +4,7 @@ import Synthesizer from "../Synthesizer";
 import { ISequencerGate } from '../../../stores/Sequencer/SequencerRunner/SequencerGate';
 import IOscillatorType from '../IOscillatorType';
 
-import IPlayParams from "../../../Types/IPlayParams";
+import IPlayAttributes from "../../../Types/IPlayAttributes";
 
 import { debug } from '../../../Util/logger';
 
@@ -32,7 +32,7 @@ export default class Bass extends Synthesizer {
     }
   }
 
-  play(_gate: ISequencerGate, params: IPlayParams) {
+  play(_gate: ISequencerGate, params: IPlayAttributes) {
     this.synth.triggerAttackRelease("C1", "2n", params.time, .6);
     debug("Bass Context: ", this.synth);
   }

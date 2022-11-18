@@ -1,5 +1,7 @@
 import ArpeggiatorIntervalCalculator from "./IntervalCalculator/ArpeggiatorIntervalCalculator";
 import ListIntervalCalculator from "./IntervalCalculator/ListIntervalCalculator";
+import ScaleIntervalCalculator from "./IntervalCalculator/ScaleIntervalCalculator";
+
 import * as Tone from "tone";
 
 import { IMusicChord, IMusicKey, IMusicScale } from "Types";
@@ -30,6 +32,7 @@ export default class IntervalToPlay {
     startNote: string,
     lastNote: string
   ): number {
+    console.log(this.intervalCalculator);
     return this.intervalCalculator?.getCurrentIntervalFromScale(
       scale,
       key,
@@ -71,27 +74,25 @@ export default class IntervalToPlay {
     })!;
   }
 
-  get intervalType(): "list" | "arpeggiator" | undefined {
+  get intervalType(): "scale" | "list" | "arpeggiator" | undefined {
     return this.intervalCalculator?.intervalType;
   }
 
   parse(line: IntervalToPlayManifestSection) {
-    if (!line) {
-      return;
-    }
-
-    if (line.interval_type === "arpeggiator") {
+    if (line && line.interval_type === "arpeggiator") {
       this.intervalCalculator = new ArpeggiatorIntervalCalculator(
         this.intervalLength,
         line.type_list[0]!
       );
     }
 
-    if (line.interval_type === "list") {
+    if (line && line.interval_type === "list") {
       this.intervalCalculator = new ListIntervalCalculator(
         this.intervalLength,
         line.list
       );
     }
+
+    this.intervalCalculator = new ScaleIntervalCalculator(this.intervalLength);
   }
 }

@@ -7,7 +7,8 @@ import GridMiddleFullWidth from "Components/TightBorderedGrid/GridMiddleFullWidt
 
 import Grid from "@mui/material/Grid";
 import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
+
+import ParameterTitle from "./ParameterTitle";
 
 interface ISliderParameterParams {
   edit: Function;
@@ -49,15 +50,7 @@ export default observer(
       return (
         <Grid item xs={3} sx={{ height: "300px" }}>
           <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
-            <GridTopFullWidth sx={{ width: 1 }}>
-              <Typography
-                style={{ fontFamily: "Source Code Pro" }}
-                id="track-false-slider"
-                gutterBottom
-              >
-                {name} - {parameterValue}
-              </Typography>
-            </GridTopFullWidth>
+            <GridTopFullWidth sx={{ width: 1 }}></GridTopFullWidth>
             <GridMiddleFullWidth sx={{ width: 1 }}>
               <Slider
                 aria-label={name}
@@ -74,6 +67,7 @@ export default observer(
                 valueLabelDisplay="auto"
                 sx={{ height: "200px" }}
               />
+              <ParameterTitle name={name} />
             </GridMiddleFullWidth>
           </Grid>
         </Grid>
@@ -81,15 +75,7 @@ export default observer(
     }
     return (
       <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
-        <GridTopFullWidth sx={{ width: 1 }}>
-          <Typography
-            style={{ fontFamily: "Source Code Pro" }}
-            id="track-false-slider"
-            gutterBottom
-          >
-            {name} - {parameterValue}
-          </Typography>
-        </GridTopFullWidth>
+        <GridTopFullWidth sx={{ width: 1 }}></GridTopFullWidth>
         <GridMiddleFullWidth sx={{ width: 1 }}>
           <Slider
             aria-label={name}
@@ -105,6 +91,7 @@ export default observer(
             max={max}
             valueLabelDisplay="auto"
           />
+          <ParameterTitle name={name} />
         </GridMiddleFullWidth>
       </Grid>
     );

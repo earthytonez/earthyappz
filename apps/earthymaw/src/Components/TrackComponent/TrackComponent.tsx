@@ -11,6 +11,8 @@ import DroppableTrackElement from "./MachineComponent/DroppableTrackElement";
 import TrackSettingsComponent from "./TrackSettings/TrackSettingsComponent";
 import StepSequencerAnimation from "./StepSequencerAnimation";
 
+import { useUIStore } from "../../stores/UI/useUIStore";
+
 interface TrackComponentProps {
   track: Track;
   sectionLength: number;
@@ -19,8 +21,8 @@ interface TrackComponentProps {
 const TRACK_GRID_STYLE = {
   paddingTop: "6px",
   paddingBottom: "6px",
-  height: "7rem",
-  maxHeight: "7rem",
+  height: "8rem",
+  maxHeight: "8rem",
 };
 
 const TRACK_GRID_SX = {
@@ -35,6 +37,10 @@ const TRACK_GRID_SX = {
 
 const TrackComponent = observer(
   ({ track, sectionLength }: TrackComponentProps): React.ReactElement => {
+    const uiStore = useUIStore();
+
+    const { toggleTrackEdit } = uiStore;
+
     return (
       <Grid
         container
@@ -51,7 +57,10 @@ const TrackComponent = observer(
         }}
       >
         <Grid item p={0} style={TRACK_GRID_STYLE} sx={TRACK_GRID_SX}>
-          <TrackSettingsComponent track={track} />
+          <TrackSettingsComponent
+            track={track}
+            toggleTrackEdit={toggleTrackEdit}
+          />
         </Grid>
         {/* <Grid
             sx={TRACK_GRID_SX}

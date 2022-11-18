@@ -1,0 +1,38 @@
+spec:
+  domains:
+  - domain: earthytonez.com
+    type: PRIMARY
+    zone: earthytonez.com
+  - domain: blog.earthytones.com
+    type: ALIAS
+    zone: earthytones.com
+  name: whale-app
+  region: nyc
+  services:
+  - build_command: |-
+      pnpm install
+      pnpm run build
+    environment_slug: node-js
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: earthytonez/earthyappz
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    name: earthyappz-apps-curation
+    routes:
+    - path: /
+    run_command: pnpm start
+    source_dir: apps/curation
+  static_sites:
+  - build_command: bundle exec jekyll build -d ./public
+    environment_slug: jekyll
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: earthytonez/earthy-tonez-blog
+    name: earthy-tonez-blog
+    routes:
+    - path: /blog
+    source_dir: /

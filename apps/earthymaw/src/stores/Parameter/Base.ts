@@ -35,6 +35,7 @@ export interface IBaseParameterParams {
 // }
 
 export type ParameterFieldTypes =
+  | "knob"
   | "slider"
   | "radio"
   | "dial"
@@ -83,8 +84,8 @@ export default abstract class BaseParameter {
     this.userParameterStore = params.userParameterStore;
     this.key = params.key;
 
-    this.slug = params.name.replaceAll(" ", "").toLowerCase();
-    this.field = params.name.replaceAll(" ", "").toLowerCase();
+    this.slug = params.name.replaceAll(" ", "_").toLowerCase();
+    this.field = params.name.replaceAll(" ", "_").toLowerCase();
   }
 
   increment() {}

@@ -64,7 +64,7 @@ test("getIntervalParameterNote for First Note", () => {
     description: "description",
   });
 
-  parameters.set("stepinterval", stepInterval);
+  parameters.set("step_interval", stepInterval);
   parameters.set("steppitchshiftdirection", stepPitchShiftDirection);
   parameters.set("steppitchshift", stepPitchShift);
 
@@ -121,7 +121,7 @@ test("getIntervalParameterNote for Second Note", () => {
     description: "description",
   });
 
-  parameters.set("stepinterval", stepInterval);
+  parameters.set("step_interval", stepInterval);
   parameters.set("steppitchshiftdirection", stepPitchShiftDirection);
   parameters.set("steppitchshift", stepPitchShift);
 

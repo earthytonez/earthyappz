@@ -3,5 +3,6 @@ description = "Single Oscillator Waveform Synth"
 tags = [
     "house", "trance", "edm"
 ]
-plugins = ["filter<lowpass>"]
+plugins = ["filter<lowpass>", "adsr"]
+parameters = ["oscillator", "oscillator_pitch"]
 type = "PolySynth<FMSynth>"

@@ -66,6 +66,7 @@ export default class FilterPlugin extends BasePlugin {
         key: this.parameterKey("frequency"),
         default: defaultFrequency!,
         plugin: "Filter",
+        fieldType: "knob",
         description: "frequency at which the filter takes effect",
         min: 0,
         max: 20000,

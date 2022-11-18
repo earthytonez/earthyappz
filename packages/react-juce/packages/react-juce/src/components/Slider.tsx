@@ -5,6 +5,8 @@ import { Canvas, CanvasRenderingContext } from "./Canvas";
 import { View } from "./View";
 import { SyntheticMouseEvent } from "../lib/SyntheticEvents";
 
+import { Donut } from "react-dial-knob";
+
 // Some simple helpers for slider drag gesture -> value mapping
 const _linearHorizontalGestureMap = (
   mouseDownX: number,

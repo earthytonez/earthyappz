@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 
-export interface ISequencerPlayParams {
+export default interface IPlayAttributes {
   volume: number; // +/- 100
   note?: Tone.FrequencyClass;
   notes?: Array<Tone.FrequencyClass>;

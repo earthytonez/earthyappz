@@ -21,7 +21,7 @@ import TrackStore from "./Track.store";
 import TrackOctaves from "./Track/TrackOctaves";
 import TrackVolume from "./Track/TrackVolume";
 
-import { debug, error } from "../Util/logger";
+import { debug, error, warn } from "../Util/logger";
 
 import { IMachineTypeSlug } from "./Machines/MachineTypes";
 
@@ -119,18 +119,20 @@ export default class Track {
   };
 
   async tick(beatMarker: BeatMarker, time: number) {
+    debug(`TRACK_TICK`, `-------------------- Start --------------------`);
+
     if (this.sequencer === undefined) {
-      console.error(`No Sequencer Set`);
+      warn("TRACK_TICK", "No Sequencer Set");
       return;
     }
 
     if (this.gateSequencer === undefined) {
-      console.error(`No Gate Sequencer Set`);
+      warn("TRACK_TICK", "No Gate Sequencer Set");
       return false;
     }
 
     if (this.synthesizer === undefined) {
-      console.error(`No Synthesizer Set`);
+      warn("TRACK_TICK", "No Synthesizer Set");
       return false;
     }
 
@@ -146,30 +148,30 @@ export default class Track {
     let progression = this.musicFeaturesStore.musicChordProgression.value();
 
     /* TODO: Make arrangement work */
-    // let arrangementParams = this.arranger?.play(beatMarker, time);
-    // if (!arrangementParams) {
+    // let arrangementAttributes = this.arranger?.play(beatMarker, time);
+    // if (!arrangementAttributes) {
     //   return false;
     // }
 
-    let arrangementParams = {
+    let arrangementAttributes = {
       play: true,
     };
-    debug(`TRACK_TICK`, `Arrangement Params: `, arrangementParams);
+    debug(`TRACK_TICK`, `Arrangement Attributes: `, arrangementAttributes);
 
-    let gateParams = await this.gateSequencer?.play(
-      arrangementParams,
+    let gateAttributes = await this.gateSequencer?.play(
+      arrangementAttributes,
       beatMarker,
       time
     );
 
-    if (!gateParams || !gateParams.triggered) {
+    if (!gateAttributes || !gateAttributes.triggered) {
       return false;
     }
 
-    debug(`TRACK_TICK`, `Gate Params: `, gateParams);
+    debug(`TRACK_TICK`, `Gate Attributes: `, gateAttributes);
 
-    let playParams = await this.sequencer.play(
-      gateParams,
+    let playAttributes = await this.sequencer.play(
+      gateAttributes,
       key,
       scale,
       chord,
@@ -178,13 +180,13 @@ export default class Track {
       time
     );
 
-    if (!playParams) {
+    if (!playAttributes) {
       return false;
     }
 
-    debug(`TRACK_TICK`, `Play Params: `, gateParams);
+    debug(`TRACK_TICK`, `Play Attributes: `, playAttributes);
 
-    this.synthesizer?.play(gateParams, playParams);
+    this.synthesizer?.play(gateAttributes, playAttributes);
 
     if (beatMarker.num % 10 === 0) {
       this.trackStore?.saveTracks();
@@ -394,6 +396,12 @@ export default class Track {
   }
 
   private initializeMachines(trackMachines: any) {
+    if (!trackMachines) {
+      return warn(
+        "TRACK_LOADER",
+        "trackMachines not set when running initializeMachines"
+      );
+    }
     debug("TRACK_LOADER", `Initializing Machines from trackMachines: `);
 
     this.arranger = undefined;

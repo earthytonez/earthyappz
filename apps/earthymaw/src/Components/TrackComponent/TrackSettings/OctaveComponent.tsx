@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import TrackOctaves from "../../../stores/Track/TrackOctaves";
 import FullGridButton from "../../TightBorderedGrid/FullGridButton";
 import GridBottomMiddle from "../../TightBorderedGrid/GridBottomMiddle";
+import { Grid } from "@mui/material";
 
 interface OctaveComponentProps {
   trackOctave: TrackOctaves;
@@ -20,26 +21,33 @@ const OctaveComponent = observer(({ trackOctave }: OctaveComponentProps) => {
   if (!octaves) {
     console.warn("octaves should never be undefined");
     <React.Fragment>
-      {allOctaves.map((octave: number) => (
-        <GridBottomMiddle item xs={1.5} key={octave} sx={{ p: 0 }}>
-          <FullGridButton onClick={() => handleSelectionChanged(octave)}>
-            {octave}
-          </FullGridButton>
-        </GridBottomMiddle>
-      ))}
+      <Grid container sx={{ p: 0 }}>
+        {allOctaves.map((octave: number) => (
+          <GridBottomMiddle item xs={1.5} key={octave} sx={{ p: 0 }}>
+            <FullGridButton onClick={() => handleSelectionChanged(octave)}>
+              {octave}
+            </FullGridButton>
+          </GridBottomMiddle>
+        ))}
+      </Grid>
     </React.Fragment>;
   }
 
-
   return (
     <React.Fragment>
-      {allOctaves.map((octave: number) => (
-        <GridBottomMiddle item xs={1.5} key={octave} sx={{ p: 0 }}>
-          <FullGridButton variant={octaves.includes(octave) ? "contained" : "outlined"} size="small" onClick={() => handleSelectionChanged(octave)}>
-            {octave}
-          </FullGridButton>
-        </GridBottomMiddle>
-      ))}
+      <Grid container sx={{ p: 0 }}>
+        {allOctaves.map((octave: number) => (
+          <GridBottomMiddle item xs={1.5} key={octave} sx={{ p: 0 }}>
+            <FullGridButton
+              variant={octaves.includes(octave) ? "contained" : "outlined"}
+              size="small"
+              onClick={() => handleSelectionChanged(octave)}
+            >
+              {octave}
+            </FullGridButton>
+          </GridBottomMiddle>
+        ))}
+      </Grid>
     </React.Fragment>
   );
 });

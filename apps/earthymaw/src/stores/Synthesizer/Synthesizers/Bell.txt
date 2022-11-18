@@ -4,7 +4,7 @@ import * as Tone from "tone";
 
 import { ISequencerGate } from '../../../stores/Sequencer/SequencerRunner/SequencerGate';
 import IOscillatorType from "../IOscillatorType";
-import IPlayParams from "Types/IPlayParams";
+import IPlayAttributes from "Types/IPlayAttributes";
 import { debug } from '../../../Util/logger';
 
 import ISynthesizerEditableParams from '../ISynthEditableParams';
@@ -31,7 +31,7 @@ export default class Bell extends Synthesizer {
     }
   }
 
-  play(gate: ISequencerGate, params: IPlayParams) {
+  play(gate: ISequencerGate, params: IPlayAttributes) {
     console.log(`Bell is playing note ${params.note} for length ${gate.length}`);
     this.synth.triggerAttackRelease(params.note, gate.length);
     debug("Bell Context: ", this.synth);

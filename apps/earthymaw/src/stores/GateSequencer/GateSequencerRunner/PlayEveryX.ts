@@ -78,8 +78,8 @@ export default class PlayEveryX implements ISequencerRunner {
     sequencerParameters: Map<string, any>
   ): ISequencerGate {
     let stepInterval;
-    if (sequencerParameters.has("stepinterval")) {
-      stepInterval = sequencerParameters.get("stepinterval").val;
+    if (sequencerParameters.has("step_interval")) {
+      stepInterval = sequencerParameters.get("step_interval").val;
     } else {
       stepInterval = parameters.stepInterval;
     }
@@ -132,8 +132,8 @@ export default class PlayEveryX implements ISequencerRunner {
     let stepCount = beatMarker % this.rhythm_length;
 
     let stepInterval;
-    if (sequencerParameters.has("stepinterval")) {
-      stepInterval = sequencerParameters.get("stepinterval");
+    if (sequencerParameters.has("step_interval")) {
+      stepInterval = sequencerParameters.get("step_interval");
     } else {
       stepInterval = parameters.stepInterval;
     }
@@ -186,6 +186,7 @@ export default class PlayEveryX implements ISequencerRunner {
         );
     }
     return {
+      stepInterval: sequencerParameters.get("step_interval")?.val(),
       triggered: false,
     };
   }

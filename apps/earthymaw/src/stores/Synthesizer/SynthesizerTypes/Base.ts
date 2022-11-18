@@ -1,16 +1,16 @@
 import { observable, makeObservable, action } from "mobx";
 import * as Tone from "tone";
 
-import { IGatePlayParams } from "../../GateSequencer/IGatePlayParams";
-import { ISequencerPlayParams } from "../../Sequencer/ISequencerPlayParams";
+import { IGatePlayAttributes } from "../../GateSequencer/IGatePlayAttributes";
+import { ISequencerPlayAttributes } from "../../Sequencer/ISequencerPlayAttributes";
 import ISynthDefinition from "../SynthLoader/ISynthDefinition";
 import BaseParameter from "../../Parameter/Base";
 import BasePlugin, { IPluginNode } from "../../Plugins/Base";
 import NumericParameter from "stores/Parameter/NumericParameter";
-import { debug } from "../../../Util/logger";
+import { debug, info } from "../../../Util/logger";
 import ISynthEditableParams from "../ISynthEditableParams";
 
-const SYNTHESIZER_PARAMS: string[] = ["pitchDecay"];
+const SYNTHESIZER_PARAMS: string[] = ["pitchDecay", "oscillator_type"];
 
 const ENVELOPE_PARAMS = [
   "envelopeattack",
@@ -72,7 +72,9 @@ export default class BaseSynthesizer {
       throw new Error("Invalid Parameter");
     }
 
-    console.log(parameterSlug);
+    info(`SYNTHESIZER_BASE::changeParameter`, parameterSlug, this._parameters);
+    info(`SYNTHESIZER_BASE::changeParameter`, SYNTHESIZER_PARAMS.join(" "));
+    info(`SYNTHESIZER_BASE::changeParameter`, ENVELOPE_PARAMS.join(" "));
 
     if (SYNTHESIZER_PARAMS.includes(parameterSlug)) {
     }
@@ -82,9 +84,6 @@ export default class BaseSynthesizer {
       paramsToSet[parameterSlug.replace("envelope", "")] = value;
 
       this.synth.envelope.set(paramsToSet);
-      // this.synth.set({ envelope: paramsToSet });
-      console.log(paramsToSet);
-      console.log(this.synth.get());
     }
 
     parameter.setValue(value);
@@ -93,7 +92,8 @@ export default class BaseSynthesizer {
       if (plugin) {
         let vals: any = {};
         vals[parameter.slug] = parameter.val;
-        console.log(
+        info(
+          `SYNTHESIZER_BASE::changeParameter`,
           `Setting ${plugin.ToneJSNode.name} ${parameter.slug} to ${parameter.val}`
         );
         plugin.ToneJSNode.set(vals);
@@ -162,6 +162,7 @@ export default class BaseSynthesizer {
      is supposed to go?  I think you change the userdata and everything pulls from that.
      */
   registerParameter(parameter: BaseParameter) {
+    console.log(parameter);
     this._parameters?.set(parameter.slug, parameter);
   }
 
@@ -218,20 +219,21 @@ export default class BaseSynthesizer {
     return this.parameterValue(slug) as string;
   }
 
-  play(_gate: IGatePlayParams, params: ISequencerPlayParams) {
-    // this.numericParameter("pitch")
-    // this.numericParameter("pitch")
+  play(_gate: IGatePlayAttributes, params: ISequencerPlayAttributes) {
     let pitch = params.note;
-
     if (!pitch) {
       pitch = Tone.Frequency(this.numericParameter("pitch"), "midi");
     }
 
-    if (this.numericParameter("synthesizerpitch")) {
+    console.log(pitch);
+
+    if (this.numericParameter("oscillator_pitch")) {
       pitch = Tone.Frequency(
-        pitch.toMidi() + this.numericParameter("synthesizerpitch")
+        pitch.toMidi() + this.numericParameter("oscillator_pitch")
       );
     }
+
+    console.log(pitch);
 
     debug(`BaseSynthesizer`, "play", {
       pitch: pitch,
@@ -240,6 +242,8 @@ export default class BaseSynthesizer {
     });
 
     console.log(this.synth.get());
-    this.synth.triggerAttackRelease(pitch, "16n", params.time);
+    const length = "8n";
+
+    this.synth.triggerAttackRelease(pitch, length, params.time);
   }
 }

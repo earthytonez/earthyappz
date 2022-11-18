@@ -7,7 +7,8 @@ Sources/Docs:
 4. https://material.io/design/typography/the-type-system.html#type-scale
 5. https://mynoise.net/
 6. https://cables.gl/p/bmG4rF
-
+7. muted.io
+    
 MMF (Minimum Marketable Features)
 Tech Debt: 1. Save more things (like Octaves)
 

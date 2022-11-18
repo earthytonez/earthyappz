@@ -3,12 +3,13 @@ import { observer } from "mobx-react-lite";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 
-import MachineEditDrawerRadioGroup from "./MachineEditDrawerRadioGroup";
-import MachineEditDrawerDial from "./MachineEditDrawerDial";
+import MachineEditDrawerRadioGroup from "./ParameterComponents/MachineEditDrawerRadioGroup";
+import MachineEditDrawerDial from "./ParameterComponents/MachineEditDrawerDial";
 
+import KnobParameter from "./ParameterComponents/KnobParameter";
 import SliderParameter from "./ParameterComponents/SliderParameter";
+import ParameterTitle from "./ParameterComponents/ParameterTitle";
 
 import ArraySelectorComponent from "./ArraySelectorComponent";
 import EnumArraySelectorComponent from "./EnumArraySelectorComponent";
@@ -40,50 +41,60 @@ export default observer(
     parameterValue,
     style,
   }: ILoadParameterParams): React.ReactElement => {
-    console.log(fieldType);
     switch (fieldType) {
       case "radio":
         return (
-          <MachineEditDrawerRadioGroup
-            name={name}
-            field={field}
-            fieldOptions={fieldOptions}
-            edit={edit}
-          ></MachineEditDrawerRadioGroup>
+          <Grid item xs={5}>
+            <ParameterTitle name={name} />
+            <MachineEditDrawerRadioGroup
+              edit={edit}
+              field={field}
+              fieldOptions={fieldOptions}
+            ></MachineEditDrawerRadioGroup>
+          </Grid>
         );
       case "dial":
         return (
-          <MachineEditDrawerDial
-            name={name}
-            field={field}
-            fieldOptions={fieldOptions}
-            edit={edit}
-          ></MachineEditDrawerDial>
+          <Grid item xs={5}>
+            <ParameterTitle name={name} />
+            <MachineEditDrawerDial
+              field={field}
+              fieldOptions={fieldOptions}
+              edit={edit}
+            ></MachineEditDrawerDial>
+          </Grid>
         );
       case "slider":
         return (
-          <SliderParameter
-            min={fieldOptions.min}
-            max={fieldOptions.max}
-            edit={edit}
-            field={field}
-            name={name}
-            style={style}
-            parameterValue={parameterValue}
-          />
+          <React.Fragment>
+            <SliderParameter
+              edit={edit}
+              field={field}
+              min={fieldOptions.min}
+              max={fieldOptions.max}
+              parameterValue={parameterValue}
+              name={name}
+              style={style}
+            />
+          </React.Fragment>
+        );
+      case "knob":
+        return (
+          <Grid item xs={6}>
+            <KnobParameter
+              min={fieldOptions.min}
+              max={fieldOptions.max}
+              edit={edit}
+              field={field}
+              style={style}
+              parameterValue={parameterValue}
+            />
+            <ParameterTitle name={name} />
+          </Grid>
         );
       case "arraySelector":
         return (
-          <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
-            <GridMiddleFullWidth>
-              <Typography
-                style={{ fontFamily: "Source Code Pro" }}
-                id="track-false-slider"
-                gutterBottom
-              >
-                {name}
-              </Typography>
-            </GridMiddleFullWidth>
+          <Grid item xs={5}>
             <GridMiddleFullWidth>
               <ArraySelectorComponent
                 aria-label={name}
@@ -93,22 +104,16 @@ export default observer(
                 incrementValue={() => increment(field)}
                 decrementValue={() => decrement(field)}
               />
+              <ParameterTitle name={name} />
             </GridMiddleFullWidth>
           </Grid>
         );
       case "enumArraySelector":
+        console.log(name);
         return (
-          <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
+          <Grid item xs={6}>
             <GridMiddleFullWidth>
-              <Typography
-                style={{ fontFamily: "Source Code Pro" }}
-                id="track-false-slider"
-                gutterBottom
-              >
-                {name}
-              </Typography>
-            </GridMiddleFullWidth>
-            <GridMiddleFullWidth>
+              <ParameterTitle name={name} />
               <EnumArraySelectorComponent
                 aria-label={name}
                 selectableValues={fieldOptions.options}
@@ -122,15 +127,7 @@ export default observer(
         return (
           <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
             <GridMiddleFullWidth>
-              <Typography
-                style={{ fontFamily: "Source Code Pro" }}
-                id="track-false-slider"
-                gutterBottom
-              >
-                {name}
-              </Typography>
-            </GridMiddleFullWidth>
-            <GridMiddleFullWidth>
+              <ParameterTitle name={name} />
               <NumericArraySelectorComponent
                 aria-label={name}
                 currentValue={parameterValue}

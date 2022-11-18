@@ -4,6 +4,8 @@ import NumericParameter from "./Parameter/NumericParameter";
 
 import { Note } from "@tonaljs/tonal";
 
+import { OSCILLATOR_TYPES } from "./Synthesizer/IOscillatorType";
+
 import RootStore from "./Root.store";
 import { SynthesizerDefinition } from "./Synthesizer/SynthLoader/SynthLoader";
 import BaseParameter from "./Parameter/Base";
@@ -17,6 +19,9 @@ import {
 } from "config/constants/parameters";
 import SequencerDefinition from "./Sequencer/SequencerLoader/SequencerDefinition";
 import GateSequencerDefinition from "./GateSequencer/GateSequencerLoader/GateSequencerDefinition";
+
+const MIN_STEP_PITCH_SHIFT = 0;
+const MAX_STEP_PITCH_SHIFT = 32;
 
 /*
  * Defines Parameters not associated with a plugin.
@@ -53,17 +58,18 @@ export default class ParameterStore {
           "The pitch of the sound, often for single pitch instruments (Kick Drum)",
       });
     },
-    synthesizer_pitch: (
+    oscillator_pitch: (
       trackID: string,
       _options: { [key: string]: number | string }
     ) => {
       return new NumericParameter({
         userParameterStore: this.rootStore!.userParameterStore,
-        name: "Synthesizer Pitch",
-        key: this.parameterKey("synthesizer_pitch", trackID),
+        name: "Oscillator Pitch",
+        key: this.parameterKey("oscillator_pitch", trackID),
         default: 0,
         min: -36,
         max: 36,
+        fieldType: "knob",
         description:
           "The pitch of the sound, often for single pitch instruments (Kick Drum)",
       });
@@ -234,8 +240,8 @@ export default class ParameterStore {
         name: "Step Pitch Shift",
         key: this.parameterKey("step_pitch_shift", trackID),
         default: [0, 0, 0, 0, 0, 0, 0, 0],
-        min: options.min as number,
-        max: options.max as number,
+        min: (options.min as number) || MIN_STEP_PITCH_SHIFT,
+        max: (options.max as number) || MAX_STEP_PITCH_SHIFT,
         description:
           "The number of steps to move up or down in pitch, for interval step sequencers.",
       });
@@ -275,6 +281,19 @@ export default class ParameterStore {
         ],
         description:
           "In an interval step sequencer, which direction the current interval should go.",
+      });
+    },
+    oscillator: (
+      trackID: string,
+      _options: { [key: string]: number | string }
+    ) => {
+      return new StringEnumParameter({
+        userParameterStore: this.rootStore!.userParameterStore,
+        name: "Oscillator Type", // chosenGateParameterSet
+        key: this.parameterKey("oscillator_type", trackID),
+        options: OSCILLATOR_TYPES,
+        default: OSCILLATOR_TYPES[0]!,
+        description: "description",
       });
     },
     beat_repeat: (
@@ -363,16 +382,9 @@ export default class ParameterStore {
       retVal.push({ Slug: "max_interval", Options: {} });
     }
 
-    if (sequencer.type === "fixedStep") {
+    if (sequencer.type === "directional") {
       retVal.push({ Slug: "step_pitch_shift", Options: {} });
       retVal.push({ Slug: "step_pitch_shift_direction", Options: {} });
-      retVal.push({ Slug: "step_gate_array", Options: {} });
-    }
-
-    if (
-      sequencer.triggerWhen.parameterSets[0]?.triggerType === "stepInterval"
-    ) {
-      retVal.push({ Slug: "step_interval", Options: {} });
     }
 
     if (
@@ -418,9 +430,13 @@ export default class ParameterStore {
     }
 
     if (gateSequencer.type === "fixedStep") {
-      retVal.push({ Slug: "step_pitch_shift", Options: {} });
-      retVal.push({ Slug: "step_pitch_shift_direction", Options: {} });
-      retVal.push({ Slug: "step_gate_array", Options: {} });
+      retVal.push({
+        Slug: "step_gate_array",
+        Options: {
+          min: 0,
+          max: 100,
+        },
+      });
     }
 
     console.log(gateSequencer);

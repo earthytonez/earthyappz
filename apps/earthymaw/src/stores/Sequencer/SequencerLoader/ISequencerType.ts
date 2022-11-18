@@ -1,5 +1,6 @@
 type ISequencerType =
   | "arpeggiator"
+  | "directional"
   | "drone"
   | "fixedStep"
   | "randomStep"
