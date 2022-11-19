@@ -161,7 +161,7 @@ export const SYNTH_TYPE_FROM_STRING: IHash<any> = {
 //   "waveform": Waveform
 // }
 
-export const ALL_SYNTH_PARAMETERS = ["oscillatorType"];
+export const ALL_SYNTH_PARAMETERS = ["oscillator_type"];
 
 export const A_ZERO_STARTING_NUMBER = 8;
 

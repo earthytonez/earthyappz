@@ -1,7 +1,7 @@
 import TriggerWhen from "./TriggerWhen";
-import NoteToPlay from "./NoteToPlay";
+import NoteToPlayDefinition from "./NoteToPlayDefinition";
 import VolumeToPlay from "./VolumeToPlay";
-import IntervalToPlay from "./IntervalToPlay";
+import IntervalToPlayDefinition from "./IntervalToPlayDefinition";
 
 import ISequencerType from "./ISequencerType";
 
@@ -21,12 +21,12 @@ export default class SequencerDefinition {
   type?: ISequencerType;
   tags?: string[];
   description?: string = "";
-  intervalToPlay: IntervalToPlay = new IntervalToPlay();
+  intervalToPlay: IntervalToPlayDefinition = new IntervalToPlayDefinition();
   intervalsToPlay?: IIntervalsToPlay;
   rhythm_length?: number = undefined;
   totalLength: number = 16;
   triggerWhen: TriggerWhen = new TriggerWhen();
-  noteToPlay: NoteToPlay = new NoteToPlay();
+  noteToPlay: NoteToPlayDefinition = new NoteToPlayDefinition();
   parameters?: string[];
   volumeToPlay: VolumeToPlay = new VolumeToPlay();
 

@@ -15,6 +15,12 @@ export interface IIntervalCalculatorParams {
   parameters: any;
 }
 
+class IntervalException extends Error {
+  constructor() {
+    super("Interval Exception");
+  }
+}
+
 export default abstract class IntervalCalculator {
   intervalType: "scale" | "list" | "arpeggiator" | undefined = undefined;
   coinToss() {
@@ -57,7 +63,17 @@ export default abstract class IntervalCalculator {
     let allOctavesScale: string[] = this.allOctavesScale(scaleDef);
     let last = allOctavesScale.indexOf(lastNote);
     let start = allOctavesScale.indexOf(startNote);
-    return last - start;
+    let interval = last - start;
+
+    debug(
+      "INTERVAL_CALCULATOR::getCurrentIntervalFromScale",
+      `last=${last},start=${start},interval=${interval}`
+    );
+
+    if (Number.isNaN(interval) || interval == undefined) {
+      throw new IntervalException();
+    }
+    return interval;
 
     // switch (direction) {
     //   case "up":

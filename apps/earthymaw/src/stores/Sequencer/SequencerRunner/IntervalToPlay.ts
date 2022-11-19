@@ -1,13 +1,13 @@
-import ArpeggiatorIntervalCalculator from "./IntervalCalculator/ArpeggiatorIntervalCalculator";
-import ListIntervalCalculator from "./IntervalCalculator/ListIntervalCalculator";
-import ScaleIntervalCalculator from "./IntervalCalculator/ScaleIntervalCalculator";
+import ArpeggiatorIntervalCalculator from "./IntervalToPlayRunner/ArpeggiatorIntervalCalculator";
+import ListIntervalCalculator from "./IntervalToPlayRunner/ListIntervalCalculator";
+import ScaleIntervalCalculator from "./IntervalToPlayRunner/ScaleIntervalCalculator";
 
 import * as Tone from "tone";
 
 import { IMusicChord, IMusicKey, IMusicScale } from "Types";
 
-import IntervalCalculator from "./IntervalCalculator/IntervalCalculator";
-import { IntervalToPlayManifestSection } from "./IParsedSequencerTOML";
+import IntervalCalculator from "./IntervalToPlayRunner/IntervalCalculator";
+import IntervalToPlayDefinition from "../SequencerLoader/IntervalToPlayDefinition";
 /*
  * IntervalToPlay parses an array or a type of an interval to determine what notes to play
  * in a sequence.  You can think of this as a melody, though often it is for something
@@ -32,7 +32,6 @@ export default class IntervalToPlay {
     startNote: string,
     lastNote: string
   ): number {
-    console.log(this.intervalCalculator);
     return this.intervalCalculator?.getCurrentIntervalFromScale(
       scale,
       key,
@@ -40,6 +39,7 @@ export default class IntervalToPlay {
       lastNote
     )!;
   }
+
   getScaleInterval(
     scale: IMusicScale,
     key: IMusicKey,
@@ -78,21 +78,22 @@ export default class IntervalToPlay {
     return this.intervalCalculator?.intervalType;
   }
 
-  parse(line: IntervalToPlayManifestSection) {
-    if (line && line.interval_type === "arpeggiator") {
-      this.intervalCalculator = new ArpeggiatorIntervalCalculator(
-        this.intervalLength,
-        line.type_list[0]!
-      );
+  constructor(intervalToPlayDefinition: IntervalToPlayDefinition) {
+    switch (intervalToPlayDefinition.intervalType) {
+      case "arpeggiator":
+        this.intervalCalculator = new ArpeggiatorIntervalCalculator(
+          this.intervalLength,
+          intervalToPlayDefinition.intervalTypeList[0]!
+        );
+      case "list":
+        this.intervalCalculator = new ListIntervalCalculator(
+          this.intervalLength,
+          intervalToPlayDefinition.intervalList!
+        );
+      default:
+        this.intervalCalculator = new ScaleIntervalCalculator(
+          this.intervalLength
+        );
     }
-
-    if (line && line.interval_type === "list") {
-      this.intervalCalculator = new ListIntervalCalculator(
-        this.intervalLength,
-        line.list
-      );
-    }
-
-    this.intervalCalculator = new ScaleIntervalCalculator(this.intervalLength);
   }
 }

@@ -1,5 +1,5 @@
 import TriggerWhen from "./TriggerWhen";
-import { INoteToPlayDefinition } from "./NoteToPlay";
+import { INoteToPlayDefinition } from "./NoteToPlayDefinition";
 import ISequencerType from "./ISequencerType";
 
 export interface IntervalToPlayManifestSection {

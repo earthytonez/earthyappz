@@ -4,8 +4,8 @@
  * is loaded other than the name of the Sequencer.
  */
 
-import NoteToPlay from "./NoteToPlay";
+import NoteToPlayDefinition from "./NoteToPlayDefinition";
 import TriggerWhen from "./TriggerWhen";
 import SequencerLoader from "./SequencerLoader";
 
-export { TriggerWhen, NoteToPlay, SequencerLoader };
+export { TriggerWhen, NoteToPlayDefinition, SequencerLoader };

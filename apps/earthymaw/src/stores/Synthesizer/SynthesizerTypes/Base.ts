@@ -6,9 +6,9 @@ import { ISequencerPlayAttributes } from "../../Sequencer/ISequencerPlayAttribut
 import ISynthDefinition from "../SynthLoader/ISynthDefinition";
 import BaseParameter from "../../Parameter/Base";
 import BasePlugin, { IPluginNode } from "../../Plugins/Base";
-import NumericParameter from "stores/Parameter/NumericParameter";
 import { debug, info } from "../../../Util/logger";
-import ISynthEditableParams from "../ISynthEditableParams";
+
+import Machine from "../../Machines/Machine";
 
 const SYNTHESIZER_PARAMS: string[] = ["pitchDecay", "oscillator_type"];
 
@@ -19,7 +19,7 @@ const ENVELOPE_PARAMS = [
   "enveloperelease",
 ];
 
-export default class BaseSynthesizer {
+export default class BaseSynthesizer extends Machine {
   name: string;
   slug: string;
   description: string;
@@ -37,6 +37,7 @@ export default class BaseSynthesizer {
    * are created with references to it.
    */
   constructor(SynthDefinition: ISynthDefinition) {
+    super();
     this.name = SynthDefinition.name;
     this.description = SynthDefinition.description;
     this.slug = SynthDefinition.slug;
@@ -100,51 +101,6 @@ export default class BaseSynthesizer {
       }
     }
   }
-
-  incrementParameter(parameterSlug: string): void {
-    if (!this._parameters) {
-      throw new Error("No Parameters");
-    }
-
-    let parameter = this._parameters.get(parameterSlug) as NumericParameter;
-
-    if (!parameter) {
-      throw new Error("Invalid Parameter");
-    }
-
-    if (parameter.type === "numeric") {
-      parameter.increment();
-    }
-  }
-
-  decrementParameter(parameterSlug: string): void {
-    if (!this._parameters) {
-      throw new Error("No Parameters");
-    }
-
-    let parameter = this._parameters.get(parameterSlug) as NumericParameter;
-
-    if (!parameter) {
-      throw new Error("Invalid Parameter");
-    }
-
-    if (parameter.type === "numeric") {
-      parameter.decrement();
-    }
-  }
-
-  get editParameters(): ISynthEditableParams[] {
-    return Array.from(this._parameters!.values());
-  }
-
-  // get _editParameters(): BaseParameter[] {
-  //   debug("SYNTHESIZER_BASE", "_editParameters", this._parameters)
-  //
-  // }
-
-  // loadParameters(_parameters: Map<string, BaseParameter>) {
-  // this._parameters = parameters;
-  // }
 
   attachVolume(vol: Tone.Volume) {
     let headNode = this.synth;
@@ -221,11 +177,18 @@ export default class BaseSynthesizer {
 
   play(_gate: IGatePlayAttributes, params: ISequencerPlayAttributes) {
     let pitch = params.note;
+
     if (!pitch) {
       pitch = Tone.Frequency(this.numericParameter("pitch"), "midi");
     }
 
-    console.log(pitch);
+    if (this.stringParameter("oscillator_type")) {
+      this.synth.set({
+        oscillator: {
+          type: this.stringParameter("oscillator_type"),
+        },
+      });
+    }
 
     if (this.numericParameter("oscillator_pitch")) {
       pitch = Tone.Frequency(
@@ -233,17 +196,15 @@ export default class BaseSynthesizer {
       );
     }
 
-    console.log(pitch);
-
     debug(`BaseSynthesizer`, "play", {
       pitch: pitch,
       time: params.time,
       params: params,
     });
 
-    console.log(this.synth.get());
     const length = "8n";
 
+    console.log(`TRIGGER_ATTACH_RELEASE, ${pitch}, ${length}, ${params.time}`);
     this.synth.triggerAttackRelease(pitch, length, params.time);
   }
 }

@@ -18,12 +18,16 @@ import BaseParameter from "../Parameter/Base";
 
 import { IMusicChord, IMusicKey, IMusicScale, IMusicProgression } from "Types";
 
-import NoteToPlay from "./SequencerLoader/NoteToPlay";
+import ToneFeatures from "../../Types/ToneFeatures";
+
+import NoteToPlay from "./SequencerRunner/NoteToPlayRunner";
 import VolumeToPlay from "./SequencerLoader/VolumeToPlay";
-import IntervalToPlay from "./SequencerLoader/IntervalToPlay";
+import IntervalToPlayDefinition from "./SequencerLoader/IntervalToPlayDefinition";
+import IntervalToPlay from "./SequencerRunner/IntervalToPlay";
 import { IGatePlayAttributes } from "../GateSequencer/IGatePlayAttributes";
 
 import { ISequencerPlayAttributes } from "./ISequencerPlayAttributes";
+import { NoteToPlayDefinition } from "./SequencerLoader";
 
 interface IIntervalsToPlay {
   interval_length: number;
@@ -73,15 +77,15 @@ export default class Sequencer extends SequencerType {
 
   tags?: string[];
   description?: string = "";
-  intervalToPlay: IntervalToPlay = new IntervalToPlay();
   intervalsToPlay?: IIntervalsToPlay;
-  noteToPlay: NoteToPlay = new NoteToPlay();
+  stepInterval: number = 4;
+
+  intervalToPlayDefinition: IntervalToPlayDefinition;
+  noteToPlayDefinition: NoteToPlayDefinition;
   parameters?: string[];
   volumeToPlay: VolumeToPlay = new VolumeToPlay();
   rhythm_length?: number = undefined;
   totalLength: number;
-
-  stepInterval: number = 4;
 
   /* TODO: Deprecate and remove */
   minInterval: number = 0;
@@ -104,8 +108,8 @@ export default class Sequencer extends SequencerType {
     this.slug = sequencerDefinition.slug!;
     this.type = sequencerDefinition.type!;
 
-    this.intervalToPlay = sequencerDefinition.intervalToPlay;
-    this.noteToPlay = sequencerDefinition.noteToPlay;
+    this.intervalToPlayDefinition = sequencerDefinition.intervalToPlay;
+    this.noteToPlayDefinition = sequencerDefinition.noteToPlay;
     this.volumeToPlay = sequencerDefinition.volumeToPlay;
     this.totalLength = sequencerDefinition.totalLength;
 
@@ -226,19 +230,31 @@ export default class Sequencer extends SequencerType {
     key: IMusicKey,
     scale: IMusicScale,
     chord: IMusicChord,
-    beatMarker: BeatMarker
+    beatMarker: BeatMarker,
+    stepInterval: number
   ): Tone.FrequencyClass {
-    let octaves = this.trackFeatures.octaves.val();
-    return this.noteToPlay.get(
+    let octaves = this.trackFeatures.octaves;
+
+    let toneFeatures = new ToneFeatures(
       key,
       scale,
       chord,
-      octaves,
+      "progression",
+      octaves
+    );
+
+    let noteToPlay = new NoteToPlay(
+      this.noteToPlayDefinition,
+      toneFeatures,
+      stepInterval
+    );
+    let intervalToPlay = new IntervalToPlay(this.intervalToPlayDefinition);
+
+    return noteToPlay.get(
       this.measureBeat(beatMarker),
-      this.intervalToPlay,
+      intervalToPlay,
       this._parameters,
-      this.lastParams,
-      this.stepInterval
+      this.lastParams
     );
   }
 
@@ -274,11 +290,12 @@ export default class Sequencer extends SequencerType {
     scale: IMusicScale,
     chord: IMusicChord,
     beatMarker: BeatMarker,
-    time: any
+    time: any,
+    stepInterval: number
   ): IPlayAttributes {
     return {
       volume: this.volume(beatMarker),
-      note: this.note(key, scale, chord, beatMarker),
+      note: this.note(key, scale, chord, beatMarker, stepInterval),
       time: time,
     };
   }
@@ -288,11 +305,19 @@ export default class Sequencer extends SequencerType {
     scale: IMusicScale,
     chord: IMusicChord,
     beatMarker: BeatMarker,
-    time: any
+    time: any,
+    stepInterval: number
   ): any {
     info("DRONE_SEQUENCER", "Starting Drone");
 
-    let playParams = this.playParams(key, scale, chord, beatMarker, time);
+    let playParams = this.playParams(
+      key,
+      scale,
+      chord,
+      beatMarker,
+      time,
+      stepInterval
+    );
     playParams.lengthSeconds = this.droneLength;
     playParams.tailSeconds = this.droneTail;
 
@@ -383,11 +408,12 @@ export default class Sequencer extends SequencerType {
     scale: IMusicScale,
     chord: IMusicChord,
     beatMarker: BeatMarker,
-    time: any
+    time: any,
+    stepInterval: number
   ): ISequencerPlayAttributes {
     return {
       volume: this.volume(beatMarker),
-      note: this.note(key, scale, chord, beatMarker),
+      note: this.note(key, scale, chord, beatMarker, stepInterval),
       time: time,
     };
   }
@@ -408,21 +434,47 @@ export default class Sequencer extends SequencerType {
     time: any
   ): Promise<ISequencerPlayAttributes> {
     this.beatsSinceLastNote++;
-    this.stepInterval = gateParams.stepInterval;
-
     let params: ISequencerPlayAttributes;
 
     if (!gateParams.triggered) {
-      return this.playParams(key, scale, chord, beatMarker, time);
+      return this.playParams(
+        key,
+        scale,
+        chord,
+        beatMarker,
+        time,
+        gateParams.stepInterval
+      );
     }
     if (this.sequencerType() === "drone") {
       console.log("sequencerType Drone");
-      params = this.droneParams(key, scale, chord, beatMarker, time);
+      params = this.droneParams(
+        key,
+        scale,
+        chord,
+        beatMarker,
+        time,
+        gateParams.stepInterval
+      );
     } else if (this.sequencerType() === "arpeggiator") {
       console.log(`sequencerType Arpeggiator ${beatMarker}`);
-      params = this.arpParams(key, scale, chord, beatMarker, time);
+      params = this.arpParams(
+        key,
+        scale,
+        chord,
+        beatMarker,
+        time,
+        gateParams.stepInterval
+      );
     } else {
-      params = this.playParams(key, scale, chord, beatMarker, time);
+      params = this.playParams(
+        key,
+        scale,
+        chord,
+        beatMarker,
+        time,
+        gateParams.stepInterval
+      );
     }
 
     this.lastParams = params;

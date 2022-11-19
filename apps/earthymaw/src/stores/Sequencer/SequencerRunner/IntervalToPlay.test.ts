@@ -2,13 +2,17 @@ import { Scale } from "@tonaljs/tonal";
 import { IMusicKey, IMusicScale } from "Types";
 import IntervalToPlay from "./IntervalToPlay";
 
+import IntervalToPlayDefinition from "../SequencerLoader/IntervalToPlayDefinition";
+
 test("find midi number from note name", async () => {
-  const intervalToPlay = new IntervalToPlay();
-  intervalToPlay.parse({
+  let intervalToPlayDefinition = new IntervalToPlayDefinition();
+  intervalToPlayDefinition.parse({
     interval_type: "arpeggiator",
     list: [],
     type_list: [],
   });
+
+  const intervalToPlay = new IntervalToPlay(intervalToPlayDefinition);
   let key = "C" as IMusicKey;
   let scale = Scale.get("major") as IMusicScale;
   let interval = 4;
@@ -19,12 +23,14 @@ test("find midi number from note name", async () => {
 });
 
 test("get all octaves for a scale", () => {
-  const intervalToPlay = new IntervalToPlay();
-  intervalToPlay.parse({
+  let intervalToPlayDefinition = new IntervalToPlayDefinition();
+  intervalToPlayDefinition.parse({
     interval_type: "arpeggiator",
     list: [],
     type_list: [],
   });
+
+  const intervalToPlay = new IntervalToPlay(intervalToPlayDefinition);
 
   let scaleDef = Scale.get(`C major`);
 
@@ -36,12 +42,14 @@ test("get all octaves for a scale", () => {
 });
 
 test("get current interval from scale", () => {
-  const intervalToPlay = new IntervalToPlay();
-  intervalToPlay.parse({
+  let intervalToPlayDefinition = new IntervalToPlayDefinition();
+  intervalToPlayDefinition.parse({
     interval_type: "arpeggiator",
     list: [],
     type_list: [],
   });
+
+  const intervalToPlay = new IntervalToPlay(intervalToPlayDefinition);
 
   let scale = Scale.get(`major`);
   let key = "C" as IMusicKey;

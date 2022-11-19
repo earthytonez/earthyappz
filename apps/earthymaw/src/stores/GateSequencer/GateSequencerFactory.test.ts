@@ -45,5 +45,7 @@ test("test parameters", async () => {
 
   gateSequencer.registerParameter(parameter);
 
-  expect(gateSequencer._parameters?.get("testparameter")?.type).toBe("numeric");
+  expect(gateSequencer._parameters?.get("test_parameter")?.type).toBe(
+    "numeric"
+  );
 });
