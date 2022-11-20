@@ -11,7 +11,7 @@ import { IntervalToPlayManifestSection } from "./IParsedSequencerTOML";
  */
 
 const INTERVAL_TYPES = ["list", "arpeggiator", "scale"];
-export default class IntervalToPlay {
+export default class IntervalToPlayDefinition {
   intervalLength: number = 1;
   _intervalType?: "list" | "arpeggiator" | "scale";
   _intervalTypeList?: string[];

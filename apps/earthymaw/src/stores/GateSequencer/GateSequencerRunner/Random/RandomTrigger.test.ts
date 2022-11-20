@@ -1,6 +1,6 @@
 import RandomTrigger from "./RandomTrigger";
 
-import { ITriggerParameters } from "../GateSequencerLoader/TriggerWhen";
+import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
 
 test("test RandomTrigger random Trigger Type", async () => {
   let rhythmLength = 16;
@@ -18,7 +18,11 @@ test("test RandomTrigger random Trigger Type", async () => {
   let resetBeatsSinceLastNote = jest.fn();
 
   expect(
-    randomTrigger.run(0, 10, resetBeatsSinceLastNote, parameters, new Map())
-      .triggered
+    randomTrigger.isTriggered(
+      10,
+      resetBeatsSinceLastNote,
+      parameters,
+      new Map()
+    ).triggered
   ).toBeTruthy();
 });

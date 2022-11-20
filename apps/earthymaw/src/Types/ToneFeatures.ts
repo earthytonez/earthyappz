@@ -24,6 +24,14 @@ export default class ToneFeatures {
     return Scale.get(this.scaleName).notes;
   }
 
+  getOctave() {
+    let octaveToPlay = 4;
+    if (this.octaves[0]) {
+      octaveToPlay = this.octaves[0];
+    }
+    return octaveToPlay;
+  }
+
   get key() {
     return this._key;
   }

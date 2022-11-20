@@ -1,8 +1,6 @@
 import BaseParameter from "stores/Parameter/Base";
-import { debug } from "../../../Util/logger";
-
-import { ITriggerParameters } from "../GateSequencerLoader/TriggerWhen";
-import SequencerGate from "./SequencerGate";
+import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
+import SequencerGate from "../SequencerGate";
 /*
  * Play Every X is used to calculate whether or not a trigger should occur, usually
  * playing every x notes.
@@ -32,52 +30,39 @@ export default class RandomTrigger implements ISequencerRunner {
   }
 
   randomInterval(
-    beatMarker: number,
     beatsSinceLastNote: number,
     resetBeatsSinceLastNote: Function,
-    parameters: ITriggerParameters,
-    minGate: number,
-    maxGate: number,
     minInterval: number,
     maxInterval: number
   ): SequencerGate {
-    let stepCount = beatMarker % this.rhythm_length;
-
-    debug(
-      "RANDOM_TRIGGER",
-      `Playing from step list steps: ${beatMarker} / ${stepCount} (${parameters.stepList}`
-    );
-    console.log(beatsSinceLastNote);
-    console.log(this.generateRandom(minInterval, maxInterval));
     if (beatsSinceLastNote > this.generateRandom(minInterval, maxInterval)) {
       resetBeatsSinceLastNote();
 
-      return new SequencerGate(true, this.getRandomFloat(minGate, maxGate, 2));
+      return new SequencerGate(true);
     }
     return new SequencerGate(false);
   }
 
-  run(
-    beatMarker: number,
+  duration(userParameters: Map<string, BaseParameter>): number {
+    let minGate = userParameters.get("min_gate")?.val() || { val: 0.1 };
+    let maxGate = userParameters.get("max_gate")?.val() || { val: 10 };
+    return this.getRandomFloat(minGate, maxGate, 2);
+  }
+
+  isTriggered(
     beatsSinceLastNote: number,
     resetBeatsSinceLastNote: Function,
     parameters: ITriggerParameters,
     sequencerParameters: Map<string, BaseParameter>
   ): SequencerGate {
-    let minGate = sequencerParameters.get("min_gate") || { val: 0.1 };
-    let maxGate = sequencerParameters.get("max_gate") || { val: 10 };
     let minInterval = sequencerParameters.get("min_interval") || { val: 5 };
     let maxInterval = sequencerParameters.get("max_interval") || { val: 10 };
 
     switch (parameters.triggerType) {
       case "random":
         return this.randomInterval(
-          beatMarker,
           beatsSinceLastNote,
           resetBeatsSinceLastNote,
-          parameters,
-          minGate!.val,
-          maxGate!.val,
           minInterval!.val,
           maxInterval!.val
         );

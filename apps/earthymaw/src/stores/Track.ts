@@ -25,6 +25,11 @@ import { debug, error, warn } from "../Util/logger";
 
 import { IMachineTypeSlug } from "./Machines/MachineTypes";
 
+import ToneFeatures from "../Types/ToneFeatures";
+import TrackPipeline from "./Track/TrackPipeline";
+import BeatFeatures from "./Track/BeatFeatures";
+import TrackMachines from "Types/TrackMachines";
+
 interface ITrackFeatures {
   octaves: TrackOctaves;
   volume: TrackVolume;
@@ -119,27 +124,12 @@ export default class Track {
   };
 
   async tick(beatMarker: BeatMarker, time: number) {
-    debug(`TRACK_TICK`, `-------------------- Start --------------------`);
-
-    if (this.sequencer === undefined) {
-      warn("TRACK_TICK", "No Sequencer Set");
-      return;
-    }
-
-    if (this.gateSequencer === undefined) {
-      warn("TRACK_TICK", "No Gate Sequencer Set");
-      return false;
-    }
-
-    if (this.synthesizer === undefined) {
-      warn("TRACK_TICK", "No Synthesizer Set");
-      return false;
-    }
-
-    if (!this.musicFeaturesStore) {
-      console.error(`musicFeaturesStore Not Set`);
-      return;
-    }
+    let machines = new TrackMachines(
+      this.arranger,
+      this.gateSequencer,
+      this.sequencer,
+      this.synthesizer
+    );
 
     /* Here is what it takes to play a note from gate to synth */
     let key = this.musicFeaturesStore.musicKey.value();
@@ -147,51 +137,21 @@ export default class Track {
     let chord = this.musicFeaturesStore.musicChord.value();
     let progression = this.musicFeaturesStore.musicChordProgression.value();
 
-    /* TODO: Make arrangement work */
-    // let arrangementAttributes = this.arranger?.play(beatMarker, time);
-    // if (!arrangementAttributes) {
-    //   return false;
-    // }
-
-    let arrangementAttributes = {
-      play: true,
-    };
-    debug(`TRACK_TICK`, `Arrangement Attributes: `, arrangementAttributes);
-
-    let gateAttributes = await this.gateSequencer?.play(
-      arrangementAttributes,
-      beatMarker,
-      time
-    );
-
-    if (!gateAttributes || !gateAttributes.triggered) {
-      return false;
-    }
-
-    debug(`TRACK_TICK`, `Gate Attributes: `, gateAttributes);
-
-    let playAttributes = await this.sequencer.play(
-      gateAttributes,
+    let toneFeatures = new ToneFeatures(
       key,
       scale,
       chord,
       progression,
-      beatMarker,
-      time
+      this.trackFeatures.octaves
     );
 
-    if (!playAttributes) {
-      return false;
-    }
+    let beatFeatures = new BeatFeatures(beatMarker, time);
 
-    debug(`TRACK_TICK`, `Play Attributes: `, playAttributes);
-
-    this.synthesizer?.play(gateAttributes, playAttributes);
-
+    let pipeline = new TrackPipeline(machines, beatFeatures, toneFeatures);
+    pipeline.tick();
     if (beatMarker.num % 10 === 0) {
       this.trackStore?.saveTracks();
     }
-    return;
   }
 
   audioContext() {
@@ -199,7 +159,6 @@ export default class Track {
   }
 
   synthFromSlug(synthSlug: string) {
-    console.log("TRACK::SYNTH_FROM_SLUG", `Synth Slug: ${synthSlug}`);
     return getSynthesizer(
       this.userParameterStore,
       this.parameterStore,
@@ -210,10 +169,6 @@ export default class Track {
   }
 
   gateSequencerFromSlug(gateSequencerSlug: string) {
-    console.log(
-      "TRACK::SEQUENCER_FROM_SLUG",
-      `Sequencer Slug: ${gateSequencerSlug}`
-    );
     let gateSequencerFactory = new GateSequencerFactory(
       this.parameterStore,
       this.musicFeaturesStore
@@ -222,10 +177,6 @@ export default class Track {
   }
 
   sequencerFromSlug(sequencerSlug: string) {
-    console.log(
-      "TRACK::SEQUENCER_FROM_SLUG",
-      `Sequencer Slug: ${sequencerSlug}`
-    );
     return getSequencer(
       this.userParameterStore,
       this.parameterStore,
@@ -257,13 +208,9 @@ export default class Track {
   }
 
   async assignMachine(machineType: IMachineTypeSlug, machineSlug: any) {
-    console.log(`Assigning Machine ${machineType}`);
     let machine = await this.newMachine(machineType, machineSlug);
 
     this[machineType as keyof this] = machine;
-
-    console.log(machineType);
-    console.log(this[machineType as keyof this]);
 
     if (machineType === "synthesizer") {
       this.synthesizer?.attachVolume(this.trackFeatures.volume.vol);

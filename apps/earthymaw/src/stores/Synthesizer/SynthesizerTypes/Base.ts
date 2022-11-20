@@ -1,14 +1,13 @@
 import { observable, makeObservable, action } from "mobx";
 import * as Tone from "tone";
 
-import { IGatePlayAttributes } from "../../GateSequencer/IGatePlayAttributes";
-import { ISequencerPlayAttributes } from "../../Sequencer/ISequencerPlayAttributes";
 import ISynthDefinition from "../SynthLoader/ISynthDefinition";
 import BaseParameter from "../../Parameter/Base";
 import BasePlugin, { IPluginNode } from "../../Plugins/Base";
 import { debug, info } from "../../../Util/logger";
 
 import Machine from "../../Machines/Machine";
+import ITriggerAttackReleaseParams from "../../Track/ITriggerAttackReleaseParams";
 
 const SYNTHESIZER_PARAMS: string[] = ["pitchDecay", "oscillator_type"];
 
@@ -175,11 +174,11 @@ export default class BaseSynthesizer extends Machine {
     return this.parameterValue(slug) as string;
   }
 
-  play(_gate: IGatePlayAttributes, params: ISequencerPlayAttributes) {
-    let pitch = params.note;
+  trigger(triggerAttackReleaseParams: ITriggerAttackReleaseParams) {
+    let frequency = triggerAttackReleaseParams.frequency;
 
-    if (!pitch) {
-      pitch = Tone.Frequency(this.numericParameter("pitch"), "midi");
+    if (!frequency) {
+      frequency = Tone.Frequency(this.numericParameter("pitch"), "midi");
     }
 
     if (this.stringParameter("oscillator_type")) {
@@ -191,20 +190,23 @@ export default class BaseSynthesizer extends Machine {
     }
 
     if (this.numericParameter("oscillator_pitch")) {
-      pitch = Tone.Frequency(
-        pitch.toMidi() + this.numericParameter("oscillator_pitch")
+      frequency = Tone.Frequency(
+        frequency.toMidi() + this.numericParameter("oscillator_pitch")
       );
     }
 
-    debug(`BaseSynthesizer`, "play", {
-      pitch: pitch,
-      time: params.time,
-      params: params,
-    });
+    debug(
+      "Synthesizer::Trigger",
+      `frequency=${frequency.valueOf()} duration=${triggerAttackReleaseParams.duration.valueOf()} time=${
+        triggerAttackReleaseParams.time
+      } velocity=${triggerAttackReleaseParams.velocity}`
+    );
 
-    const length = "8n";
-
-    console.log(`TRIGGER_ATTACH_RELEASE, ${pitch}, ${length}, ${params.time}`);
-    this.synth.triggerAttackRelease(pitch, length, params.time);
+    this.synth.triggerAttackRelease(
+      frequency,
+      triggerAttackReleaseParams.duration,
+      triggerAttackReleaseParams.time,
+      triggerAttackReleaseParams.velocity
+    );
   }
 }

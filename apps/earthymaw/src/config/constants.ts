@@ -188,3 +188,5 @@ export const NOTE_NUMBERS: IHash<number> = {
   G: 61,
   "G#": 62,
 };
+
+export const DEFAULT_STEP_INTERVAL = 4;

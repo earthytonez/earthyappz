@@ -12,6 +12,12 @@ Sources/Docs:
 MMF (Minimum Marketable Features)
 Tech Debt: 1. Save more things (like Octaves)
 
+1. Finish Demo for Interval Sequencer
+    1. Get Time working Well
+    2. Ensure all parameters work
+    3. Esnure Save/Load
+    4. Fix Help for Autocompleted.
+
 1. Help
   1. ~~Fix Keys/Scale/Chord Changes to show yellow when changed.~~
   2. ~~Parameters should take a min and max value (options)~~

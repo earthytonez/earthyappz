@@ -28,6 +28,7 @@ import { IGatePlayAttributes } from "../GateSequencer/IGatePlayAttributes";
 
 import { ISequencerPlayAttributes } from "./ISequencerPlayAttributes";
 import { NoteToPlayDefinition } from "./SequencerLoader";
+import BeatFeatures from "stores/Track/BeatFeatures";
 
 interface IIntervalsToPlay {
   interval_length: number;
@@ -430,9 +431,11 @@ export default class Sequencer extends SequencerType {
     scale: IMusicScale,
     chord: IMusicChord,
     _progression: IMusicProgression,
-    beatMarker: BeatMarker,
-    time: any
+    beatFeatures: BeatFeatures
   ): Promise<ISequencerPlayAttributes> {
+    let beatMarker = beatFeatures.beatMarker;
+    let time = beatFeatures.time;
+
     this.beatsSinceLastNote++;
     let params: ISequencerPlayAttributes;
 

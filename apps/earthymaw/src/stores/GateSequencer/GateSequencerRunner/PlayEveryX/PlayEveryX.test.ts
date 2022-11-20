@@ -1,6 +1,6 @@
-import PlayEveryX from "./PlayEveryX";
+import PlayEveryX from "./PlayEveryXFactory";
 
-import { ITriggerParameters } from "../GateSequencerLoader/TriggerWhen";
+import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
 
 test("test PlayEveryX stepInterval Trigger Type", async () => {
   let rhythmLength = 16;

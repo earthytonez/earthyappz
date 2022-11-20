@@ -10,10 +10,8 @@ import UserParameterStore from "stores/UserParameter.store";
 
 import ToneFeatures from "Types/ToneFeatures";
 
-import NoteToPlay from ".";
-
 import * as Tone from "tone";
-import NoteToPlayDefinition from "stores/Sequencer/SequencerLoader/NoteToPlayDefinition";
+import IntervalParameterNoteToPlayRunner from "./IntervalParameterNoteToPlayRunner";
 
 let key: IMusicKey;
 let chord: IMusicChord;
@@ -76,40 +74,19 @@ test("getIntervalParameterNote for First Note", () => {
   parameters.set("step_pitch_shift_direction", stepPitchShiftDirection);
   parameters.set("step_pitch_shift", stepPitchShift);
 
-  let toneFeatures = new ToneFeatures(
-    key,
-    scale,
-    chord,
-    "progression",
-    octaves
+  let intervalParameterNoteToPlayRunner = new IntervalParameterNoteToPlayRunner(
+    toneFeatures,
+    intervalToPlay,
+    parameters,
+    4
   );
 
-  let noteToPlayDefinition = new NoteToPlayDefinition();
-  noteToPlayDefinition.parse({ note: "IntervalParameter()" });
-  let noteToPlay = new NoteToPlay(noteToPlayDefinition, toneFeatures, 4);
-
-  let retrievedNote = noteToPlay.getIntervalParameterNote({
+  let retrievedNote = intervalParameterNoteToPlayRunner.getNote({
     measureBeat: measureBeat,
-    intervalToPlay: intervalToPlay,
-    parameters: parameters,
     lastParams: undefined,
   });
 
   expect(retrievedNote.toNote()).toEqual("D4");
-});
-
-test("getArrayStep returns right value", () => {
-  let noteToPlayDefinition = new NoteToPlayDefinition();
-  noteToPlayDefinition.parse({ note: "IntervalParameter()" });
-  let noteToPlay = new NoteToPlay(noteToPlayDefinition, toneFeatures, 4);
-
-  expect(noteToPlay.getArrayStep(1, 1, 8)).toEqual(0);
-  expect(noteToPlay.getArrayStep(2, 1, 8)).toEqual(1);
-  expect(noteToPlay.getArrayStep(8, 1, 8)).toEqual(7);
-  expect(noteToPlay.getArrayStep(9, 1, 8)).toEqual(0);
-  expect(noteToPlay.getArrayStep(2, 2, 8)).toEqual(0);
-  expect(noteToPlay.getArrayStep(4, 2, 8)).toEqual(1);
-  expect(noteToPlay.getArrayStep(9, 3, 8)).toEqual(2);
 });
 
 test("getIntervalParameterNote for Second Note", () => {
@@ -146,6 +123,13 @@ test("getIntervalParameterNote for Second Note", () => {
   parameters.set("step_pitch_shift_direction", stepPitchShiftDirection);
   parameters.set("step_pitch_shift", stepPitchShift);
 
+  let intervalParameterNoteToPlayRunner = new IntervalParameterNoteToPlayRunner(
+    toneFeatures,
+    intervalToPlay,
+    parameters,
+    4
+  );
+
   let measureBeat = 2;
 
   let lastParams = {
@@ -162,16 +146,11 @@ test("getIntervalParameterNote for Second Note", () => {
     lastParams: lastParams,
   };
 
-  let noteToPlayDefinition = new NoteToPlayDefinition();
-  noteToPlayDefinition.parse({ note: "IntervalParameter()" });
-  let noteToPlay = new NoteToPlay(noteToPlayDefinition, toneFeatures, 4);
+  let retrievedNote = intervalParameterNoteToPlayRunner.getNote({
+    measureBeat,
+    lastParams: undefined,
+  });
 
-  let retrievedNote = noteToPlay.getIntervalParameterNote(
-    Object.assign(getIntervalParameterNoteParams, {
-      lastParams: lastParams,
-      measureBeat: measureBeat,
-    })
-  );
   expect(retrievedNote.toNote()).toEqual("E4");
 
   /* Next Interval */
@@ -181,7 +160,7 @@ test("getIntervalParameterNote for Second Note", () => {
     note: Tone.Frequency("E4"),
   };
 
-  retrievedNote = noteToPlay.getIntervalParameterNote(
+  retrievedNote = intervalParameterNoteToPlayRunner.getNote(
     Object.assign(getIntervalParameterNoteParams, {
       lastParams: lastParams,
       measureBeat: measureBeat,
@@ -197,7 +176,7 @@ test("getIntervalParameterNote for Second Note", () => {
     note: Tone.Frequency("F4"),
   };
 
-  retrievedNote = noteToPlay.getIntervalParameterNote(
+  retrievedNote = intervalParameterNoteToPlayRunner.getNote(
     Object.assign(getIntervalParameterNoteParams, {
       lastParams: lastParams,
       measureBeat: measureBeat,
@@ -211,7 +190,7 @@ test("getIntervalParameterNote for Second Note", () => {
     note: Tone.Frequency("G4"),
   };
 
-  retrievedNote = noteToPlay.getIntervalParameterNote(
+  retrievedNote = intervalParameterNoteToPlayRunner.getNote(
     Object.assign(getIntervalParameterNoteParams, {
       lastParams: lastParams,
       measureBeat: measureBeat,
@@ -225,7 +204,7 @@ test("getIntervalParameterNote for Second Note", () => {
     note: Tone.Frequency("F4"),
   };
 
-  retrievedNote = noteToPlay.getIntervalParameterNote(
+  retrievedNote = intervalParameterNoteToPlayRunner.getNote(
     Object.assign(getIntervalParameterNoteParams, {
       lastParams: lastParams,
       measureBeat: measureBeat,
@@ -239,7 +218,7 @@ test("getIntervalParameterNote for Second Note", () => {
     note: Tone.Frequency("E4"),
   };
 
-  retrievedNote = noteToPlay.getIntervalParameterNote(
+  retrievedNote = intervalParameterNoteToPlayRunner.getNote(
     Object.assign(getIntervalParameterNoteParams, {
       lastParams: lastParams,
       measureBeat: measureBeat,
@@ -253,11 +232,30 @@ test("getIntervalParameterNote for Second Note", () => {
     note: Tone.Frequency("D4"),
   };
 
-  retrievedNote = noteToPlay.getIntervalParameterNote(
+  retrievedNote = intervalParameterNoteToPlayRunner.getNote(
     Object.assign(getIntervalParameterNoteParams, {
       lastParams: lastParams,
       measureBeat: measureBeat,
     })
   );
   expect(retrievedNote.toNote()).toEqual("C4");
+});
+
+test("getArrayStep returns right value", () => {
+  let parameterMap = new Map();
+  parameterMap.set("step_pitch_shift", [1, 1, 1, 1, 1, 1, 1, 1]);
+  let intervalParameterNoteToPlayRunner = new IntervalParameterNoteToPlayRunner(
+    toneFeatures,
+    intervalToPlay,
+    parameterMap,
+    4
+  );
+
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(1, 1)).toEqual(0);
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(2, 1)).toEqual(1);
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(8, 1)).toEqual(7);
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(9, 1)).toEqual(0);
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(2, 2)).toEqual(0);
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(4, 2)).toEqual(1);
+  expect(intervalParameterNoteToPlayRunner.getArrayStep(9, 3)).toEqual(2);
 });

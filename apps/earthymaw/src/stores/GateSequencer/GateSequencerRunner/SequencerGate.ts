@@ -1,32 +1,32 @@
-import { IGatePlayAttributes } from "../IGatePlayAttributes";
+import {
+  IGatePlayAttributes,
+  Duration,
+  DEFAULT_DURATION,
+} from "../IGatePlayAttributes";
 
 /*
- * Passed from a sequencer to a synthesizer to determine if a note is played and the length of the note.
+ * Passed from a sequencer to a synthesizer to determine if a note is played and the duration of the note.
  */
 interface ISequencerGate extends IGatePlayAttributes {
   readonly triggered: boolean;
-  readonly length?: number;
+  readonly duration: Duration;
 }
 
 export default class SequencerGate implements ISequencerGate {
-  _length?: number;
+  _duration: number = DEFAULT_DURATION;
   triggered: boolean;
   stepInterval: number = 4;
 
-  get length(): number | undefined {
-    return this._length;
-  }
-
-  set length(length: number | undefined) {
-    if (!length || length <= 0) {
-      throw new Error("length must be greater than 0");
+  get duration(): Duration {
+    if (this._duration) {
+      return new Duration(this._duration);
     }
-    this._length = length;
+    return new Duration(1);
   }
 
-  constructor(triggered: boolean | undefined, length?: number) {
+  constructor(triggered: boolean | undefined, duration?: number) {
     this.triggered = !!triggered;
-    if (length) this.length = length;
+    if (duration) this._duration = duration;
   }
 }
 
