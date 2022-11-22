@@ -98,7 +98,7 @@ export class Duration {
   value(): Tone.TimeClass {
     debug("IGatePlayAttributes:", `Duration: ${this._val}`);
     // let lengthArray = ["128n", "64n", "32n", "16n", "8n", "4n", "2n", "1n"];
-    return Tone.Time(`${this._val * 0.1}s`);
+    return Tone.Time(`${(1 + this._val) * 0.05}s`);
     // return Tone.Time(this._val * 0.1);
   }
 }

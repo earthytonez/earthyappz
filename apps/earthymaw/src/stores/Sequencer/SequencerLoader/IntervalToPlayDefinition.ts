@@ -53,15 +53,16 @@ export default class IntervalToPlayDefinition {
   }
 
   parse(line: IntervalToPlayManifestSection) {
-    if (line && line.interval_type === "arpeggiator") {
-      this._intervalType = "arpeggiator";
-      this._intervalTypeList = line.type_list;
+    switch (line?.interval_type) {
+      case "arpeggiator":
+        this._intervalType = "arpeggiator";
+        this._intervalTypeList = line.type_list;
+        break;
+      case "list":
+        this._intervalType = "list";
+        this._intervalList = line.list;
+      default:
+        this._intervalType = "scale";
     }
-
-    if (line && line.interval_type === "list") {
-      this._intervalType = "list";
-      this._intervalList = line.list;
-    }
-    this._intervalType = "scale";
   }
 }

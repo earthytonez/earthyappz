@@ -108,7 +108,13 @@ export default class TrackStore {
         let trackObjects: Track[] = await bluebird.map(
           tracksFromLocalStore,
           async (trackData: any, i: number) => {
-            let t = new Track(i, this.audioContext, this.rootStore, this);
+            let t = new Track(
+              i,
+              this.audioContext,
+              this.rootStore,
+              this,
+              trackData.id
+            );
             await t.load(trackData);
             return t;
           }

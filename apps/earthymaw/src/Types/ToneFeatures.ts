@@ -12,7 +12,7 @@ export default class ToneFeatures {
     private _scale: IMusicScale,
     private _chord: IMusicChord,
     private _progression: IMusicProgression,
-    private _octaves: TrackOctaves
+    private _octaves: Octaves
   ) {}
 
   get scaleName() {
@@ -45,6 +45,7 @@ export default class ToneFeatures {
     return this._progression;
   }
   get octaves() {
+    console.log(this._octaves);
     return this._octaves.val();
   }
 }

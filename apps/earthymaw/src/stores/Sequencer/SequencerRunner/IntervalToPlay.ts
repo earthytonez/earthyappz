@@ -85,11 +85,13 @@ export default class IntervalToPlay {
           this.intervalLength,
           intervalToPlayDefinition.intervalTypeList[0]!
         );
+        break;
       case "list":
         this.intervalCalculator = new ListIntervalCalculator(
           this.intervalLength,
           intervalToPlayDefinition.intervalList!
         );
+        break;
       default:
         this.intervalCalculator = new ScaleIntervalCalculator(
           this.intervalLength

@@ -12,10 +12,11 @@ import ToneFeatures from "Types/ToneFeatures";
 
 import * as Tone from "tone";
 import IntervalParameterNoteToPlayRunner from "./IntervalParameterNoteToPlayRunner";
+import TrackOctaves from "stores/Track/TrackOctaves";
 
 let key: IMusicKey;
 let chord: IMusicChord;
-let octaves: any;
+let octaves: TrackOctaves;
 let scale: IMusicScale;
 let intervalToPlayDefinition: IntervalToPlayDefinition =
   new IntervalToPlayDefinition();
@@ -23,6 +24,9 @@ let intervalToPlay: IntervalToPlay;
 let parameters = new Map();
 const userParameterStore = new UserParameterStore();
 let toneFeatures: ToneFeatures;
+let stepInterval: any;
+let stepPitchShift: any;
+let stepPitchShiftDirection: any;
 
 beforeEach(() => {
   intervalToPlayDefinition.parse({
@@ -34,16 +38,20 @@ beforeEach(() => {
 
   key = "C" as IMusicKey;
   chord = ChordType.get("major") as IMusicChord;
-  octaves = [4];
+  let mockTrack = {
+    id: "test",
+    sequencer: {
+      sequencerLoader: {
+        type: "step",
+      },
+    },
+  };
+  octaves = new TrackOctaves(userParameterStore, mockTrack);
   scale = Scale.get("major") as IMusicScale;
 
   toneFeatures = new ToneFeatures(key, scale, chord, "progression", octaves);
-});
 
-test("getIntervalParameterNote for First Note", () => {
-  let measureBeat = 1;
-
-  const stepInterval = new NumericParameter({
+  stepInterval = new NumericParameter({
     userParameterStore,
     name: "Step Interval",
     key: "track.1.sequencer.step_interval",
@@ -52,7 +60,7 @@ test("getIntervalParameterNote for First Note", () => {
     min: 0,
     max: 100,
   });
-  const stepPitchShift = new NumericArrayParameter({
+  stepPitchShift = new NumericArrayParameter({
     userParameterStore,
     name: "Waveform",
     key: "track.1.synthesizer.step_pitch_shift",
@@ -61,7 +69,7 @@ test("getIntervalParameterNote for First Note", () => {
     max: 36,
     description: "description",
   });
-  const stepPitchShiftDirection = new StringEnumArrayParameter({
+  stepPitchShiftDirection = new StringEnumArrayParameter({
     userParameterStore,
     name: "Waveform",
     key: "track.1.synthesizer.step_pitch_shift_direction",
@@ -69,6 +77,10 @@ test("getIntervalParameterNote for First Note", () => {
     default: ["up", "up", "up", "up", "up", "up", "up", "up"],
     description: "description",
   });
+});
+
+test("getIntervalParameterNote for First Note", () => {
+  let measureBeat = 1;
 
   parameters.set("step_interval", stepInterval);
   parameters.set("step_pitch_shift_direction", stepPitchShiftDirection);
@@ -100,17 +112,7 @@ test("getIntervalParameterNote for Second Note", () => {
     max: 1,
   });
 
-  const stepPitchShift = new NumericArrayParameter({
-    userParameterStore,
-    name: "Step Pitch Shift",
-    key: "track.1.synthesizer.step_pitch_shift",
-    default: [1, 1, 1, 1, 1, 1, 1, 1],
-    min: 0,
-    max: 36,
-    description: "Step Pitch Shift",
-  });
-
-  const stepPitchShiftDirection = new StringEnumArrayParameter({
+  stepPitchShiftDirection = new StringEnumArrayParameter({
     userParameterStore,
     name: "Waveform",
     key: "track.1.synthesizer.step_pitch_shift_direction",
@@ -148,7 +150,7 @@ test("getIntervalParameterNote for Second Note", () => {
 
   let retrievedNote = intervalParameterNoteToPlayRunner.getNote({
     measureBeat,
-    lastParams: undefined,
+    lastParams,
   });
 
   expect(retrievedNote.toNote()).toEqual("E4");
@@ -243,7 +245,9 @@ test("getIntervalParameterNote for Second Note", () => {
 
 test("getArrayStep returns right value", () => {
   let parameterMap = new Map();
-  parameterMap.set("step_pitch_shift", [1, 1, 1, 1, 1, 1, 1, 1]);
+  parameterMap.set("step_pitch_shift", stepPitchShift);
+  parameterMap.set("step_pitch_shift_direction", stepPitchShiftDirection);
+
   let intervalParameterNoteToPlayRunner = new IntervalParameterNoteToPlayRunner(
     toneFeatures,
     intervalToPlay,

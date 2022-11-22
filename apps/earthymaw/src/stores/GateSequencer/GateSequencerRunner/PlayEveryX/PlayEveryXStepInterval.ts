@@ -7,7 +7,13 @@ import PlayEveryXFill from "./PlayEveryXFill";
 export default class PlayEveryXStepInterval extends PlayEveryXBase {
   gate(beatMarker: number): ISequencerGate {
     let stepCount = beatMarker % this.stepInterval;
-    let arrayStep = Math.floor((beatMarker % 64) / this.stepGateArray.length);
+
+    let arrayStep = -1;
+    let duration = 1;
+    if (this.stepGateArray) {
+      arrayStep = Math.floor((beatMarker % 64) / this.stepGateArray.length);
+      duration = this.stepGateArray[arrayStep];
+    }
 
     if (
       this.userParameters.has("selected_fill") &&
@@ -30,9 +36,6 @@ export default class PlayEveryXStepInterval extends PlayEveryXBase {
       }
     }
 
-    let duration = this.stepGateArray[arrayStep];
-    console.log(this.stepGateArray);
-    console.log(arrayStep);
     debug(
       "PlayEveryXStepInterval",
       `beatMarker=${beatMarker} stepInterval=${this.stepInterval} stepGateArray=${this.stepGateArray} arrayStep=${arrayStep} duration=${duration}`

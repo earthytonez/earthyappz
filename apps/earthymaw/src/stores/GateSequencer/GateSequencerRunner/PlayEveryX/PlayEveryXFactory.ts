@@ -21,8 +21,6 @@ export default class PlayEveryXFactory implements ISequencerRunner {
     triggerParameters: ITriggerParameters,
     userParameters: any
   ): ISequencerGate {
-    console.log(userParameters);
-
     switch (triggerParameters.triggerType) {
       case "stepList":
         const playEveryXStepList = new PlayEveryXStepList(

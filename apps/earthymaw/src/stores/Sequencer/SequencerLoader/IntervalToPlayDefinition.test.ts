@@ -9,5 +9,5 @@ test("find midi number from note name", async () => {
   });
 
   expect(intervalToPlay._intervalType).toBe("arpeggiator");
-  expect(intervalToPlay._intervalTypeList).toBe([]);
+  expect(intervalToPlay._intervalTypeList).toStrictEqual([]);
 });

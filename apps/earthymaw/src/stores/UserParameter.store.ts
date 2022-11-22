@@ -21,6 +21,12 @@ export default class UserParameterStore {
   }
 
   has(key: string) {
+    console.log(this._userParameters);
+    info(
+      "UserParameter.store",
+      `Checking to load key: ${key} -- ${this._userParameters.has(key)}`
+    );
+
     return this._userParameters.has(key);
   }
 
