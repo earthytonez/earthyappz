@@ -4,8 +4,7 @@ import { styled } from "@mui/material/styles";
 import { GRID_BORDER_COLOR } from "./constants";
 
 export default styled(Grid)`
-  border-bottom: 1px solid ${GRID_BORDER_COLOR};
-  border-right: 1px solid ${GRID_BORDER_COLOR};
+  // border-bottom: 1px solid ${GRID_BORDER_COLOR};
   padding: 8px;
   padding-top: 4px;
 `;

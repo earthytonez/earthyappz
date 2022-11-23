@@ -12,10 +12,10 @@ import ITriggerAttackReleaseParams from "../../Track/ITriggerAttackReleaseParams
 const SYNTHESIZER_PARAMS: string[] = ["pitchDecay", "oscillator_type"];
 
 const ENVELOPE_PARAMS = [
-  "envelopeattack",
-  "envelopesustain",
-  "envelopedecay",
-  "enveloperelease",
+  "envelope_attack",
+  "envelope_sustain",
+  "envelope_decay",
+  "envelope_release",
 ];
 
 export default class BaseSynthesizer extends Machine {
@@ -72,18 +72,18 @@ export default class BaseSynthesizer extends Machine {
       throw new Error("Invalid Parameter");
     }
 
-    info(`SYNTHESIZER_BASE::changeParameter`, parameterSlug, this._parameters);
-    info(`SYNTHESIZER_BASE::changeParameter`, SYNTHESIZER_PARAMS.join(" "));
-    info(`SYNTHESIZER_BASE::changeParameter`, ENVELOPE_PARAMS.join(" "));
-
     if (SYNTHESIZER_PARAMS.includes(parameterSlug)) {
     }
+    console.log(`SET_PARAMETER, ${parameterSlug}`);
     if (ENVELOPE_PARAMS.includes(parameterSlug)) {
       let paramsToSet: any = {};
       // TODO: Remove this it's just temporary.
-      paramsToSet[parameterSlug.replace("envelope", "")] = value;
+      paramsToSet[parameterSlug.replace("envelope_", "")] = value;
+      console.log(`SET_PARAMETER, ${JSON.stringify(paramsToSet)}`);
 
-      this.synth.envelope.set(paramsToSet);
+      this.synth.set({
+        envelope: paramsToSet,
+      });
     }
 
     parameter.setValue(value);
@@ -182,10 +182,16 @@ export default class BaseSynthesizer extends Machine {
     }
 
     if (this.stringParameter("oscillator_type")) {
+      console.log(
+        `OSCILLATOR_TYPE: ${this.stringParameter("oscillator_type")}`
+      );
+
+      // let osc = new Oscillator();
+      // osc.type = this.stringParameter(
+      //   "oscillator_type"
+      // ) as Tone.ToneOscillatorType;
       this.synth.set({
-        oscillator: {
-          type: this.stringParameter("oscillator_type"),
-        },
+        oscillator: { type: this.stringParameter("oscillator_type") },
       });
     }
 
@@ -195,12 +201,16 @@ export default class BaseSynthesizer extends Machine {
       );
     }
 
+    debug("SynthesizerBase::Trigger", "synth", this.synth);
+
     debug(
       "Synthesizer::Trigger",
       `frequency=${frequency.valueOf()} duration=${triggerAttackReleaseParams.duration.valueOf()} time=${
         triggerAttackReleaseParams.time
       } velocity=${triggerAttackReleaseParams.velocity}`
     );
+
+    this.synth.portamento = Tone.Time("1s");
 
     this.synth.triggerAttackRelease(
       frequency,

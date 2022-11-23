@@ -22,7 +22,6 @@ const ArraySelectorComponent = observer(
     if (!selectableValues) {
       return <Box></Box>;
     }
-
     return (
       <Select
         labelId="demo-simple-select-label"
@@ -30,6 +29,9 @@ const ArraySelectorComponent = observer(
         value={currentValue}
         onChange={(ev: any) => {
           setValue(ev.target.value);
+        }}
+        sx={{
+          borderRadius: "0px",
         }}
       >
         {selectableValues.map((value, i) => {

@@ -12,9 +12,9 @@ test("set a enum parameter", () => {
     plugin: "Filter",
     description: "description",
   });
-  expect(enumParameter.get()).toBe("sine");
+  expect(enumParameter.val).toBe("sine");
   enumParameter.setValue("square");
-  expect(enumParameter.get()).toBe("square");
+  expect(enumParameter.val).toBe("square");
   enumParameter.setValue("circle");
-  expect(enumParameter.get()).toBe("square");
+  expect(enumParameter.val).toBe("square");
 });

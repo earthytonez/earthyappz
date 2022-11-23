@@ -1,11 +1,10 @@
 import Grid from "@mui/material/Grid";
-import { styled } from "@mui/material/styles";
+import { styled } from '@mui/material/styles';
 
-import { GRID_BORDER_COLOR } from "./constants";
+import { GRID_BORDER_COLOR } from './constants';
 
 export default styled(Grid)`
   border-bottom: 1px solid ${GRID_BORDER_COLOR};
-  border-right: 1px solid ${GRID_BORDER_COLOR};
   padding: 8px;
   padding-top: 4px;
 `;
@@ -48,3 +47,4 @@ export default styled(Grid)`
 //       borderBottom: "1px solid grey"
 //     }
 //   }));
+  

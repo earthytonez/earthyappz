@@ -108,6 +108,8 @@ const MachineEditDrawerContent = observer(
           <Grid container sx={{ mb: 0, pr: 0, pl: 0 }}>
             {defaultParameters.map((parameter: any, key: number) => {
               console.log(`MachineEditDrawer: ${JSON.stringify(parameter)}`);
+              console.log(`MachineEditDrawer: ${parameter.val}`);
+
               return (
                 <LoadParameter
                   key={key}
@@ -115,6 +117,7 @@ const MachineEditDrawerContent = observer(
                   increment={incrementParameter}
                   decrement={decrementParameter}
                   name={parameter.name}
+                  title={parameter.title}
                   parameterValue={parameter.val}
                   field={parameter.field}
                   fieldType={parameter.fieldType}
@@ -124,13 +127,12 @@ const MachineEditDrawerContent = observer(
               );
             })}
           </Grid>
-
           {Object.keys(editParametersByPlugin).map(
             (plugin: any, key: number) => {
               return (
                 <TightBorderedPaper key={key} sx={{ mt: 3 }}>
                   <GridTopFullWidth>
-                    <Typography variant="h4">{plugin}</Typography>
+                    <Typography variant="h5">{plugin}</Typography>
                   </GridTopFullWidth>
                   <Grid container>
                     {editParametersByPlugin[plugin].map(
@@ -145,6 +147,7 @@ const MachineEditDrawerContent = observer(
                             increment={incrementParameter}
                             decrement={decrementParameter}
                             name={parameter.name}
+                            title={parameter.title}
                             field={parameter.field}
                             parameterValue={parameter.val}
                             fieldType={parameter.fieldType}

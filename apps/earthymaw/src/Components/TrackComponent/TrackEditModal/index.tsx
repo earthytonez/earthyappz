@@ -41,9 +41,15 @@ const TrackEditModal = observer((): React.ReactElement => {
 
     return (
       <Paper>
-        <Grid container spacing={2} sx={{ width: MODAL_WIDTH }}>
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          sx={{ width: MODAL_WIDTH }}
+        >
           {/*} <MachineEditDrawerContent machine={arranger} >*/}
-          <Grid item xs={12} alignItems="center" justifyContent="center">
+          <Grid item xs={1}></Grid>
+          <Grid item xs={10} alignItems="center" justifyContent="center">
             <StepSequencerAnimation
               gateSequencer={track.gateSequencer}
               sequencer={track.sequencer}
@@ -51,8 +57,15 @@ const TrackEditModal = observer((): React.ReactElement => {
               sectionLength={sectionLength}
             />
           </Grid>
+          <Grid item xs={1} textAlign="right">
+            <Button onClick={() => toggleTrackEdit(false)}>
+              <CloseIcon fontSize="small" />
+            </Button>
+          </Grid>
           <Grid item xs={4}>
-            <Typography>Gate Sequencer {gateSequencer?.name}</Typography>
+            <Typography variant="h6" align="center">
+              Gate Sequencer {gateSequencer?.name}
+            </Typography>
             <MachineEditDrawerContent
               toggleOpen={undefined}
               trackMachine={gateSequencer}
@@ -60,7 +73,9 @@ const TrackEditModal = observer((): React.ReactElement => {
             />
           </Grid>{" "}
           <Grid item xs={4}>
-            <Typography>Sequencer {sequencer?.name}</Typography>
+            <Typography variant="h6" align="center">
+              Sequencer {sequencer?.name}
+            </Typography>
             <MachineEditDrawerContent
               toggleOpen={undefined}
               trackMachine={sequencer}
@@ -68,7 +83,9 @@ const TrackEditModal = observer((): React.ReactElement => {
             />
           </Grid>{" "}
           <Grid item xs={4}>
-            <Typography>Synthesizer {synthesizer?.name}</Typography>
+            <Typography variant="h6" align="center">
+              Synthesizer {synthesizer?.name}
+            </Typography>
 
             <MachineEditDrawerContent
               toggleOpen={undefined}
@@ -76,9 +93,6 @@ const TrackEditModal = observer((): React.ReactElement => {
               contentWidth={PANE_WIDTH}
             />
           </Grid>
-          <Button onClick={() => toggleTrackEdit(false)}>
-            <CloseIcon fontSize="small" />
-          </Button>
         </Grid>
       </Paper>
     );

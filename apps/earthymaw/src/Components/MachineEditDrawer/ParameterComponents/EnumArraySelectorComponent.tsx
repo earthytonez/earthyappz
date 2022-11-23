@@ -38,9 +38,6 @@ const EnumArraySelectorComponent = observer(
       setAnchorEl(null);
     };
 
-    console.log(currentValue);
-    console.log(selectableValues);
-
     return (
       <Grid container>
         {currentValue.map((value: number | string, i: number) => {
@@ -70,6 +67,7 @@ const EnumArraySelectorComponent = observer(
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
+          sx={{ borderRadius: 0 }}
         >
           {selectableValues.map((value: string | number, j: number) => {
             return (

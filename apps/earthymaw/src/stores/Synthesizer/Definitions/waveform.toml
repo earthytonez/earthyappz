@@ -5,4 +5,4 @@ tags = [
 ]
 plugins = ["filter<lowpass>", "adsr"]
 parameters = ["oscillator", "oscillator_pitch"]
-type = "PolySynth<FMSynth>"
+type = "PolySynth<MonoSynth>"

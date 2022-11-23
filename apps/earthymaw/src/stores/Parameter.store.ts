@@ -65,6 +65,7 @@ export default class ParameterStore {
       return new NumericParameter({
         userParameterStore: this.rootStore!.userParameterStore,
         name: "Oscillator Pitch",
+        title: "Pitch",
         key: this.parameterKey("oscillator_pitch", trackID),
         default: 0,
         min: -36,
@@ -289,7 +290,8 @@ export default class ParameterStore {
     ) => {
       return new StringEnumParameter({
         userParameterStore: this.rootStore!.userParameterStore,
-        name: "Oscillator Type", // chosenGateParameterSet
+        name: "Oscillator Waveform", // chosenGateParameterSet
+        title: "Osc Wav",
         key: this.parameterKey("oscillator_type", trackID),
         options: OSCILLATOR_TYPES,
         default: OSCILLATOR_TYPES[0]!,

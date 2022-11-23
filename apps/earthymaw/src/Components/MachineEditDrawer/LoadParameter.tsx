@@ -11,17 +11,19 @@ import KnobParameter from "./ParameterComponents/KnobParameter";
 import SliderParameter from "./ParameterComponents/SliderParameter";
 import ParameterTitle from "./ParameterComponents/ParameterTitle";
 
-import ArraySelectorComponent from "./ArraySelectorComponent";
-import EnumArraySelectorComponent from "./EnumArraySelectorComponent";
+import EnumSelectorComponent from "./ParameterComponents/EnumSelectorComponent";
+import EnumArraySelectorComponent from "./ParameterComponents/EnumArraySelectorComponent";
 import NumericArraySelectorComponent from "./NumericArraySelectorComponent";
 import { ParameterFieldTypes } from "stores/Parameter/Base";
 import GridMiddleFullWidth from "Components/TightBorderedGrid/GridMiddleFullWidth";
 
+import { FormControl } from "@mui/material";
 interface ILoadParameterParams {
   edit: Function;
   increment: Function;
   decrement: Function;
   name: string;
+  title: string;
   field: string;
   parameterValue: any;
   fieldType: ParameterFieldTypes;
@@ -33,6 +35,7 @@ export default observer(
   ({
     edit,
     name,
+    title,
     field,
     fieldType,
     fieldOptions,
@@ -45,7 +48,7 @@ export default observer(
       case "radio":
         return (
           <Grid item xs={5}>
-            <ParameterTitle name={name} />
+            <ParameterTitle name={title} />
             <MachineEditDrawerRadioGroup
               edit={edit}
               field={field}
@@ -56,7 +59,7 @@ export default observer(
       case "dial":
         return (
           <Grid item xs={5}>
-            <ParameterTitle name={name} />
+            <ParameterTitle name={title} />
             <MachineEditDrawerDial
               field={field}
               fieldOptions={fieldOptions}
@@ -74,6 +77,7 @@ export default observer(
               max={fieldOptions.max}
               parameterValue={parameterValue}
               name={name}
+              title={title}
               style={style}
             />
           </React.Fragment>
@@ -89,45 +93,54 @@ export default observer(
               style={style}
               parameterValue={parameterValue}
             />
-            <ParameterTitle name={name} />
+            <ParameterTitle name={title} />
           </Grid>
         );
-      case "arraySelector":
+      case "enumSelector":
         return (
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <GridMiddleFullWidth>
-              <ArraySelectorComponent
-                aria-label={name}
-                selectableValues={fieldOptions.options}
-                currentValue={parameterValue}
-                setValue={(value: any) => edit(field, value)}
-                incrementValue={() => increment(field)}
-                decrementValue={() => decrement(field)}
-              />
-              <ParameterTitle name={name} />
+              <FormControl
+                sx={{
+                  m: 1,
+                  minWidth: 120,
+                  textAlign: "center",
+                  margin: "auto",
+                }}
+                size="small"
+              >
+                <ParameterTitle name={title} />
+
+                <EnumSelectorComponent
+                  aria-label={name}
+                  selectableValues={fieldOptions.options}
+                  currentValue={parameterValue}
+                  setValue={(value: any) => edit(field, value)}
+                  incrementValue={() => increment(field)}
+                  decrementValue={() => decrement(field)}
+                />
+              </FormControl>
             </GridMiddleFullWidth>
           </Grid>
         );
       case "enumArraySelector":
         console.log(name);
         return (
-          <Grid item xs={6}>
-            <GridMiddleFullWidth>
-              <ParameterTitle name={name} />
-              <EnumArraySelectorComponent
-                aria-label={name}
-                selectableValues={fieldOptions.options}
-                currentValue={parameterValue}
-                setValue={(value: any) => edit(field, value)}
-              />
-            </GridMiddleFullWidth>
-          </Grid>
+          <GridMiddleFullWidth>
+            <ParameterTitle name={title} />
+            <EnumArraySelectorComponent
+              aria-label={name}
+              selectableValues={fieldOptions.options}
+              currentValue={parameterValue}
+              setValue={(value: any) => edit(field, value)}
+            />
+          </GridMiddleFullWidth>
         );
       case "numericArraySelector":
         return (
           <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
             <GridMiddleFullWidth>
-              <ParameterTitle name={name} />
+              <ParameterTitle name={title} />
               <NumericArraySelectorComponent
                 aria-label={name}
                 currentValue={parameterValue}

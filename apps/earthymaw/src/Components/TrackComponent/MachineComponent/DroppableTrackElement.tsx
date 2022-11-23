@@ -12,9 +12,12 @@ import LaunchIcon from "@mui/icons-material/Launch";
 import SearchIcon from "@mui/icons-material/Search";
 
 import FullGridIconButton from "../../TightBorderedGrid/FullGridIconButton";
+import GridTopFullWidth from "Components/TightBorderedGrid/GridTopFullWidth";
 import GridBottomRightCorner from "../../TightBorderedGrid/GridBottomRightCorner";
 import GridBottomLeftCorner from "../../TightBorderedGrid/GridBottomLeftCorner";
-import GridTopRightCorner from "../../TightBorderedGrid/GridTopRightCorner";
+import GridBottomMiddle from "../../TightBorderedGrid/GridBottomMiddle";
+import GridMiddleLeft from "Components/TightBorderedGrid/GridMiddleLeft";
+import GridMiddleRight from "Components/TightBorderedGrid/GridMiddleFullWidth copy";
 import GridTopLeftCorner from "../../TightBorderedGrid/GridTopLeftCorner";
 import TightBorderedPaper from "../../TightBorderedGrid/TightBorderedPaper";
 import MachinePlaceholder from "./MachinePlaceholder";
@@ -65,7 +68,7 @@ const DroppableTrackElement = observer(
 
     const { toggleObjectEdit } = uiStore;
 
-    let placeholder = `Drop ${title} Here`;
+    let placeholder = `Load ${title}:`;
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
       null
@@ -96,7 +99,7 @@ const DroppableTrackElement = observer(
         droppableId={`track-${track_id}-${slug}`}
       >
         {(provided, _snapshot) => (
-          <TightBorderedPaper>
+          <TightBorderedPaper sx={{ height: "8rem" }}>
             <Card
               ref={provided.innerRef}
               // {...provided.draggableProps}
@@ -115,37 +118,66 @@ const DroppableTrackElement = observer(
                 machine.name !== "" &&
                 machine.name !== undefined ? (
                   <Grid container spacing={0}>
-                    <GridTopLeftCorner item xs={10}>
+                    <GridTopLeftCorner
+                      item
+                      xs={12}
+                      style={{ textOverflow: "ellipsis" }}
+                    >
                       <Typography
                         color="neutral.500"
                         fontWeight={700}
                         sx={{
+                          float: "left",
                           fontSize: "12px",
                           textTransform: "uppercase",
                           letterSpacing: ".1rem",
+                          marginRight: ".5rem",
                         }}
                       >
                         {machine.name}
+                      </Typography>{" "}
+                      <Typography
+                        style={{
+                          fontSize: "12px",
+                          marginLeft: "10px",
+                          color: "gray",
+                          fontFamily: "Source Code Pro",
+                        }}
+                      >
+                        {title}
                       </Typography>
                     </GridTopLeftCorner>
-                    <GridTopRightCorner item xs={2}>
-                      <FullGridIconButton
-                        aria-label={`edit ${machine.name}`}
-                        size="small"
-                        onClick={() =>
-                          toggleObjectEdit(true, track_id, slug, machine.slug)
-                        }
-                      >
-                        <LaunchIcon fontSize="small" />
-                      </FullGridIconButton>
-                    </GridTopRightCorner>
                   </Grid>
                 ) : (
-                  <LoadingPlaceHolder
-                    machine={machine}
-                    placeholder={placeholder}
-                    slug={slug}
-                  />
+                  <Grid container>
+                    <GridTopFullWidth></GridTopFullWidth>
+                    <Grid container>
+                      <GridMiddleLeft item xs={10}>
+                        <LoadingPlaceHolder
+                          machine={machine}
+                          placeholder={placeholder}
+                          slug={slug}
+                        />
+                      </GridMiddleLeft>
+                      <GridMiddleRight item xs={2}>
+                        <FullGridIconButton
+                          aria-label={`Search`}
+                          size="small"
+                          onClick={toggleSearchPopover}
+                        >
+                          <SearchIcon fontSize="small" />
+                        </FullGridIconButton>
+                        <SearchPopover
+                          title={title}
+                          type={slug}
+                          open={Boolean(anchorEl)}
+                          anchorEl={anchorEl}
+                          handleChange={handleChange}
+                          handleClose={handleClose}
+                        />
+                      </GridMiddleRight>
+                    </Grid>
+                  </Grid>
                 )}
                 {provided.placeholder}
               </Box>
@@ -156,37 +188,54 @@ const DroppableTrackElement = observer(
                       name={`${machine.machineType}${machine.name}`}
                     />
                   </GridBottomLeftCorner>
-                  <GridBottomRightCorner item xs>
-                    <Typography style={{ fontFamily: "Source Code Pro" }}>
-                      {title}
-                    </Typography>
-                  </GridBottomRightCorner>
+                  <GridBottomRightCorner item xs></GridBottomRightCorner>
                 </Grid>
               ) : (
                 ""
               )}
               {slug !== undefined ? (
                 <Grid container>
-                  <GridBottomLeftCorner item xs={10}>
+                  <GridBottomLeftCorner item xs={8}>
                     <Presets />
                   </GridBottomLeftCorner>
-                  <GridBottomRightCorner item xs={2}>
-                    <FullGridIconButton
-                      aria-label={`Search`}
-                      size="small"
-                      onClick={toggleSearchPopover}
-                    >
-                      <SearchIcon fontSize="small" />
-                    </FullGridIconButton>
-                    <SearchPopover
-                      title={title}
-                      type={slug}
-                      open={Boolean(anchorEl)}
-                      anchorEl={anchorEl}
-                      handleChange={handleChange}
-                      handleClose={handleClose}
-                    />
-                  </GridBottomRightCorner>
+                  <GridBottomMiddle item xs={2}>
+                    {machine && machine.name !== "" ? (
+                      <FullGridIconButton
+                        aria-label={`edit ${machine.name}`}
+                        size="small"
+                        onClick={() =>
+                          toggleObjectEdit(true, track_id, slug, machine.slug)
+                        }
+                      >
+                        <LaunchIcon fontSize="small" />
+                      </FullGridIconButton>
+                    ) : (
+                      <div></div>
+                    )}
+                  </GridBottomMiddle>
+                  {machine &&
+                  machine.name !== "" &&
+                  machine.name !== undefined ? (
+                    <GridBottomRightCorner item xs={2}>
+                      <FullGridIconButton
+                        aria-label={`Search`}
+                        size="small"
+                        onClick={toggleSearchPopover}
+                      >
+                        <SearchIcon fontSize="small" />
+                      </FullGridIconButton>
+                      <SearchPopover
+                        title={title}
+                        type={slug}
+                        open={Boolean(anchorEl)}
+                        anchorEl={anchorEl}
+                        handleChange={handleChange}
+                        handleClose={handleClose}
+                      />
+                    </GridBottomRightCorner>
+                  ) : (
+                    <React.Fragment />
+                  )}
                 </Grid>
               ) : (
                 <div></div>

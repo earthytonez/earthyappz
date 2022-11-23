@@ -47,13 +47,17 @@ export default observer(
     return (
       <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
         <Donut
-          diameter={100}
+          diameter={75}
           min={min}
           max={max}
           step={step}
           value={roundToStep(parameterValue)}
           theme={{
-            donutColor: "blue",
+            donutColor: "#148C94",
+            donutThickness: 4,
+            bgrColor: "#121212",
+            centerColor: "#121212",
+            centerFocusedColor: "#222222",
           }}
           onValueChange={(value: any) => {
             edit(field, value);

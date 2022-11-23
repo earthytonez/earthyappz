@@ -11,9 +11,9 @@ test("set a enum parameter", () => {
     userParameterStore,
     description: "description",
   });
-  expect(enumParameter.get()).toBe(3);
+  expect(enumParameter.val).toBe(3);
   enumParameter.setValue(2);
-  expect(enumParameter.get()).toBe(2);
+  expect(enumParameter.val).toBe(2);
   enumParameter.setValue(4);
-  expect(enumParameter.get()).toBe(4);
+  expect(enumParameter.val).toBe(4);
 });

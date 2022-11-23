@@ -16,10 +16,11 @@ interface ISliderParameterParams {
   min: number;
   max: number;
   name: string;
+  title: string;
   parameterValue: number;
   style: any;
 }
-
+// border: 1px solid darkcyan;
 export default observer(
   ({
     edit,
@@ -27,6 +28,7 @@ export default observer(
     min,
     max,
     name,
+    title,
     parameterValue,
     style,
   }: ISliderParameterParams): React.ReactElement => {
@@ -67,7 +69,7 @@ export default observer(
                 valueLabelDisplay="auto"
                 sx={{ height: "200px" }}
               />
-              <ParameterTitle name={name} />
+              <ParameterTitle name={title} />
             </GridMiddleFullWidth>
           </Grid>
         </Grid>
@@ -91,7 +93,7 @@ export default observer(
             max={max}
             valueLabelDisplay="auto"
           />
-          <ParameterTitle name={name} />
+          <ParameterTitle name={title} />
         </GridMiddleFullWidth>
       </Grid>
     );

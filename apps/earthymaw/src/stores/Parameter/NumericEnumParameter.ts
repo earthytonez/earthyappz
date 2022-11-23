@@ -15,7 +15,7 @@ export default class NumericEnumParameter extends BaseParameter {
   type: string = "numeric_enum";
   default: number;
   options: number[];
-  fieldType: ParameterFieldTypes = "arraySelector";
+  fieldType: ParameterFieldTypes = "enumSelector";
   onDeckValue?: number;
   _val: number;
 

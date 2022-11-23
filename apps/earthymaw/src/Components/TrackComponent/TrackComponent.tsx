@@ -19,8 +19,9 @@ interface TrackComponentProps {
 }
 
 const TRACK_GRID_STYLE = {
-  paddingTop: "6px",
-  paddingBottom: "6px",
+  paddingTop: "0px",
+  paddingBottom: "0px",
+  paddingLeft: "2px",
   height: "8rem",
   maxHeight: "8rem",
 };
@@ -48,12 +49,12 @@ const TrackComponent = observer(
         spacing={1}
         p={2}
         style={{
-          backgroundColor: "#333",
+          backgroundColor: "#000",
           marginTop: "3px",
           padding: 0,
           paddingLeft: "1em",
           paddingTop: "0",
-          maxHeight: "8rem",
+          height: "8rem",
         }}
       >
         <Grid item p={0} style={TRACK_GRID_STYLE} sx={TRACK_GRID_SX}>

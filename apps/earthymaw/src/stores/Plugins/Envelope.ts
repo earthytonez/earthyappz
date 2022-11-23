@@ -29,6 +29,7 @@ export default class FilterPlugin extends BasePlugin {
       new NumericParameter({
         userParameterStore: this._userParameterStore,
         name: "Envelope Attack",
+        title: "Att",
         key: this.parameterKey("attack"),
         default: 0.001,
         plugin: "Envelope",
@@ -55,6 +56,7 @@ export default class FilterPlugin extends BasePlugin {
       new NumericParameter({
         userParameterStore: this._userParameterStore,
         name: "Envelope Decay",
+        title: "Dec",
         key: this.parameterKey("decay"),
         default: 0.4,
         plugin: "Envelope",
@@ -72,6 +74,7 @@ export default class FilterPlugin extends BasePlugin {
       new NumericParameter({
         userParameterStore: this._userParameterStore,
         name: "Envelope Sustain",
+        title: "Sus",
         key: this.parameterKey("sustain"),
         default: 0.01,
         plugin: "Envelope",
@@ -89,6 +92,7 @@ export default class FilterPlugin extends BasePlugin {
       new NumericParameter({
         userParameterStore: this._userParameterStore,
         name: "Envelope Release",
+        title: "Rel",
         key: this.parameterKey("release"),
         default: 1.4,
         plugin: "Envelope",

@@ -24,6 +24,7 @@ export default class NumericParameter extends BaseParameter {
     super({
       userParameterStore: params.userParameterStore,
       name: params.name,
+      title: params.title,
       key: params.key,
       plugin: params.plugin,
       description: params.description,

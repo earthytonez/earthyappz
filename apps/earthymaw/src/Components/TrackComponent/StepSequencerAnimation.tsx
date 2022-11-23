@@ -48,7 +48,7 @@ let StepSequencerAnimation = observer(
             ></StepCircle>
           );
         })}
-        {gateSequencer?.stepIsTriggered}
+        {/* {gateSequencer?.stepIsTriggered} */}
       </React.Fragment>
     );
   }

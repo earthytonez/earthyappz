@@ -7,7 +7,8 @@ import UserParameterStore from "stores/UserParameter.store";
 
 export interface IBaseParameterParams {
   userParameterStore: UserParameterStore;
-  name: string;
+  title?: string; // What is showin the UI
+  name: string; // Hover Text
   key: string;
   changedAtSection?: boolean;
   plugin?: string;
@@ -39,6 +40,7 @@ export type ParameterFieldTypes =
   | "slider"
   | "radio"
   | "dial"
+  | "enumSelector"
   | "arraySelector"
   | "enumArraySelector"
   | "numericArraySelector";
@@ -60,6 +62,7 @@ export default abstract class BaseParameter {
   protected userParameterStore: UserParameterStore;
   protected key: string;
   public name: string;
+  public title: string;
   public description: string;
   public style: any;
 
@@ -77,6 +80,11 @@ export default abstract class BaseParameter {
     }
     if (params.style) {
       this.style = params.style;
+    }
+    if (params.title) {
+      this.title = params.title;
+    } else {
+      this.title = params.name;
     }
     this.name = params.name;
     this.description = params.description;
