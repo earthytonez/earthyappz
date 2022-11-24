@@ -62,7 +62,6 @@ export default class GateSequencer extends GateSequencerType {
   lastParams: any;
 
   tags?: string[];
-  description?: string = "";
   gateLengths: GateLengths = new GateLengths();
   parameters?: string[];
   volumeToPlay: VolumeToPlay = new VolumeToPlay();

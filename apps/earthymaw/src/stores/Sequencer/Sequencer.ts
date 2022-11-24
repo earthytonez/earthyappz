@@ -8,7 +8,6 @@ import { debug, info } from "../../Util/logger";
 import SequencerType from "./SequencerType";
 
 import SequencerDefinition from "./SequencerLoader/SequencerDefinition";
-import ISequencerParameters from "./SequencerRunner/ISequencerParameters";
 
 import MusicFeaturesStore from "../MusicFeatures.store";
 import { BeatMarker } from "../MusicFeatures/BeatMarker";
@@ -77,7 +76,6 @@ export default class Sequencer extends SequencerType {
   musicFeaturesStore: MusicFeaturesStore;
 
   tags?: string[];
-  description?: string = "";
   intervalsToPlay?: IIntervalsToPlay;
   stepInterval: number = 4;
 
@@ -195,9 +193,9 @@ export default class Sequencer extends SequencerType {
     parameter.setValue(value);
   }
 
-  get editParameters(): ISequencerParameters[] {
-    return Array.from(this._parameters!.values());
-  }
+  // get editParameters(): ISequencerParameters[] {
+  //   return Array.from(this._parameters!.values());
+  // }
 
   /* Here we have parameters, how does the data get back to the plugin, or wherever it 
      is supposed to go?  I think you change the userdata and everything pulls from that.

@@ -5,8 +5,9 @@ import { runInAction, makeObservable, observable } from "mobx";
 import { SequencerLoader } from "./SequencerLoader/index";
 
 import SequencerDefinition from "./SequencerLoader/SequencerDefinition";
+import Machine from "../Machines/Machine";
 
-export default class SequencerType {
+export default class SequencerType extends Machine {
   name: string;
   slug: string;
   boundSynthesizer?: BaseSynthesizer = undefined;
@@ -18,6 +19,7 @@ export default class SequencerType {
   awaitBuffers?: Promise<any>;
 
   constructor(sequencerDefinition: SequencerDefinition) {
+    super();
     this.name = sequencerDefinition.name!;
     this.slug = sequencerDefinition.slug!;
     this.type = sequencerDefinition.type!;

@@ -144,12 +144,10 @@ const TopBar = observer(() => {
             />
           </Box>
 
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 1.5 }}>
-            <ColorSchemeToggle />
-          </Box>
           <Box
             sx={{ flexGrow: 1, display: "flex", flexDirection: "row-reverse" }}
           >
+            <ColorSchemeToggle />
             <Button onClick={handleOpenAboutModal}>About</Button>
             <AboutModal
               open={openAboutModal}
