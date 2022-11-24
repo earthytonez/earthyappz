@@ -4,7 +4,7 @@ RUN apk update
 RUN apk install pnpm
 
 RUN pnpm install
-RUN pnpm build
+RUN pnpm run build
 
 EXPOSE 3000
 
