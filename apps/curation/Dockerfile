@@ -18,9 +18,7 @@ RUN pnpm -r run build
 
 EXPOSE 8080
 
-WORKDIR /opt/app/apps/curation
-
-CMD [ "pnpm", "start" ]
+CMD [ "pnpm", "--filter curation", "start" ]
 
 
 

@@ -73,7 +73,7 @@ export interface ListViewProps {
  *     const name     = "Item " + i;
  *     const category = i % 2 ? "A" : "B";
  *
- *     items.push({id: i, name: name, category: category});
+ *     items.push({id: i, name: name, categories: category});
  *   }
  *
  *   return items;

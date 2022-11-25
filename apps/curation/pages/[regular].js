@@ -140,16 +140,14 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
   const { regular } = params;
 
-  const making = getSinglePages("content/making");
-  const learning = getSinglePages("content/learning");
-  const appreciating = getSinglePages("content/appreciating");
+  const ssg = getSinglePages("content/ssg");
+  const cms = getSinglePages("content/cms");
+  const css = getSinglePages("content/css");
   const tool = getSinglePages("content/tool");
   const toolPage = tool.filter((data) => data.slug === regular);
 
   // taxonomy slug
-  const makingSlug = getSinglePagesSlug("content/making");
-  const learningSlug = getSinglePagesSlug("content/learning");
-  const appreciatingSlug = getSinglePagesSlug("content/appreciating");
+  const ssgSlug = getSinglePagesSlug("content/ssg");
   const toolSlug = getSinglePagesSlug("content/tool");
 
   // taxonomy page data
@@ -215,7 +213,7 @@ export const getStaticProps = async ({ params }) => {
 
   // statichunt themes
   const statichuntThemes = themes.filter(
-    (theme) => theme.frontmatter.author === "EarthyResources"
+    (theme) => theme.frontmatter.author === "Statichunt"
   );
 
   return {

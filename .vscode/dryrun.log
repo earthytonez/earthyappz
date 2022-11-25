@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/mgimenez-peterson/Dev/github.com/earthytonez/monorepo'
+make: Leaving directory `/Users/mgimenez-peterson/Dev/github.com/earthytonez/monorepo'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

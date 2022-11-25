@@ -1,25 +1,24 @@
 ---
 title: Ableton Live
-github: https://github.com/theme-url
-external_url: https://ableton.com
-author: Author
-author_link: https://examplesite.com/
-author_twitter: twitter_username
-date: 2021-08-29T00:00:00.000Z
-description: Ableton Live is a
-making_music:
+github: https://github.com/markteekman/accessible-astro-starter
+website_url: https://ableton.com/
+author: Mark Teekman
+author_link: https://github.com/markteekman
+author_twitter: MarkTeekman
+date: 2022-08-31T11:44:50.000Z
+description: >-
+  A DAW designed for Live 
+ssg:
   - DAW
-tags:
-  - Native App
-  - Windows
-  - Mac OS X
+css:
+  - Undefined
+cms:
+  - Undefined
 category:
-  - DAW
-draft: true
-disabled_reason: Github repo not found
+  - Blog
+draft: false
+publish_date: "2021-08-01T07:37:35Z"
+update_date: "2022-11-06T10:10:58Z"
+github_star: 101
+github_fork: 10
 ---
-
-## Theme features
-
-- Very Fast
-- Responsive

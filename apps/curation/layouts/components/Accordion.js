@@ -9,14 +9,12 @@ const Accordion = ({
   type,
   params,
   themes,
-  arrayMaking,
-  setArrayMaking,
-  arrayLearning,
-  setArrayLearning,
-  arrayAppreciating,
-  setArrayAppreciating,
-  arrayTags,
-  setArrayTags,
+  arraySSG,
+  setArraySSG,
+  arrayCMS,
+  setArrayCMS,
+  arrayCSS,
+  setArrayCSS,
   arrayCategory,
   setArrayCategory,
   arrayTool,
@@ -61,37 +59,30 @@ const Accordion = ({
     }
     setTaxonomy(temp);
 
-    // set making array
-    if (type === "making") {
-      if (arrayMaking.includes(label)) {
-        setArrayMaking(arrayMaking.filter((x) => x !== label));
+    // set ssg array
+    if (type === "ssg") {
+      if (arraySSG.includes(label)) {
+        setArraySSG(arraySSG.filter((x) => x !== label));
       } else {
-        setArrayMaking((prevValue) => [...prevValue, label]);
-      }
-    }
-    // set making array
-    if (type === "learning") {
-      if (arrayLearning.includes(label)) {
-        setArrayLearning(arrayLearning.filter((x) => x !== label));
-      } else {
-        setArrayLearning((prevValue) => [...prevValue, label]);
-      }
-    }
-    // set making array
-    if (type === "appreciating") {
-      if (arrayAppreciating.includes(label)) {
-        setArrayAppreciating(arrayAppreciating.filter((x) => x !== label));
-      } else {
-        setArrayAppreciating((prevValue) => [...prevValue, label]);
+        setArraySSG((prevValue) => [...prevValue, label]);
       }
     }
 
-    // set tags array
-    if (type === "tags") {
-      if (arrayTags.includes(label)) {
-        setArrayTags(arrayTags.filter((x) => x !== label));
+    // set cms array
+    if (type === "cms") {
+      if (arrayCMS.includes(label)) {
+        setArrayCMS(arrayCMS.filter((x) => x !== label));
       } else {
-        setArrayTags((prevValue) => [...prevValue, label]);
+        setArrayCMS((prevValue) => [...prevValue, label]);
+      }
+    }
+
+    // set css array
+    if (type === "css") {
+      if (arrayCSS.includes(label)) {
+        setArrayCSS(arrayCSS.filter((x) => x !== label));
+      } else {
+        setArrayCSS((prevValue) => [...prevValue, label]);
       }
     }
 
@@ -104,16 +95,23 @@ const Accordion = ({
       }
     }
 
+    // set tool array
+    if (type === "tool") {
+      if (arrayTool.includes(label)) {
+        setArrayTool(arrayTool.filter((x) => x !== label));
+      } else {
+        setArrayTool((prevValue) => [...prevValue, label]);
+      }
+    }
   };
   // hide intro function
   useEffect(() => {
     if (setIsIntro) {
       if (
-        arrayMaking?.length > 0 ||
-        arrayLearning?.length > 0 ||
-        arrayAppreciating?.length > 0 ||
+        arraySSG?.length > 0 ||
         arrayCategory?.length > 0 ||
-        arrayTags?.length > 0
+        arrayCMS?.length > 0 ||
+        arrayCSS?.length > 0
       ) {
         setIsIntro(false);
       } else {
@@ -122,11 +120,10 @@ const Accordion = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    arrayMaking?.length,
-    arrayLearning?.length,
-    arrayAppreciating?.length,
+    arraySSG?.length,
     arrayCategory?.length,
-    arrayTags?.length,
+    arrayCMS?.length,
+    arrayCSS?.length,
   ]);
   // category items count
   const countItems = (params, item) =>

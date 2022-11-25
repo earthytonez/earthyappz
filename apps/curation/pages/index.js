@@ -13,16 +13,16 @@ import { useState } from "react";
 
 const Home = ({
   frontmatter: { intro },
-  aesthetic,
-  tags,
-  making_music,
+  cms,
+  css,
+  ssg,
   category,
   themes,
   tools,
 }) => {
   const { sidebar } = config;
 
-  // making_music array update state
+  // ssg array update state
   const [arraySSG, setArraySSG] = useState([]);
   const [arrayCMS, setArrayCMS] = useState([]);
   const [arrayCSS, setArrayCSS] = useState([]);
@@ -48,8 +48,8 @@ const Home = ({
   const filterSSG = currentTheme?.filter((theme) =>
     arraySSG.length
       ? arraySSG.find((type) =>
-          theme.frontmatter.making_music
-            ?.map((making_music) => slugify(making_music))
+          theme.frontmatter.ssg
+            ?.map((ssg) => slugify(ssg))
             .includes(slugify(type))
         )
       : defaultSort
@@ -57,8 +57,8 @@ const Home = ({
   const filterCMS = filterSSG?.filter((theme) =>
     arrayCMS.length
       ? arrayCMS.find((type) =>
-          theme.frontmatter.aesthetic
-            ?.map((aesthetic) => slugify(aesthetic))
+          theme.frontmatter.cms
+            ?.map((cms) => slugify(cms))
             .includes(slugify(type))
         )
       : defaultSort
@@ -66,8 +66,8 @@ const Home = ({
   const filterCSS = filterCMS?.filter((theme) =>
     arrayCSS.length
       ? arrayCSS.find((type) =>
-          theme.frontmatter.tags
-            ?.map((tags) => slugify(tags))
+          theme.frontmatter.css
+            ?.map((css) => slugify(css))
             .includes(slugify(type))
         )
       : defaultSort
@@ -87,9 +87,9 @@ const Home = ({
       <div className="flex" onClick={mouseHndler}>
         <Sidebar
           sidebar={sidebar}
-          making_music={making_music}
-          aesthetic={aesthetic}
-          tags={tags}
+          ssg={ssg}
+          cms={cms}
+          css={css}
           themes={themes}
           setArraySSG={setArraySSG}
           arraySSG={arraySSG}
@@ -131,21 +131,19 @@ export default Home;
 export const getStaticProps = async () => {
   const homepage = await getListPage("content");
   const { frontmatter } = homepage;
-  const making = getSinglePages("content/making");
-  const learning = getSinglePages("content/learning");
-  const appreciating = getSinglePages("content/appreciating");
-  const tags = getSinglePages("content/tags");
+  const ssg = getSinglePages("content/ssg");
+  const cms = getSinglePages("content/cms");
+  const css = getSinglePages("content/css");
   const category = getSinglePages("content/category");
-  const tools = [...making, ...learning, ...appreciating, ...tags, ...category];
+  const tools = [...ssg, ...cms, ...css, ...category];
   const themes = getSinglePages("content/themes");
 
   return {
     props: {
       frontmatter: frontmatter,
-      making: making,
-      learning: learning,
-      appreciating: appreciating,
-      tags: tags,
+      ssg: ssg,
+      cms: cms,
+      css: css,
       category: category,
       themes: themes,
       tools: tools,

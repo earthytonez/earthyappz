@@ -1,3 +1,0 @@
-https://www.researchgate.net/publication/318169668_How_Music_and_Instruments_Began_A_Brief_Overview_of_the_Origin_and_Entire_Development_of_Music_from_Its_Earliest_Stages
-https://www.brain.fm/
-https://community.resonate.coop/

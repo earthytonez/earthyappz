@@ -8,7 +8,7 @@ const Intro = ({ data, toggleClass }) => {
         {data.title_start}{" "}
         <Typewriter
           options={{
-            strings: ["Themes", "Resources"],
+            strings: ["DAWs", "Videos", "Audio", "Music", "Resources"],
             autoStart: true,
             loop: true,
             cursor: "",

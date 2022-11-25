@@ -90,7 +90,7 @@ const updateGithubData = async (githubURL, slug) => {
   } catch (err) {
     spinner.text = `${slug} => update failed`;
     updateFrontmatter(slug, {
-      draft: true,
+      draft: false,
       disabled_reason: "Github repo not found",
     });
   }

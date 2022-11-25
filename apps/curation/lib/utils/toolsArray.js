@@ -1,25 +1,15 @@
 export const toolsArray = (theme) => {
-  var tags = [];
-  if (theme.frontmatter?.tags) {
-    tags = theme.frontmatter?.tags;
+  var cms = [];
+  if (theme.frontmatter?.cms) {
+    cms = theme.frontmatter?.cms;
   }
 
-    var making = [];
-  if (theme.frontmatter?.making) {
-    making = theme.frontmatter?.making;
+  var css = [];
+  if (theme.frontmatter?.css) {
+    css = theme.frontmatter?.css;
   }
 
-    var learning = [];
-  if (theme.frontmatter?.learning) {
-    learning = theme.frontmatter?.learning;
-  }
-
-    var appreciating = [];
-  if (theme.frontmatter?.appreciating) {
-    appreciating = theme.frontmatter?.appreciating;
-  }
-
-  const tool = [...making, ...learning, ...appreciating, ...tags];
+  const tool = [...theme.frontmatter?.ssg, ...cms, ...css];
 
   return tool;
 };

@@ -8,20 +8,18 @@ import Accordion from "./Accordion";
 const Sidebar = ({
   sidebar,
   slug,
-  makingmusic,
-  aesthetic,
-  tags,
+  ssg,
+  cms,
+  css,
   category,
   tool,
   themes,
-  arrayMaking,
-  setArrayMaking,
-  arrayLearning,
-  setArrayLearning,
-  arrayAppreciating,
-  setArrayAppreciating,
-  arrayTags,
-  setArrayTags,
+  arraySSG,
+  setArraySSG,
+  arrayCMS,
+  setArrayCMS,
+  arrayCSS,
+  setArrayCSS,
   arrayCategory,
   setArrayCategory,
   arrayTool,
@@ -53,12 +51,12 @@ const Sidebar = ({
       ...item,
       selected: windowSize < 1024 ? false : true,
       taxonomy:
-        item.type == "makingmusic"
-          ? makingmusic
-          : item.type == "aesthetic"
-          ? aesthetic
-          : item.type == "tags"
-          ? tags
+        item.type == "ssg"
+          ? ssg
+          : item.type == "cms"
+          ? cms
+          : item.type == "css"
+          ? css
           : item.type == "category"
           ? category
           : tool,
@@ -124,19 +122,17 @@ const Sidebar = ({
                   {data.taxonomy && (
                     <div className="lh:mb-8 relative mb-3 flex flex-col">
                       <Accordion
-                        setArrayMaking={setArrayMaking}
-                        arrayMaking={arrayMaking}
-                        setArrayLearning={setArrayLearning}
-                        arrayLearning={arrayLearning}
-                        setArrayAppreciating={setArrayAppreciating}
-                        arrayAppreciating={arrayAppreciating}
+                        setArraySSG={setArraySSG}
+                        arraySSG={arraySSG}
                         data={data}
                         slug={slug}
                         type={data.taxonomy}
                         params={slugify(data.type)}
                         themes={themes}
-                        setArrayTags={setArrayTags}
-                        arrayTags={arrayTags}
+                        setArrayCMS={setArrayCMS}
+                        arrayCMS={arrayCMS}
+                        setArrayCSS={setArrayCSS}
+                        arrayCSS={arrayCSS}
                         setArrayCategory={setArrayCategory}
                         arrayCategory={arrayCategory}
                         setArrayTool={setArrayTool}

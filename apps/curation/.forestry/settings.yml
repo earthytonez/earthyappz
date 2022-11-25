@@ -26,24 +26,24 @@ sections:
   templates:
   - new-theme
 - type: directory
-  path: content/making
-  label: Making Music
+  path: content/ssg
+  label: SSG
   create: documents
   match: "*"
   exclude: _index.md
   templates:
   - taxonomy
 - type: directory
-  path: content/learning
-  label: Learning Music
+  path: content/cms
+  label: CMS
   create: documents
   match: "*"
   exclude: _index.md
   templates:
   - taxonomy
 - type: directory
-  path: content/appreciating
-  label: Appreciating Music
+  path: content/css
+  label: CSS
   create: documents
   match: "*"
   exclude: _index.md

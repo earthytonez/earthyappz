@@ -1,6 +1,6 @@
 ---
 title: Disclaimer
-meta_title: EarthyResources Disclaimer
+meta_title: Statichunt Disclaimer
 description:
 layout: default
 noindex: true
@@ -14,7 +14,7 @@ Some links within the website may lead to other sites that we believe may be use
 
 All trademarks, logos, and brand names are the property of their respective owners. All company, product, and service names used in this website are for identification purposes only. Use of these names trademarks, and brands do not imply endorsement.
 
-**EarthyResources does not claim ownership or copyright to any of the submitted sources. If a copyright infringement claim is made regarding the submitted source, the content will be removed and the submitted user might be blocked from future submissions.**
+**Statichunt does not claim ownership or copyright to any of the submitted sources. If a copyright infringement claim is made regarding the submitted source, the content will be removed and the submitted user might be blocked from future submissions.**
 
 If you have any questions related to the disclaimer, please contact us. We will take the necessary steps.
 

@@ -174,10 +174,10 @@ const Themes = ({ themes, tools, customRowClass, customColClass }) => {
               </div>
               <span className="text-xs text-dark dark:text-light">
                 by{" "}
-                {theme.frontmatter?.author === "EarthyResources" ? (
+                {theme.frontmatter?.author === "Statichunt" ? (
                   <Link href="/theme-by-us" passHref>
                     <a className="bg-gradient-to-r from-primary to-secondary bg-clip-text font-bold text-transparent">
-                      EarthyResources
+                      Statichunt
                     </a>
                   </Link>
                 ) : theme.frontmatter?.author ? (

@@ -81,11 +81,11 @@ export const getStaticProps = ({ params }) => {
   const { theme } = params;
   const allTheme = getSinglePages("content/themes");
   const singleTheme = allTheme.filter((data) => data.slug == theme);
-  const making = getSinglePages("content/making");
-  const learning = getSinglePages("content/learning");
-  const appreciating = getSinglePages("content/appreciating");
+  const ssg = getSinglePages("content/ssg");
+  const cms = getSinglePages("content/cms");
+  const css = getSinglePages("content/css");
   const category = getSinglePages("content/category");
-  const tools = [...making, ...learning, ...appreciating, ...category];
+  const tools = [...ssg, ...cms, ...css, ...category];
 
   return {
     props: {

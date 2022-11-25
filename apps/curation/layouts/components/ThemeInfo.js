@@ -15,13 +15,13 @@ const ThemeInfo = ({ theme, slug, tools }) => {
     github_fork,
     publish_date,
     update_date,
+    website_url,
     download,
     price,
-    makingmusic,
-    aesthetic,
-    tags,
+    ssg,
+    cms,
+    css,
     category,
-    external_url,
   } = theme[0].frontmatter;
 
   return (
@@ -35,24 +35,16 @@ const ThemeInfo = ({ theme, slug, tools }) => {
               className="btn btn-demo mr-4 sm:px-10 lg:px-7 xl:px-10"
               target="_blank"
               rel="noopener noreferrer nofollow"
-              href={external_url}
+              href={`${website_url}`}
             >
-              Website
+              Browse to Page
             </a>
 
-            <a
-              className="btn btn-fill sm:px-10 lg:px-7 xl:px-10"
-              href={`${github ? github : download}?ref=statichunt.com`}
-              target="_blank"
-              rel="nofollow noopener noreferrer"
-            >
-              Download
-            </a>
           </div>
         </div>
       </div>
       <div className="widget widget-info mb-3 mt-12">
-        <h3 className="h4 mb-3 font-light">Theme Information:</h3>
+        {/* <h3 className="h4 mb-3 font-light">Theme Information:</h3>
 
         {github_star > 0 && (
           <div className="flex items-center py-[6px]">
@@ -105,14 +97,14 @@ const ThemeInfo = ({ theme, slug, tools }) => {
               {dateFormat(publish_date)}
             </span>
           </div>
-        )}
+        )} */}
 
         <span className="flex py-[6px]">
           <span className="mb-2 min-w-[120px]">Types : </span>
           <div className="flex flex-wrap items-center">
-            <ToolsIcon tools={tools} size={20} themeCard={false} type={makingmusic} />
-            <ToolsIcon tools={tools} size={20} themeCard={false} type={aesthetic} />
-            <ToolsIcon tools={tools} size={20} themeCard={false} type={tags} />
+            <ToolsIcon tools={tools} size={20} themeCard={false} type={ssg} />
+            <ToolsIcon tools={tools} size={20} themeCard={false} type={cms} />
+            <ToolsIcon tools={tools} size={20} themeCard={false} type={css} />
             <ToolsIcon
               tools={tools}
               size={20}
@@ -125,7 +117,7 @@ const ThemeInfo = ({ theme, slug, tools }) => {
 
       <div className="widget mt-10">
         <div className="flex items-center">
-          <Image
+          {/* <Image
             src={
               github
                 ? `https://www.github.com/${
@@ -137,7 +129,7 @@ const ThemeInfo = ({ theme, slug, tools }) => {
             width={50}
             alt={author}
             className="mr-5 rounded border border-gray-100 dark:border-darkmode-border"
-          />
+          /> */}
 
           <div>
             <span className="mb-[2px] block text-sm">Created by</span>

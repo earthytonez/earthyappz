@@ -18,6 +18,5 @@ RUN pnpm -r run build
 
 EXPOSE 3000
 
-WORKDIR /opt/app/apps/earthymaw
 
-CMD [ "pnpm", "start" ]
+CMD [ "pnpm", "--filter earthymaw", "start" ]

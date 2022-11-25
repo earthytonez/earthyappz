@@ -116,13 +116,11 @@ export const getSinglePagesSlug = (folder) => {
 // get regulerpage slug
 export const getRegularPageSlug = () => {
   const regularPage = getSinglePagesSlug("content");
-  const makingFile = getSinglePagesSlug(`content/making`);
-  const learningFile = getSinglePagesSlug(`content/learning`);
-  const appreciatingFile = getSinglePagesSlug(`content/appreciating`);
+  const ssgFile = getSinglePagesSlug(`content/ssg`);
   const toolFile = getSinglePagesSlug(`content/tool`);
   const allThemes = getSinglePages("content/themes");
 
-  const allSlug = [...regularPage, ...toolFile, ...makingFile, ...learningFile, ...appreciatingFile];
+  const allSlug = [...regularPage, ...toolFile, ...ssgFile];
 
   return allSlug;
 };

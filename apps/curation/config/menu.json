@@ -1,12 +1,8 @@
 {
   "main": [
     {
-      "name": "Themes",
-      "url": "/"
-    },
-    {
       "name": "Resources",
-      "url": "/resources"
+      "url": "/"
     },
     {
       "name": "About",
@@ -15,7 +11,7 @@
   ],
   "footer": [
     {
-      "name": "EarthyResources",
+      "name": "Statichunt",
       "pages": [
         {
           "page": "themes",
