@@ -1,0 +1,8 @@
+name = "Single Note"
+description = "Single Note"
+length = 16
+outputs = 1
+type = "step"
+
+[NoteToPlay]
+note = "root" # This is the note

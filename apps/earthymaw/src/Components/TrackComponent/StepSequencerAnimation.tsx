@@ -42,13 +42,13 @@ let StepSequencerAnimation = observer(
           return (
             <StepCircle
               key={i}
-              triggered={i == gateSequencer?.stepIsTriggered}
+              triggered={i == gateSequencer?.stepIsGateTriggered}
               color={(noteMidi! / 127) * 360 || 1}
               volume={100}
             ></StepCircle>
           );
         })}
-        {/* {gateSequencer?.stepIsTriggered} */}
+        {/* {gateSequencer?.stepIsGateTriggered} */}
       </React.Fragment>
     );
   }

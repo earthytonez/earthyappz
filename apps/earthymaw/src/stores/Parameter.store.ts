@@ -97,12 +97,12 @@ export default class ParameterStore {
     // ) => {
     //   return new NumericParameter({
     //     userParameterStore: this.rootStore!.userParameterStore,
-    //     name: "Trigger Set", //  chosenTriggerParameterSet
+    //     name: "GateTrigger Set", //  chosenGateTriggerParameterSet
     //     key: this.parameterKey("trigger_set", trackID),
     //     default: Note.midi("C2")!,
     //     // fieldOptions: {
     //     //   min: 0,
-    //     //   max: this.triggerWhen?.parameterSets.length! - 1,
+    //     //   max: this.gateTrigger?.parameterSets.length! - 1,
     //     //   step: 1,
     //     //   current: this.chosenGateParameterSet,
     //     // },
@@ -119,7 +119,7 @@ export default class ParameterStore {
     //     default: Note.midi("C2")!,
     //     // fieldOptions: {
     //     //   min: 0,
-    //     //   max: this.triggerWhen?.parameterSets.length! - 1,
+    //     //   max: this.gateTrigger?.parameterSets.length! - 1,
     //     //   step: 1,
     //     //   current: this.chosenGateParameterSet,
     //     // },
@@ -343,7 +343,7 @@ export default class ParameterStore {
         userParameterStore: this.rootStore!.userParameterStore,
         name: "Steps", // chosenGateParameterSet
         key: this.parameterKey("steps", trackID),
-        default: 1,
+        default: 16,
         min: 0,
         max: 64,
         description: "How many steps in the section.",
@@ -389,18 +389,6 @@ export default class ParameterStore {
       retVal.push({ Slug: "step_pitch_shift_direction", Options: {} });
     }
 
-    if (
-      sequencer?.triggerWhen?.parameterSets[0]?.fillList &&
-      sequencer?.triggerWhen?.parameterSets[0]?.fillList.length > 0
-    ) {
-      retVal.push({
-        Slug: "selected_fill",
-        Options: {
-          min: 0,
-          max: sequencer?.triggerWhen?.parameterSets[0]?.fillList.length,
-        },
-      });
-    }
     return retVal.filter((parameter: ParameterSlug | undefined) => {
       return parameter !== undefined;
     });
@@ -443,20 +431,20 @@ export default class ParameterStore {
 
     console.log(gateSequencer);
     if (
-      gateSequencer.triggerWhen.parameterSets[0]?.triggerType === "stepInterval"
+      gateSequencer.gateTrigger.parameterSets[0]?.triggerType === "stepInterval"
     ) {
       retVal.push({ Slug: "step_interval", Options: {} });
     }
 
     if (
-      gateSequencer?.triggerWhen?.parameterSets[0]?.fillList &&
-      gateSequencer?.triggerWhen?.parameterSets[0]?.fillList.length > 0
+      gateSequencer?.gateTrigger?.parameterSets[0]?.fillList &&
+      gateSequencer?.gateTrigger?.parameterSets[0]?.fillList.length > 0
     ) {
       retVal.push({
         Slug: "selected_fill",
         Options: {
           min: 0,
-          max: gateSequencer?.triggerWhen?.parameterSets[0]?.fillList.length,
+          max: gateSequencer?.gateTrigger?.parameterSets[0]?.fillList.length,
         },
       });
     }

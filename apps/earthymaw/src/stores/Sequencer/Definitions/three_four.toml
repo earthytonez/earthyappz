@@ -30,7 +30,7 @@ list = [
     [3, 3, 3],
 ]
 
-[TriggerWhenList]
+[GateTriggerList]
 list = [
     [1, 4, 7],
     [1, 3, 7],

@@ -40,15 +40,6 @@ interface IIntervalsToPlay {
 export default class Sequencer extends SequencerType {
   slug: string;
 
-  /*
-   * A parameter set determines when a sequence is triggered.
-   * There can be multiple parameter sets for a given sequencer, in order to have
-   * selectable variation.  For example, the 3 four can play the second beat
-   * on the 2 or the three (1-2-4, 1-3-4).
-   */
-  chosenTriggerParameterSet: number = 0;
-  chosenGateParameterSet: number = 0;
-
   beatsSinceLastNote: number;
 
   boundSynthesizer?: BaseSynthesizer = undefined;
@@ -519,12 +510,12 @@ export default class Sequencer extends SequencerType {
 
 // return [
 //   {
-//     name: "TriggerSet",
-//     field: "chosenTriggerParameterSet",
+//     name: "GateTriggerSet",
+//     field: "chosenGateTriggerParameterSet",
 //     fieldType: "arraySelector",
 //     fieldOptions: {
 //       options: [0, 1, 2, 3, 4],
-//       current: this.chosenTriggerParameterSet,
+//       current: this.chosenGateTriggerParameterSet,
 //     },
 //   },
 //   {

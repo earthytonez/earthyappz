@@ -9,5 +9,5 @@ type = "fixedStep"
 
 parameters = ["step_interval"]
 
-[TriggerWhen]
+[GateTrigger]
 trigger = "every 4 steps"

@@ -1,4 +1,3 @@
-import TriggerWhen from "./TriggerWhen";
 import NoteToPlayDefinition from "./NoteToPlayDefinition";
 import VolumeToPlay from "./VolumeToPlay";
 import IntervalToPlayDefinition from "./IntervalToPlayDefinition";
@@ -25,7 +24,6 @@ export default class SequencerDefinition {
   intervalsToPlay?: IIntervalsToPlay;
   rhythm_length?: number = undefined;
   totalLength: number = 16;
-  triggerWhen: TriggerWhen = new TriggerWhen();
   noteToPlay: NoteToPlayDefinition = new NoteToPlayDefinition();
   parameters?: string[];
   volumeToPlay: VolumeToPlay = new VolumeToPlay();

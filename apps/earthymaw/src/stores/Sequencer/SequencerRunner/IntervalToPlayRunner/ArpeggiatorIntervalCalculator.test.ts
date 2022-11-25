@@ -39,7 +39,7 @@ test("test arpeggiator up", async () => {
     "up"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "up",
   });
 
@@ -72,7 +72,7 @@ test("test arpeggiator up = special", async () => {
     "up"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "up",
   });
 
@@ -109,7 +109,7 @@ test("test arpeggiator down", async () => {
     arpeggiator
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: arpeggiator,
   });
 
@@ -126,7 +126,7 @@ test("test arpeggiator updown", async () => {
     "updown"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "updown",
   });
 
@@ -143,7 +143,7 @@ test("test arpeggiator updowninc", async () => {
     "updowninc"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "updowninc",
   });
 
@@ -160,7 +160,7 @@ test("test arpeggiator downup", async () => {
     "downup"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "downup",
   });
 
@@ -177,7 +177,7 @@ test("test arpeggiator downupinc", async () => {
     "downupinc"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "downupinc",
   });
 
@@ -194,7 +194,7 @@ test("test arpeggiator top-line-up", async () => {
     "top-line-up"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "top-line-up",
   });
 
@@ -211,7 +211,7 @@ test("test arpeggiator top-line-down", async () => {
     "top-line-down"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "top-line-down",
   });
 
@@ -228,7 +228,7 @@ test("test arpeggiator bottom-line-up", async () => {
     "bottom-line-up"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "bottom-line-up",
   });
 
@@ -245,7 +245,7 @@ test("test arpeggiator bottom-line-down", async () => {
     "bottom-line-down"
   );
 
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "bottom-line-down",
   });
 

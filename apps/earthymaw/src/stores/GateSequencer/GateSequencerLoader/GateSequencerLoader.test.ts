@@ -30,14 +30,14 @@ test("random function", async () => {
   [NoteToPlay]
   note = "Rand()"
   
-  [TriggerWhen]
+  [GateTrigger]
   trigger = "Rand()"
 `;
   const sequencerLoader = new SequencerLoader(code);
   await sequencerLoader.load();
   expect(sequencerLoader.name).toEqual("Random");
   expect(sequencerLoader.description).toEqual("Random Gates and Notes");
-  expect(sequencerLoader.triggerWhen().type).toEqual("random");
+  expect(sequencerLoader.gateTrigger().type).toEqual("random");
 });
 
 // test('measureBeat', async() => {

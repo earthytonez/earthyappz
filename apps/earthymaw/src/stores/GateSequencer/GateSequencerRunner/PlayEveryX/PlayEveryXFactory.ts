@@ -1,4 +1,4 @@
-import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
+import { IGateTriggerParameters } from "../../GateSequencerLoader/GateTrigger";
 
 import { ISequencerGate } from "../SequencerGate";
 
@@ -18,7 +18,7 @@ export default class PlayEveryXFactory implements ISequencerRunner {
 
   run(
     beatMarker: number,
-    triggerParameters: ITriggerParameters,
+    triggerParameters: IGateTriggerParameters,
     userParameters: any
   ): ISequencerGate {
     switch (triggerParameters.triggerType) {

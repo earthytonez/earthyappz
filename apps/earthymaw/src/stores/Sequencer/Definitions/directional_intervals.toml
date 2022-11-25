@@ -13,5 +13,5 @@ parameters = ["step_pitch_shift", "step_pitch_shift_direction"]
 [NoteToPlay]
 note = "IntervalParameter()"
 
-[TriggerWhen]
+[GateTrigger]
 trigger = "every 4 steps"

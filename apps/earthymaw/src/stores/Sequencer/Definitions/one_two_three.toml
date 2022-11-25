@@ -7,6 +7,6 @@ type = "step"
 [NoteToPlay]
 note = "C4" # This is the note
 
-[TriggerWhen]
+[GateTrigger]
 trigger = "every 4 steps"
 

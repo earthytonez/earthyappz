@@ -1,11 +1,11 @@
-import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
+import { IGateTriggerParameters } from "../../GateSequencerLoader/GateTrigger";
 
 const DEFAULT_GATE = 1;
 
 export default class PlayEveryXBase {
   constructor(
     protected rhythm_length: number,
-    protected triggerParameters: ITriggerParameters,
+    protected triggerParameters: IGateTriggerParameters,
     protected userParameters: any
   ) {}
 

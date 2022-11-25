@@ -8,5 +8,5 @@ type = "drone"
 [NoteToPlay]
 play = "C4" # This is the note
 
-[TriggerWhen]
+[GateTrigger]
 trigger = "every 64 steps on 1"

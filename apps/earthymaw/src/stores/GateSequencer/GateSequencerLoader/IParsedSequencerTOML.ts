@@ -1,4 +1,4 @@
-import TriggerWhen from "./TriggerWhen";
+import GateTrigger from "./GateTrigger";
 import GateLengths from "./GateLengths";
 import ISequencerType from "./ISequencerType";
 
@@ -21,8 +21,8 @@ export default interface IParsedSequencerTOML {
   GateLengthsList: {
     list: number[][];
   };
-  TriggerWhen: TriggerWhen;
-  TriggerWhenList: {
+  GateTrigger: GateTrigger;
+  GateTriggerList: {
     list: number[][];
   };
   IntervalsToPlay: IntervalToPlayManifestSection;

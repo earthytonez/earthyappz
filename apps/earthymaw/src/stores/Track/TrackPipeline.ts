@@ -9,7 +9,7 @@ import { warn, debug } from "../../Util/logger";
 
 import BeatFeatures from "./BeatFeatures";
 import * as Tone from "tone";
-import ITriggerAttackReleaseParams from "./ITriggerAttackReleaseParams";
+import IGateTriggerAttackReleaseParams from "./IGateTriggerAttackReleaseParams";
 
 export default class TrackPipeline {
   private gateSequencer?: GateSequencer;
@@ -27,7 +27,7 @@ export default class TrackPipeline {
   }
 
   async tick() {
-    let triggerAttackReleaseParams: ITriggerAttackReleaseParams = {
+    let triggerAttackReleaseParams: IGateTriggerAttackReleaseParams = {
       frequency: Tone.Frequency("C4"),
       duration: Tone.Time("16n"),
       time: Tone.Time("0"),

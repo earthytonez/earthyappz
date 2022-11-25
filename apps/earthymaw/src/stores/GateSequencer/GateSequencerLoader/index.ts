@@ -5,7 +5,7 @@
  */
 
 import GateLengths from "./GateLengths";
-import TriggerWhen from "./TriggerWhen";
+import GateTrigger from "./GateTrigger";
 import GateSequencerLoader from "./GateSequencerLoader";
 
-export { GateLengths, TriggerWhen, GateSequencerLoader };
+export { GateLengths, GateTrigger, GateSequencerLoader };

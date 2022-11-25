@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 
-export default interface ITriggerAttackReleaseParams {
+export default interface IGateTriggerAttackReleaseParams {
   frequency: Tone.FrequencyClass;
   duration: Tone.TimeClass | Tone.TimeClass[];
   time: Tone.TimeClass;

@@ -12,5 +12,5 @@ length = "Rand()"
 [NoteToPlay]
 note = "Rand()"
 
-[TriggerWhen]
+[GateTrigger]
 trigger = "Rand()"

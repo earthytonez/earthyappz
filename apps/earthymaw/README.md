@@ -19,6 +19,7 @@ Tech Debt: 1. Save more things (like Octaves)
     3. Esnure Save/Load
     4. Fix Help for Autocompleted.
     6. Help on edit pages.
+    7. Track should default to single note Fixed Interval
 
 1. Help
   1. ~~Fix Keys/Scale/Chord Changes to show yellow when changed.~~
@@ -109,7 +110,7 @@ Tech Debt: 1. Save more things (like Octaves)
     5. Modulate "FMBell" Synth
 
     Refactor Function Parameters to Types
-    A Trigger should be a type that includes Gate.
+    A GateTrigger should be a type that includes Gate.
 
 2. Make Synthesizers, Sequencers and Arrangers Browseable and Searchable.
     1. Make the bar on the left.

@@ -57,7 +57,7 @@ test('can change filter parameter', () => {
 //     sequencer.sequencerLoader = new SequencerLoader("rhythm_length=64");
 //     await sequencer.load();
     
-//     let parameters: ITriggerParameters = {
+//     let parameters: IGateTriggerParameters = {
 //         on: 0,
 //         stepInterval: 64,
 //         triggerType: "stepInterval"

@@ -1,11 +1,11 @@
 import BaseParameter from "stores/Parameter/Base";
-import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
+import { IGateTriggerParameters } from "../../GateSequencerLoader/GateTrigger";
 import SequencerGate from "../SequencerGate";
 /*
  * Play Every X is used to calculate whether or not a trigger should occur, usually
  * playing every x notes.
  */
-export default class RandomTrigger implements ISequencerRunner {
+export default class RandomGateTrigger implements ISequencerRunner {
   rhythm_length: number;
 
   generateRandom(min: number, max: number) {
@@ -49,10 +49,10 @@ export default class RandomTrigger implements ISequencerRunner {
     return this.getRandomFloat(minGate, maxGate, 2);
   }
 
-  isTriggered(
+  isGateTriggered(
     beatsSinceLastNote: number,
     resetBeatsSinceLastNote: Function,
-    parameters: ITriggerParameters,
+    parameters: IGateTriggerParameters,
     sequencerParameters: Map<string, BaseParameter>
   ): SequencerGate {
     let minInterval = sequencerParameters.get("min_interval") || { val: 5 };

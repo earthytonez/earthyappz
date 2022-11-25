@@ -1,4 +1,3 @@
-import TriggerWhen from "./TriggerWhen";
 import { INoteToPlayDefinition } from "./NoteToPlayDefinition";
 import ISequencerType from "./ISequencerType";
 
@@ -18,9 +17,5 @@ export default interface IParsedSequencerTOML {
   total_length: number;
   type: ISequencerType;
   NoteToPlay: INoteToPlayDefinition;
-  TriggerWhen: TriggerWhen;
-  TriggerWhenList: {
-    list: number[][];
-  };
   IntervalsToPlay: IntervalToPlayManifestSection;
 }

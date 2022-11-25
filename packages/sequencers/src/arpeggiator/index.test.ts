@@ -126,7 +126,7 @@ test("test arpeggiator downup", async () => {
 });
 
 test("test arpeggiator downupinc", async () => {
-  parameters.set("arpeggiatortype", {
+  parameters.set("arpeggiator_type", {
     val: "downupinc",
   });
 

@@ -5,7 +5,6 @@
  */
 
 import NoteToPlayDefinition from "./NoteToPlayDefinition";
-import TriggerWhen from "./TriggerWhen";
 import SequencerLoader from "./SequencerLoader";
 
-export { TriggerWhen, NoteToPlayDefinition, SequencerLoader };
+export { NoteToPlayDefinition, SequencerLoader };

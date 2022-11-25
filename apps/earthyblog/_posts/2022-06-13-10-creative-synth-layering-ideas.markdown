@@ -22,7 +22,7 @@ Start with a noise sample.
 
 Then take a descending chord progression.
 
-Trigger the noise with the same midi, but add a keytracked bandpass filter.  Serum's keytracking is polyphonic.
+GateTrigger the noise with the same midi, but add a keytracked bandpass filter.  Serum's keytracking is polyphonic.
 
 4. Pitch Envelopes
 Apply pitch envelopes to your noise and layer with synth.

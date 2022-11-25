@@ -7,7 +7,7 @@ import BasePlugin, { IPluginNode } from "../../Plugins/Base";
 import { debug, info } from "../../../Util/logger";
 
 import Machine from "../../Machines/Machine";
-import ITriggerAttackReleaseParams from "../../Track/ITriggerAttackReleaseParams";
+import IGateTriggerAttackReleaseParams from "../../Track/IGateTriggerAttackReleaseParams";
 
 const SYNTHESIZER_PARAMS: string[] = ["pitchDecay", "oscillator_type"];
 
@@ -174,7 +174,7 @@ export default class BaseSynthesizer extends Machine {
     return this.parameterValue(slug) as string;
   }
 
-  trigger(triggerAttackReleaseParams: ITriggerAttackReleaseParams) {
+  trigger(triggerAttackReleaseParams: IGateTriggerAttackReleaseParams) {
     let frequency = triggerAttackReleaseParams.frequency;
 
     if (!frequency) {
@@ -201,10 +201,10 @@ export default class BaseSynthesizer extends Machine {
       );
     }
 
-    debug("SynthesizerBase::Trigger", "synth", this.synth);
+    debug("SynthesizerBase::GateTrigger", "synth", this.synth);
 
     debug(
-      "Synthesizer::Trigger",
+      "Synthesizer::GateTrigger",
       `frequency=${frequency.valueOf()} duration=${triggerAttackReleaseParams.duration.valueOf()} time=${
         triggerAttackReleaseParams.time
       } velocity=${triggerAttackReleaseParams.velocity}`

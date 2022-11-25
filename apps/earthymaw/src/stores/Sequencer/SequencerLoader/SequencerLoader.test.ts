@@ -1,6 +1,6 @@
-import SequencerLoader from './SequencerLoader';
+import SequencerLoader from "./SequencerLoader";
 
-test('find name from toml', async() => {
+test("find name from toml", async () => {
   let code = `name = "Test Sequencer"
 description = "Test Sequencer Description"`;
   const sequencerLoader = new SequencerLoader(code);
@@ -9,7 +9,7 @@ description = "Test Sequencer Description"`;
   expect(sequencerLoader.description).toEqual("Test Sequencer Description");
 });
 
-test('random function', async() => {
+test("random function", async () => {
   let code = `
   name = "Random"
   description = "Random Gates and Notes"
@@ -30,16 +30,14 @@ test('random function', async() => {
   [NoteToPlay]
   note = "Rand()"
   
-  [TriggerWhen]
+  [GateTrigger]
   trigger = "Rand()"
 `;
   const sequencerLoader = new SequencerLoader(code);
   await sequencerLoader.load();
   expect(sequencerLoader.name).toEqual("Random");
   expect(sequencerLoader.description).toEqual("Random Gates and Notes");
-  expect(sequencerLoader.triggerWhen().type).toEqual("random")
 });
-
 
 // test('measureBeat', async() => {
 //   let code = `length = 4`;

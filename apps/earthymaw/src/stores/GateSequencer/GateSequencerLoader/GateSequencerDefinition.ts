@@ -1,4 +1,4 @@
-import TriggerWhen from "./TriggerWhen";
+import GateTrigger from "./GateTrigger";
 import GateLengths from "./GateLengths";
 import VolumeToPlay from "./VolumeToPlay";
 
@@ -16,7 +16,7 @@ export default class GateSequencerDefinition {
   gateLengths: GateLengths = new GateLengths();
   rhythm_length?: number = undefined;
   totalLength: number = 16;
-  triggerWhen: TriggerWhen = new TriggerWhen();
+  gateTrigger: GateTrigger = new GateTrigger();
   parameters?: string[];
   volumeToPlay: VolumeToPlay = new VolumeToPlay();
 

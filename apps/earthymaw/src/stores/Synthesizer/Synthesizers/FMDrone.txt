@@ -149,7 +149,7 @@ export default class FMDrone extends Synthesizer {
 
     debug(
       "FMDrone",
-      `Starting FMDrone Play Trigger Attack Release of ${notes} with lengthSeconds ${lengthSeconds}`, 
+      `Starting FMDrone Play GateTrigger Attack Release of ${notes} with lengthSeconds ${lengthSeconds}`, 
       this.synth
     );
   
@@ -216,7 +216,7 @@ export default class FMDrone extends Synthesizer {
   //     volume: -10,
   //   });
 
-  //   debug(`Starting FMDrone Play Trigger Attack Release of ${notes} with lengthSeconds ${lengthSeconds}`);
+  //   debug(`Starting FMDrone Play GateTrigger Attack Release of ${notes} with lengthSeconds ${lengthSeconds}`);
   //   this.synth.triggerAttackRelease(notes as Frequency[], lengthSeconds);
   // }
 }

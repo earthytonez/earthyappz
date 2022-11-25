@@ -21,7 +21,7 @@ export default class ArpeggiatorIntervalCalculator extends IntervalCalculator {
       }|${JSON.stringify(params.chord)}`
     );
 
-    this.intervalArp = params.parameters.get("arpeggiatortype").val;
+    this.intervalArp = params.parameters.get("arpeggiator_type").val;
 
     let chordDef = Chord.getChord(params.chord.name, params.key);
 

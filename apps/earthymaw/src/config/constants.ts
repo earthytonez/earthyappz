@@ -87,6 +87,18 @@ export const GATE_SEQUENCER_TYPES: IGateSequencerType[] = [
     slug: "free_step",
     machineType: "Gate Sequencer",
   },
+  // {
+  //   id: 11,
+  //   name: "Morodor Bassline",
+  //   slug: "morodor_basssine",
+  //   machineType: "Gate Sequencer",
+  // },
+  // {
+  //   id: 11,
+  //   name: "Hi Hats",
+  //   slug: "hi_hats",
+  //   machineType: "Gate Sequencer",
+  // },
 ];
 
 export const SEQUENCER_TYPES: ISequencerType[] = [
@@ -121,12 +133,13 @@ export const SEQUENCER_TYPES: ISequencerType[] = [
     machineType: "Sequencer",
   },
   // { id: 10, name: "Random", slug: "random", machineType: "Sequencer" },
-  // {
-  //   id: 11,
-  //   name: "Morodor Bassline",
-  //   slug: "morodor_basssine",
-  //   machineType: "Sequencer",
-  // },
+  {
+    id: 12,
+    name: "Single Note",
+    slug: "single_note",
+    machineType: "Sequencer",
+  },
+
   {
     id: 12,
     name: "Directional Intervals",

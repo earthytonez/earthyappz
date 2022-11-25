@@ -1,7 +1,7 @@
-import { debug, info } from "../../../Util/logger";
+import { debug, info } from "../../../../Util/logger";
 
-export interface ITriggerParameters {
-  triggerType: "stepList" | "stepInterval" | "random";
+export interface IGateTriggerParameters {
+  triggerType: "stepList" | "stepInterval" | "random" | "euclidean";
   stepInterval?: number;
   on?: number;
   stepList?: number[];
@@ -19,7 +19,7 @@ export interface ITriggerParameters {
 }
 
 /**
- * TriggerWhen determines when a trigger/gate will happen.
+ * GateTrigger determines when a trigger/gate will happen.
  *
  * Types:
  * random
@@ -30,9 +30,9 @@ export interface ITriggerParameters {
  * @param {any} line:string
  * @returns {any}
  */
-export default class TriggerWhen {
-  type: "random" | "everyX" | "stepArray" = "everyX";
-  parameterSets: ITriggerParameters[] = [];
+export default class GateTrigger {
+  type: "random" | "everyX" | "stepArray" | "euclidean" = "everyX";
+  parameterSets: IGateTriggerParameters[] = [];
   fills?: any[];
   fillStart: number = -1;
   fillEnd: number = -1;
@@ -96,6 +96,18 @@ export default class TriggerWhen {
           maxSkip: 64,
         };
         break;
+
+      case trimmedLine.match(/Euclidean\(\)/)?.input:
+        console.log("TRIGGER_WHEN Euclidean MATCHED TRIMMED_LINE");
+        this.type = "euclidean";
+        this.parameterSets[0] = {
+          triggerType: "euclidean",
+          octaves: 1,
+          minSkip: 0,
+          maxSkip: 64,
+        };
+        break;
+
       case trimmedLine.match(/every \d{1,2} steps on \d+/)?.input:
         this.type = "everyX";
         const rxa = /every (\d{1,2}) steps on (\d+)/;

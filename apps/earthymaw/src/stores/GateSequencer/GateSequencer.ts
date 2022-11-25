@@ -5,13 +5,14 @@ import { makeObservable, action, computed, observable } from "mobx";
 import GateSequencerDefinition from "./GateSequencerLoader/GateSequencerDefinition";
 import GateSequencerType from "./GateSequencerType";
 import { PlayEveryXFactory } from "./GateSequencerRunner/PlayEveryX";
-import RandomTrigger from "./GateSequencerRunner/Random/RandomTrigger";
-import Euclidean from "./GateSequencerRunner/Euclidean";
+import RandomGate from "./GateSequencerRunner/Random/RandomGate";
+import EuclideanRunner from "./GateSequencerRunner/Euclidean";
 
 import { BeatMarker } from "../MusicFeatures/BeatMarker";
 
-import { ITriggerParameters } from "./GateSequencerLoader/TriggerWhen";
-import TriggerWhen from "./GateSequencerLoader/TriggerWhen";
+import GateTrigger, {
+  IGateTriggerParameters,
+} from "./GateSequencerLoader/GateTrigger";
 import GateLengths from "./GateSequencerLoader/GateLengths";
 import VolumeToPlay from "./GateSequencerLoader/VolumeToPlay";
 
@@ -20,6 +21,7 @@ import { IGatePlayAttributes } from "./IGatePlayAttributes";
 import BeatFeatures from "stores/Track/BeatFeatures";
 
 import { Duration, DEFAULT_DURATION } from "./IGatePlayAttributes";
+import { debug } from "../../Util/logger";
 
 class UndefinedRunnerError extends Error {
   constructor(runnerName: string) {
@@ -30,9 +32,9 @@ class UndefinedRunnerError extends Error {
 export default class GateSequencer extends GateSequencerType {
   slug: string;
 
-  euclideanRunner?: Euclidean;
+  euclideanRunner?: EuclideanRunner;
   playEveryXRunner?: PlayEveryXFactory;
-  randomTriggerRunner?: RandomTrigger;
+  randomGateTriggerRunner?: RandomGate;
 
   /*
    * A parameter set determines when a sequence is triggered.
@@ -40,7 +42,7 @@ export default class GateSequencer extends GateSequencerType {
    * selectable variation.  For example, the 3 four can play the second beat
    * on the 2 or the three (1-2-4, 1-3-4).
    */
-  chosenTriggerParameterSet: number = 0;
+  chosenGateTriggerParameterSet: number = 0;
   chosenGateParameterSet: number = 0;
 
   beatsSinceLastNote: number;
@@ -67,12 +69,12 @@ export default class GateSequencer extends GateSequencerType {
   volumeToPlay: VolumeToPlay = new VolumeToPlay();
   rhythm_length?: number = undefined;
   totalLength: number;
-  triggerWhen: TriggerWhen = new TriggerWhen();
+  gateTrigger: GateTrigger = new GateTrigger();
 
   musicSectionLength: number = 64;
 
   public stepSequencerGrid: number[] = [];
-  public stepIsTriggered: number = -1;
+  public stepIsGateTriggered: number = -1;
   public _volume: number = -1;
 
   /* TODO: Deprecate and remove */
@@ -93,7 +95,7 @@ export default class GateSequencer extends GateSequencerType {
     this.slug = gateSequencerDefinition.slug!;
     this.type = gateSequencerDefinition.type!;
 
-    this.triggerWhen = gateSequencerDefinition.triggerWhen;
+    this.gateTrigger = gateSequencerDefinition.gateTrigger;
     this.gateLengths = gateSequencerDefinition.gateLengths;
     this.volumeToPlay = gateSequencerDefinition.volumeToPlay;
     this.totalLength = gateSequencerDefinition.totalLength;
@@ -101,15 +103,15 @@ export default class GateSequencer extends GateSequencerType {
     this.initializeRunners(gateSequencerDefinition.rhythm_length!);
 
     makeObservable(this, {
-      setStepIsTriggered: action,
+      setStepIsGateTriggered: action,
       stepSequencerGrid: observable,
-      stepIsTriggered: observable,
+      stepIsGateTriggered: observable,
       changeParameter: action.bound,
       editParameters: computed,
       play: action,
       resetBeatsSinceLastNote: action.bound,
       toJSON: action.bound,
-      randomTrigger: action.bound,
+      randomGateTrigger: action.bound,
     });
   }
 
@@ -133,8 +135,8 @@ export default class GateSequencer extends GateSequencerType {
   /*
    * This sets the step that is currently triggered for the step visualizer.
    */
-  setStepIsTriggered(n: number) {
-    this.stepIsTriggered = n;
+  setStepIsGateTriggered(n: number) {
+    this.stepIsGateTriggered = n;
   }
 
   get loading() {
@@ -173,27 +175,29 @@ export default class GateSequencer extends GateSequencerType {
    */
   private async initializeRunners(rhythm_length: number) {
     this.playEveryXRunner = new PlayEveryXFactory(rhythm_length);
-    this.randomTriggerRunner = new RandomTrigger(rhythm_length);
-    this.euclideanRunner = new Euclidean(rhythm_length);
+    this.randomGateTriggerRunner = new RandomGate(rhythm_length);
+    this.euclideanRunner = new EuclideanRunner(rhythm_length);
   }
 
   /*
    * This is a simple step sequencer, that enables you to sequence based on either a list or a mathematical formula.
    * This is only for triggers/gates it does not determine what note to play.
    */
-  randomTrigger(triggerParameters: ITriggerParameters): IGatePlayAttributes {
-    if (!this.randomTriggerRunner) {
+  randomGateTrigger(
+    triggerParameters: IGateTriggerParameters
+  ): IGatePlayAttributes {
+    if (!this.randomGateTriggerRunner) {
       throw new UndefinedRunnerError("random trigger");
     }
     try {
-      let triggerData = this.randomTriggerRunner.isTriggered(
+      let triggerData = this.randomGateTriggerRunner.isGateTriggered(
         this.beatsSinceLastNote,
         this.resetBeatsSinceLastNote,
         triggerParameters,
         this._parameters
       );
 
-      let duration = this.randomTriggerRunner.duration(this._parameters);
+      let duration = this.randomGateTriggerRunner.duration(this._parameters);
 
       return {
         ...triggerData,
@@ -203,10 +207,39 @@ export default class GateSequencer extends GateSequencerType {
       console.error(err, triggerParameters);
     }
 
-    return this.noTrigger();
+    return this.noGateTrigger();
   }
 
-  noTrigger() {
+  euclideanGateTrigger(
+    beatMarker: number,
+    triggerParameters: IGateTriggerParameters
+  ): IGatePlayAttributes {
+    if (!this.euclideanRunner) {
+      throw new UndefinedRunnerError("random trigger");
+    }
+
+    try {
+      let triggerData = this.euclideanRunner.isGateTriggered(
+        beatMarker,
+        this._parameters
+      );
+
+      let duration = this.euclideanRunner.duration(this._parameters);
+
+      debug("GateSequencer", `duration: ${duration}. trigger: `, triggerData);
+
+      return {
+        ...triggerData,
+        duration: new Duration(duration),
+      };
+    } catch (err) {
+      console.error(err, triggerParameters);
+    }
+
+    return this.noGateTrigger();
+  }
+
+  noGateTrigger() {
     return {
       triggered: false,
       stepInterval: this._parameters?.get("step_interval")?.val() || 4,
@@ -223,12 +256,12 @@ export default class GateSequencer extends GateSequencerType {
    * Drone Sequencer?
    */
   gateAndNote(beatMarker: BeatMarker, time: number): IGatePlayAttributes {
-    if (!this.triggerWhen) {
-      return this.noTrigger();
+    if (!this.gateTrigger) {
+      return this.noGateTrigger();
     }
 
     let parameters =
-      this.triggerWhen.parameterSets[this.chosenTriggerParameterSet];
+      this.gateTrigger.parameterSets[this.chosenGateTriggerParameterSet];
     if (parameters) {
       parameters.gateList =
         this.gateLengths?.parameterSets[this.chosenGateParameterSet]?.gateList;
@@ -236,13 +269,15 @@ export default class GateSequencer extends GateSequencerType {
 
     if (!parameters) {
       throw new Error(
-        `parameters for random sequencer ${this.chosenTriggerParameterSet} must be defined`
+        `parameters for random sequencer ${this.chosenGateTriggerParameterSet} must be defined`
       );
     }
 
-    switch (this.triggerWhen.type) {
+    switch (this.gateTrigger.type) {
       case "random":
-        return this.randomTrigger(parameters);
+        return this.randomGateTrigger(parameters);
+      case "euclidean":
+        return this.euclideanGateTrigger(beatMarker.num, parameters);
       case "everyX":
         return this.playEveryXRunner!.run(
           beatMarker.num,
@@ -287,7 +322,7 @@ export default class GateSequencer extends GateSequencerType {
 
     let gatePlayAttributes = this.gateAndNote(beatMarker, time);
     if (gatePlayAttributes.triggered) {
-      this.setStepIsTriggered(this.measureBeat(beatMarker));
+      this.setStepIsGateTriggered(this.measureBeat(beatMarker));
     }
     return gatePlayAttributes;
   }

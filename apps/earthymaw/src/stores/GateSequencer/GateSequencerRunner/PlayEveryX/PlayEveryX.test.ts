@@ -1,12 +1,12 @@
 import PlayEveryX from "./PlayEveryXFactory";
 
-import { ITriggerParameters } from "../../GateSequencerLoader/TriggerWhen";
+import { IGateTriggerParameters } from "../../GateSequencerLoader/GateTrigger";
 
-test("test PlayEveryX stepInterval Trigger Type", async () => {
+test("test PlayEveryX stepInterval GateTrigger Type", async () => {
   let rhythmLength = 16;
   let playEveryX = new PlayEveryX(rhythmLength);
 
-  let parameters: ITriggerParameters = {
+  let parameters: IGateTriggerParameters = {
     stepInterval: 4,
     triggerType: "stepInterval",
     on: 0,
@@ -22,11 +22,11 @@ test("test PlayEveryX stepInterval Trigger Type", async () => {
   expect(playEveryX.run(13, parameters, new Map()).triggered).toBeFalsy();
 });
 
-test("test PlayEveryX stepList Trigger Type", async () => {
+test("test PlayEveryX stepList GateTrigger Type", async () => {
   let rhythmLength = 16;
   let playEveryX = new PlayEveryX(rhythmLength);
 
-  let parameters: ITriggerParameters = {
+  let parameters: IGateTriggerParameters = {
     gateList: [1, 1, 1, 1, 1],
     stepList: [0, 3, 7, 13, 15],
     triggerType: "stepList",

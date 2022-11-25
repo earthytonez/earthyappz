@@ -1,7 +1,7 @@
 import toml from "toml";
 import { makeObservable, action, computed, observable } from "mobx";
 
-import TriggerWhen from "./TriggerWhen";
+import GateTrigger from "./GateTrigger";
 import GateLengths from "./GateLengths";
 
 import { BeatMarker } from "../../MusicFeatures/BeatMarker";
@@ -43,8 +43,8 @@ export default class GateSequencerLoader {
     return this.sequencerHolder.gateLengths;
   }
 
-  triggerWhen(): TriggerWhen {
-    return this.sequencerHolder.triggerWhen;
+  gateTrigger(): GateTrigger {
+    return this.sequencerHolder.gateTrigger;
   }
 
   lines(): Array<string> {
@@ -73,19 +73,19 @@ export default class GateSequencerLoader {
       this.sequencerHolder.type = data.type;
       this.sequencerHolder.parameters = data.parameters;
 
-      if (data.TriggerWhen) {
-        this.sequencerHolder.triggerWhen.parse(data.TriggerWhen);
-        if (data.TriggerWhen.fillWhen) {
-          this.sequencerHolder.triggerWhen.parseFill(data.TriggerWhen.fillWhen);
+      if (data.GateTrigger) {
+        this.sequencerHolder.gateTrigger.parse(data.GateTrigger);
+        if (data.GateTrigger.fillWhen) {
+          this.sequencerHolder.gateTrigger.parseFill(data.GateTrigger.fillWhen);
         }
-        if (data.TriggerWhen.fillList) {
-          this.sequencerHolder.triggerWhen.parseFillList(
-            data.TriggerWhen.fillList
+        if (data.GateTrigger.fillList) {
+          this.sequencerHolder.gateTrigger.parseFillList(
+            data.GateTrigger.fillList
           );
         }
       }
-      if (data.TriggerWhenList) {
-        this.sequencerHolder.triggerWhen.parseList(data.TriggerWhenList.list);
+      if (data.GateTriggerList) {
+        this.sequencerHolder.gateTrigger.parseList(data.GateTriggerList.list);
       }
 
       if (data.GateLengths) {

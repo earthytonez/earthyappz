@@ -1,8 +1,6 @@
 import toml from "toml";
 import { makeObservable, action, computed, observable } from "mobx";
 
-import TriggerWhen from "./TriggerWhen";
-
 import { BeatMarker } from "../../MusicFeatures/BeatMarker";
 
 import IToneJSDuration from "../../../Types/IToneJSDuration";
@@ -38,10 +36,6 @@ export default class SequencerLoader {
     return this.sequencerCode;
   }
 
-  triggerWhen(): TriggerWhen {
-    return this.sequencerHolder.triggerWhen;
-  }
-
   lines(): Array<string> {
     if (this.sequencerCode) {
       return this.sequencerCode.split("\n");
@@ -66,20 +60,6 @@ export default class SequencerLoader {
       this.sequencerHolder.tags = data.tags;
       this.sequencerHolder.type = data.type;
       this.sequencerHolder.parameters = data.parameters;
-      if (data.TriggerWhen) {
-        this.sequencerHolder.triggerWhen.parse(data.TriggerWhen);
-        if (data.TriggerWhen.fillWhen) {
-          this.sequencerHolder.triggerWhen.parseFill(data.TriggerWhen.fillWhen);
-        }
-        if (data.TriggerWhen.fillList) {
-          this.sequencerHolder.triggerWhen.parseFillList(
-            data.TriggerWhen.fillList
-          );
-        }
-      }
-      if (data.TriggerWhenList) {
-        this.sequencerHolder.triggerWhen.parseList(data.TriggerWhenList.list);
-      }
       this.sequencerHolder.noteToPlay.parse(data.NoteToPlay);
       this.sequencerHolder.intervalToPlay.parse(data.IntervalsToPlay);
     } catch (err) {
