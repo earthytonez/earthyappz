@@ -1,6 +1,6 @@
 {
-  "name": "statichunt",
-  "description": "statichunt is a static themes and resources directory",
+  "name": "curation",
+  "description": "curation is a music resources directory",
   "version": "2.0.0",
   "private": true,
   "license": "UNLICENSED",
