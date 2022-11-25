@@ -9,7 +9,9 @@ RUN ls ..
 RUN ls ../..
 
 RUN apk update
-RUN apk install pnpm
+RUN apk add curl
+
+RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
 
 RUN pnpm -r install
 RUN pnpm -r run build
