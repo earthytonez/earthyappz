@@ -1,4 +1,22 @@
 ---
+title: Programming
+weight: "4"
+meta_title: Programming Languages.
+
+description: "Programming Languages and DSLs for making music"
+icon: /images/icons/hugo.svg
+website: https://gohugo.io
+github_path: gohugoio/hugo
+twitter_username: gohugoio
+license: Apache-2.0
+license_url: https://github.com/gohugoio/hugo/blob/master/LICENSE
+language: Go
+url: "/hugo-themes"
+draft: false
+---
+Hugo is a popular static site generator written in Go. It's simple to use and easy to learn, making it a popular choice for developers who want to build a website without having to learn complex coding languages. Hugo is open source and free to use.
+
+---
 title: Astro Boilerplate
 github: https://github.com/ixartz/Astro-boilerplate
 demo: https://creativedesignsguru.com/demo/astro-boilerplate/
@@ -20,8 +38,8 @@ category:
   - Blog
   - Portfolio
 draft: false
-publish_date: '2022-05-03T15:17:26Z'
-update_date: '2022-08-10T18:31:45Z'
+publish_date: "2022-05-03T15:17:26Z"
+update_date: "2022-08-10T18:31:45Z"
 github_star: 210
 github_fork: 69
 ---

@@ -1,7 +1,7 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Why 12 notes?
 github: https://github.com/earthytonez/earthyappz
-external_url: https://github.com/Music-and-Culture-Technology-Lab/omnizart
+website_url: https://github.com/aguaviva/articles/blob/main/why_12_notes.ipynb
 author: Wintergatan
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
@@ -10,9 +10,9 @@ description: Resource short description, it will be the meta description for the
 ssg:
   - Undefined
 css:
-  - Aesthetic
-cms:
   - Undefined
+cms:
+  - Academic
 tags:
   - Native App
   - Windows

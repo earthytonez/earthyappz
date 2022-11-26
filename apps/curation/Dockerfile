@@ -16,7 +16,7 @@ RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linux
 RUN pnpm -r install
 RUN pnpm -r run build
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD [ "pnpm", "--filter curation", "start" ]
 

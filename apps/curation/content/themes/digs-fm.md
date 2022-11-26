@@ -1,8 +1,8 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Digs.fm
 github: https://github.com/earthytonez/earthyappz
-external_url: https://www.musi-co.com/listen/streams
-author: Wintergatan
+website_url: https://digs.fm/
+author: Digs.fm
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
 date: 2022-08-31T11:44:50.000Z

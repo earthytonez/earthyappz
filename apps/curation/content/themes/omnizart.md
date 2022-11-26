@@ -1,16 +1,16 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Omnizart
 github: https://github.com/earthytonez/earthyappz
-external_url: https://github.com/aguaviva/articles/blob/main/why_12_notes.ipynb
+website_url: https://github.com/Music-and-Culture-Technology-Lab/omnizart
 author: Wintergatan
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
 date: 2022-08-31T11:44:50.000Z
-description: Resource short description, it will be the meta description for the theme also.
+description: a Python library that aims for democratizing automatic music transcription
 ssg:
-  - Undefined
+  - Programming
 css:
-  - Aesthetic
+  - Undefined
 cms:
   - Undefined
 tags:

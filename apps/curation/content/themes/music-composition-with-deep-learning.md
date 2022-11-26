@@ -1,7 +1,7 @@
 ---
-title: Digs.fm
+title: "Music Composition with Deep Learning: A Review"
 github: https://github.com/earthytonez/earthyappz
-external_url: https://digs.fm/
+website_url: https://arxiv.org/abs/2108.12290
 author: Wintergatan
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
@@ -10,9 +10,9 @@ description: Resource short description, it will be the meta description for the
 ssg:
   - Undefined
 css:
-  - Aesthetic
-cms:
   - Undefined
+cms:
+  - Academic
 tags:
   - Native App
   - Windows

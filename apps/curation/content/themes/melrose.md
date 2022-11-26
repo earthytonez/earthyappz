@@ -1,22 +1,23 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Melrōse, a language to program and play music
 github: https://github.com/earthytonez/earthyappz
-website_url: https://www.youtube.com/watch?v=IvUU8joBb1Q
+website_url: https://ernestmicklei.com/melrose/introduction_melrose/
 author: Wintergatan
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
 date: 2022-08-31T11:44:50.000Z
 description: Resource short description, it will be the meta description for the theme also.
 ssg:
-  - Undefined
+  - Programming
 css:
-  - Aesthetic
+  - Undefined
 cms:
   - Undefined
 tags:
   - Native App
   - Windows
-  - Mac OS X
+  - Mac OS Xhttps://sonic-pi.net/
+
 categories:
   - Aesthetic
 draft: false

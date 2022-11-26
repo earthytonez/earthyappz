@@ -1,12 +1,12 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Musico - An AI that writes music
 github: https://github.com/earthytonez/earthyappz
-external_url: https://ernestmicklei.com/melrose/introduction_melrose/
+website_url: https://www.musi-co.com/listen/streams
 author: Wintergatan
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
 date: 2022-08-31T11:44:50.000Z
-description: Resource short description, it will be the meta description for the theme also.
+description: Musico is an AI-driven software engine that generates music.  It can react to gesture, movement, code or other sound.
 ssg:
   - Undefined
 css:

@@ -1,22 +1,23 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Sonic Pi
 github: https://github.com/earthytonez/earthyappz
-external_url: https://arxiv.org/abs/2108.12290
+website_url: https://sonic-pi.net/
 author: Wintergatan
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
 date: 2022-08-31T11:44:50.000Z
 description: Resource short description, it will be the meta description for the theme also.
 ssg:
-  - Undefined
+  - Lanaguages
 css:
-  - Aesthetic
+  - Undefined
 cms:
   - Undefined
 tags:
   - Native App
   - Windows
   - Mac OS X
+
 categories:
   - Aesthetic
 draft: false

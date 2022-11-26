@@ -1,7 +1,7 @@
 ---
 title: Resonate
 github: https://github.com/earthytonez/earthyappz
-external_url: https://community.resonate.coop/
+website_url: https://community.resonate.coop/
 author: Author
 author_link: https://examplesite.com/
 author_twitter: twitter_username
@@ -11,7 +11,7 @@ ssg:
   - Undefined
 css:
   - Mixes
-cms:
+cms:c
   - Undefined
 tags:
   - Native App
