@@ -2,7 +2,7 @@ FROM node:19-alpine
 
 WORKDIR /opt/app
 
-ADD . /opt/app
+ADD ../.. /opt/app
 
 RUN ls
 RUN ls ..
