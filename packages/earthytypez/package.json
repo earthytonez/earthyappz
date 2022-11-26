@@ -9,7 +9,7 @@
     "test": "jest --watchAll",
     "build": "tsc"
   },
-  "author": "earthytonez.com",
+  "author": "@earthytonez",
   "license": "ISC",
   "dependencies": {
     "@tonaljs/chord-type": "^4.6.5",

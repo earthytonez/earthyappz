@@ -13,12 +13,11 @@ RUN apk add curl
 
 RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
 
-RUN pnpm -r install
+RUN npm install -g tsc
 RUN pnpm -r run build
+RUN pnpm -r install
 
 EXPOSE 3000
 
-CMD [ "pnpm", "--filter curation", "start" ]
 
-
-
+CMD [ "pnpm", "--filter earthymaw", "start" ]

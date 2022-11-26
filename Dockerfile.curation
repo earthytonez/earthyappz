@@ -2,7 +2,7 @@ FROM node:19-alpine
 
 WORKDIR /opt/app
 
-ADD ../.. /opt/app
+ADD . /opt/app
 
 RUN ls
 RUN ls ..
@@ -13,11 +13,13 @@ RUN apk add curl
 
 RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
 
-RUN pnpm install -g tsc
 RUN pnpm -r install
 RUN pnpm -r run build
 
 EXPOSE 3000
+WORKDIR /opt/app/apps/curation
+
+CMD [ "pnpm", "--filter curation", "start" ]
 
 
-CMD [ "pnpm", "--filter earthymaw", "start" ]
+
