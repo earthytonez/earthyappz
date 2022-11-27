@@ -1,8 +1,8 @@
-# Statichunt
+# Earthy Resources
 
-[Statichunt](https://statichunt.com/) is an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.
 
-## Submit A Theme
+## Submit a Resource
+Reach out to us on Mastodon.social: https://mastodon.social/@mikkergp
 
 Anyone can submit an open-source theme by adding a markdown file to the `content/themes` folder.
 
@@ -36,9 +36,14 @@ If you love this project don’t forget to click the “Star” button.
 
 ## Acknowledgments
 
-Powered by [Nextjs](https://nextjs.org//), Deployed by [Vercel](https://vercel.com/), and Managed by [Forestry](https://forestry.io/).
 
 ## Connect With Us
 
 Stay up to date with all static site generator resources and engage with the community. <br>
 Follow us on Twitter: [Statichunt](https://twitter.com/heyStatichunt)<br> Join Discord Community: [Statichunt Discord Server](https://discord.gg/ph9z267TBZ)
+
+## Acknowledgements:
+
+Based on https://statichunt.com (https://github.com/statichunt/statichunt), an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.
+
+Powered by [Nextjs](https://nextjs.org//), Deployed by [Vercel](https://vercel.com/), and Managed by [Forestry](https://forestry.io/).
