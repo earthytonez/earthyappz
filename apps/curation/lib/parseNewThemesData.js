@@ -11,14 +11,14 @@ const rateLimit = require("axios-rate-limit");
 const parseGithubUrl = require("parse-github-url");
 const getThemes = require("../.json/themes.json");
 const themesFolder = path.join(process.cwd(), "/content/themes");
-const token = process.env.GITHUB_TOKEN;
+// const token = process.env.GITHUB_TOKEN;
 
 // check github token
-if (!token) {
-  throw new Error(
-    'Cannot access Github API - environment variable "GITHUB_TOKEN" is missing'
-  );
-}
+// if (!token) {
+//   throw new Error(
+//     'Cannot access Github API - environment variable "GITHUB_TOKEN" is missing'
+//   );
+// }
 
 // axios limit
 const axiosLimit = rateLimit(axios.create(), {
@@ -42,19 +42,19 @@ const getRepoName = (repoUrl) => {
 };
 
 // get last commit
-const getLastCommit = (repo, branch) => {
-  return axiosLimit
-    .get(`https://api.github.com/repos/${repo}/branches/${branch}`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    })
-    .then((res) => {
-      const lastCommit = res.data.commit.commit.author.date;
-      return lastCommit;
-    })
-    .catch((err) => {});
-};
+// const getLastCommit = (repo, branch) => {
+//   return axiosLimit
+//     .get(`https://api.github.com/repos/${repo}/branches/${branch}`, {
+//       headers: {
+//         Authorization: `Token ${token}`,
+//       },
+//     })
+//     .then((res) => {
+//       const lastCommit = res.data.commit.commit.author.date;
+//       return lastCommit;
+//     })
+//     .catch((err) => {});
+// };
 
 // update frontmatter
 const updateFrontmatter = (slug, update = {}) => {
@@ -73,38 +73,38 @@ const updateFrontmatter = (slug, update = {}) => {
 };
 
 // fetch github data
-const updateGithubData = async (githubURL, slug) => {
-  try {
-    const repo = getRepoName(githubURL);
-    spinner.text = `${slug} => updating`;
-    const res = await axiosLimit.get(`https://api.github.com/repos/${repo}`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    const lastCommit = await getLastCommit(repo, res.data.default_branch);
-    updateFrontmatter(slug, {
-      publish_date: res.data.created_at,
-      update_date: lastCommit,
-      github_star: res.data.stargazers_count,
-      github_fork: res.data.forks_count,
-    });
-  } catch (err) {
-    spinner.text = `${slug} => update failed`;
-    updateFrontmatter(slug, {
-      draft: false,
-      disabled_reason: "Github repo not found",
-    });
-  }
-};
+// const updateGithubData = async (githubURL, slug) => {
+//   try {
+//     const repo = getRepoName(githubURL);
+//     spinner.text = `${slug} => updating`;
+//     const res = await axiosLimit.get(`https://api.github.com/repos/${repo}`, {
+//       headers: {
+//         Authorization: `Token ${token}`,
+//       },
+//     });
+//     // const lastCommit = await getLastCommit(repo, res.data.default_branch);
+//     // updateFrontmatter(slug, {
+//     //   publish_date: res.data.created_at,
+//     //   // update_date: lastCommit,
+//     //   github_star: res.data.stargazers_count,
+//     //   github_fork: res.data.forks_count,
+//     // });
+//   } catch (err) {
+//     spinner.text = `${slug} => update failed`;
+//     // updateFrontmatter(slug, {
+//     //   draft: false,
+//     //   disabled_reason: "Github repo not found",
+//     // });
+//   }
+// };
 
 // update all github data
-updateAllGithubData = async (themes) => {
-  spinner.start("Updating github data");
-  for (const data of themes) {
-    await updateGithubData(data.github, data.slug);
-  }
-  spinner.stop("Success - Updating github data");
-};
+// updateAllGithubData = async (themes) => {
+//   spinner.start("Updating github data");
+//   for (const data of themes) {
+//     await updateGithubData(data.github, data.slug);
+//   }
+//   spinner.stop("Success - Updating github data");
+// };
 
-updateAllGithubData(themes);
+// updateAllGithubData(themes);
