@@ -30,6 +30,7 @@ WORKDIR /opt/app/apps/curation
 FROM nginx:1.17.8-alpine
 
 COPY --from=build /opt/app/apps/curation/build /opt/app
+# RUN rm /etc/nginx/conf.d/default.conf
 COPY /apps/curation/devops/nginx.conf /etc/nginx/conf.d
 
 EXPOSE 8080

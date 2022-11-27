@@ -40,7 +40,7 @@ If you love this project don’t forget to click the “Star” button.
 ## Connect With Us
 
 Stay up to date with all static site generator resources and engage with the community. <br>
-Follow us on Twitter: [Statichunt](https://twitter.com/heyStatichunt)<br> Join Discord Community: [Statichunt Discord Server](https://discord.gg/ph9z267TBZ)
+Follow us on Twitter: [Statichunt](https://mastodon.social/@mikkergp)<br> Join Discord Community: [Statichunt Discord Server](https://discord.gg/ph9z267TBZ)
 
 ## Acknowledgements:
 

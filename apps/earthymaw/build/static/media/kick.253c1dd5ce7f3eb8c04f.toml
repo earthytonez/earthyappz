@@ -1,0 +1,11 @@
+name = "Kick"
+description = "Kick Drum"
+tags = [
+    "house", "trance", "edm"
+]
+plugins = ["filter<lowpass>", "adsr"]
+
+parameters = ["oscillator_pitch", "pitch_decay"]
+
+type = "MembraneSynth"
+

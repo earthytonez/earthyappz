@@ -1,0 +1,13 @@
+name = "Fixed Step"
+description = "Each step comes at a flexible steady interval."
+length = 16
+outputs = 1
+tags = [
+    "house", "trance", "edm"
+]
+type = "fixedStep"
+
+parameters = ["step_interval"]
+
+[GateTrigger]
+trigger = "every 4 steps"

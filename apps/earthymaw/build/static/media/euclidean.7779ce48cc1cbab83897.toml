@@ -1,0 +1,14 @@
+name = "Euclidean"
+description = "Sequencer based on euclidean rhythyms"
+documentation = 'The Euclidean sequencer is based off of a mathematical algorithm'
+length = 16
+outputs = 1
+tags = [
+    "house", "trance", "edm"
+]
+type = "euclidean"
+
+parameters = ["pulses", "steps", "beat_offset"]
+
+[GateTrigger]
+trigger = "Euclidean()"

@@ -45,14 +45,14 @@ const Header = () => {
           />
           <a
             className="btn-follow hidden sm:inline"
-            href="https://twitter.com/heyStatichunt"
+            href="https://mastodon.social/@mikkergp"
             target="_blank"
             rel="nofollow noreferrer"
           >
             <span className="hidden not-italic md:inline">Follow </span>
             <span>
               <span className="inline-block -translate-y-[2px]">@</span>
-              Statichunt
+              EarthyResources
             </span>
           </a>
         </div>
