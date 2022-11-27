@@ -13,9 +13,20 @@ RUN apk add curl
 
 RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
 
-RUN npm install -g tsc
-RUN pnpm -r install
-RUN pnpm -r run build
+RUN npm install -g typescript
+RUN pnpm --filter "@earthytonez/earthyutilz" install
+RUN pnpm --filter "@earthytonez/earthyutilz" build
+RUN pnpm --filter "@earthytonez/earthytypez" install
+RUN pnpm --filter "@earthytonez/earthytypez" build
+RUN pnpm --filter "@earthytonez/maw-manifests" install
+RUN pnpm --filter "@earthytonez/maw-manifests" build
+RUN pnpm --filter "@earthytonez/react-juce" install
+RUN pnpm --filter "@earthytonez/react-juce" build
+RUN pnpm --filter "@earthytonez/sequencers" install
+RUN pnpm --filter "@earthytonez/sequencers" build
+
+RUN pnpm --filter "earthymaw" install
+RUN pnpm --filter "earthymaw" build
 
 EXPOSE 3000
 
