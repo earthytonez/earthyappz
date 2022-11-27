@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 const fs = require("fs");
 const path = require("path");
-const dotenv = require("dotenv").config();
+// const dotenv = require("dotenv").config();
 const Spinner = require("cli-spinner").Spinner;
-const spinner = new Spinner("Loading");
-const yamlFront = require("yaml-front-matter");
-const yaml = require("js-yaml");
+// const spinner = new Spinner("Loading");
+// const yamlFront = require("yaml-front-matter");
+// const yaml = require("js-yaml");
 const axios = require("axios");
 const rateLimit = require("axios-rate-limit");
 const parseGithubUrl = require("parse-github-url");
 const getThemes = require("../.json/themes.json");
-const themesFolder = path.join(process.cwd(), "/content/themes");
+// const themesFolder = path.join(process.cwd(), "/content/themes");
 // const token = process.env.GITHUB_TOKEN;
 
 // check github token
@@ -37,9 +37,9 @@ const themes = filterNewTheme.map((data) => ({
 }));
 
 // gert github repo name
-const getRepoName = (repoUrl) => {
-  return parseGithubUrl(repoUrl).repo;
-};
+// const getRepoName = (repoUrl) => {
+//   return parseGithubUrl(repoUrl).repo;
+// };
 
 // get last commit
 // const getLastCommit = (repo, branch) => {
@@ -57,20 +57,20 @@ const getRepoName = (repoUrl) => {
 // };
 
 // update frontmatter
-const updateFrontmatter = (slug, update = {}) => {
-  const filePath = path.resolve(themesFolder, slug + ".md");
-  const fileData = fs.existsSync(filePath) ? fs.readFileSync(filePath) : null;
-  const frontmatter = yamlFront.loadFront(fileData);
-  const content = frontmatter.__content;
-  delete frontmatter.__content;
+// const updateFrontmatter = (slug, update = {}) => {
+//   const filePath = path.resolve(themesFolder, slug + ".md");
+//   const fileData = fs.existsSync(filePath) ? fs.readFileSync(filePath) : null;
+//   const frontmatter = yamlFront.loadFront(fileData);
+//   const content = frontmatter.__content;
+//   delete frontmatter.__content;
 
-  Object.keys(update).forEach((key) => {
-    frontmatter[key] = update[key];
-  });
+//   Object.keys(update).forEach((key) => {
+//     frontmatter[key] = update[key];
+//   });
 
-  const frontmatterWrite = `---\n${yaml.dump(frontmatter)}---${content}`;
-  fs.writeFileSync(filePath, frontmatterWrite);
-};
+//   const frontmatterWrite = `---\n${yaml.dump(frontmatter)}---${content}`;
+//   fs.writeFileSync(filePath, frontmatterWrite);
+// };
 
 // fetch github data
 // const updateGithubData = async (githubURL, slug) => {

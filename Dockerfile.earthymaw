@@ -1,12 +1,8 @@
-FROM node:19-alpine
+FROM node:19-alpine as build
 
 WORKDIR /opt/app
 
 ADD . /opt/app
-
-RUN ls
-RUN ls ..
-RUN ls ../..
 
 RUN apk update
 RUN apk add curl
@@ -28,7 +24,12 @@ RUN pnpm --filter "@earthytonez/sequencers" build
 RUN pnpm --filter "earthymaw" install
 RUN pnpm --filter "earthymaw" build
 
-EXPOSE 3000
 
+FROM nginx:1.17.8-alpine
+COPY --from=build /opt/app/apps/earthymaw/build /opt/app
+RUN rm /etc/nginx/conf.d/default.conf
+COPY /apps/earthymaw/devops/nginx.conf /etc/nginx/conf.d
 
-CMD [ "pnpm", "--filter earthymaw", "start" ]
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
