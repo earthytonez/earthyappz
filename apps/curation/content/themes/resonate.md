@@ -11,7 +11,7 @@ ssg:
   - Undefined
 css:
   - Mixes
-cms:c
+cms:
   - Undefined
 tags:
   - Native App
