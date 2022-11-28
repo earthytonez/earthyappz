@@ -2,7 +2,8 @@
 title: Amped Studio
 github: https://github.com/earthytonez/earthyappz
 website_url: https://ampedstudio.com/
-author: Amped Stuiod
+demo: https://ampedstudio.com/
+author: Amped Studio
 author_link: https://ampedstudio.com/
 author_twitter: MarkTeekman
 date: 2022-08-31T11:44:50.000Z

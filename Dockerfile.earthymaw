@@ -1,8 +1,8 @@
 FROM node:19-alpine as build
 
-WORKDIR /opt/app
+WORKDIR /opt/build
 
-ADD . /opt/app
+ADD . /opt/build
 
 RUN apk update
 RUN apk add curl
@@ -26,7 +26,7 @@ RUN pnpm --filter "earthymaw" build
 
 
 FROM nginx:1.17.8-alpine
-COPY --from=build /opt/app/apps/earthymaw/build /opt/app
+COPY --from=build /opt/build/apps/earthymaw/build /opt/app
 # RUN rm /etc/nginx/conf.d/default.conf
 COPY /apps/earthymaw/devops/nginx.conf /etc/nginx/conf.d
 

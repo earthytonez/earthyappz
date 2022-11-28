@@ -1,6 +1,7 @@
 ---
 title: Euclidian Algorithm
 github: https://github.com/earthytonez/earthyappz
+demo: http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf
 website_url: http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf
 author: Mark Teekman
 author_link: https://github.com/markteekman

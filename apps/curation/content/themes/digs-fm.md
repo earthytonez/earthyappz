@@ -2,6 +2,7 @@
 title: Digs.fm
 github: https://github.com/earthytonez/earthyappz
 website_url: https://digs.fm/
+demo: https://digs.fm/
 author: Digs.fm
 author_link: https://wintergatan.net/
 author_twitter: https://twitter.com/wintergatan?lang=en
