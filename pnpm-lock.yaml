@@ -30,6 +30,7 @@ importers:
       js-yaml: ^4.1.0
       jshint: ^2.13.5
       marked: ^4.1.1
+      mixpanel-browser: ^2.45.0
       next: 12.3.1
       next-mdx-remote: ^4.1.0
       next-themes: ^0.2.1
@@ -63,6 +64,7 @@ importers:
       github-slugger: 1.5.0
       gray-matter: 4.0.3
       marked: 4.2.3
+      mixpanel-browser: 2.45.0
       next: 12.3.1_m5sxuueb27gk6ddc5gums6vtgq
       next-mdx-remote: 4.2.0_biqbaboplfbrettd7655fr4n2y
       next-themes: 0.2.1_azq6kxkn3od7qdylwkyksrwopy
@@ -109,7 +111,7 @@ importers:
       '@babel/plugin-syntax-flow': ^7.17.12
       '@babel/plugin-transform-react-jsx': ^7.17.12
       '@earthytonez/earthytypez': workspace:*
-      '@earthytonez/sequencers': workspace:0.0.1
+      '@earthytonez/sequencers': workspace:*
       '@emotion/react': ^11.9.3
       '@emotion/styled': ^11.9.3
       '@fontsource/fascinate': ^4.5.6

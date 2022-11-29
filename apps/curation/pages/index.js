@@ -11,6 +11,11 @@ import { setOthersCategory } from "hooks/setOthersCategory";
 import SortReducer from "hooks/sortReducer";
 import { useState } from "react";
 
+import mixpanel from "mixpanel-browser";
+
+mixpanel.init("5e48032a969e80844800a42be2cd1992", { debug: true });
+mixpanel.track("Landing Page");
+
 const Home = ({
   frontmatter: { intro },
   cms,
