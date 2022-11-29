@@ -13,8 +13,8 @@ import { useState } from "react";
 
 import mixpanel from "mixpanel-browser";
 
-mixpanel.init("5e48032a969e80844800a42be2cd1992", { debug: true });
-mixpanel.track("Landing Page");
+mixpanel.init("896f9416323f40212481d999023fcddb", { debug: true });
+mixpanel.track("Curation Landing Page");
 
 const Home = ({
   frontmatter: { intro },

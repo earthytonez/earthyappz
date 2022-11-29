@@ -19,7 +19,7 @@ import { UIStoreProvider } from "./stores/UI/useUIStore";
 import mixpanel from "mixpanel-browser";
 
 mixpanel.init("896f9416323f40212481d999023fcddb", { debug: true });
-mixpanel.track("Landing Page");
+mixpanel.track("EarthyMaw Landing Page");
 
 const theme = createTheme({
   palette: {
