@@ -114,6 +114,9 @@ const TopBar = observer(() => {
     setSectionLength(parseInt(ev.currentTarget.value));
   };
 
+  console.log(tempo);
+  console.log(musicSectionLength);
+
   return (
     <React.Fragment>
       <AppBar>
@@ -132,12 +135,14 @@ const TopBar = observer(() => {
             <PlayButtonToggle play={play} playPause={playPause} />
             <HeaderNumberField
               value={tempo.val}
+              onDeckValue={tempo.parameterValue.onDeckValue}
               onChange={onChangeTempo}
               title="bpm"
               width="120px"
             />
             <HeaderNumberField
               value={musicSectionLength.val}
+              onDeckValue={musicSectionLength.parameterValue.onDeckValue}
               onChange={onChangeSectionLength}
               title="Section Length"
               width="140px"

@@ -22,6 +22,7 @@ export default class ParameterValue<
   ) {
     makeObservable(this, {
       _val: observable,
+      onDeckValue: observable,
       setValue: action.bound,
       set: action.bound,
       val: computed,

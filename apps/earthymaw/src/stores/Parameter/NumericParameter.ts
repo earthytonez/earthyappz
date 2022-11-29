@@ -65,6 +65,7 @@ export default class NumericParameter extends BaseParameter {
   }
 
   public setValue(newValue: number): boolean {
+    console.log(`HeaderNumberField Set Value ${newValue}`);
     return this.parameterValue.setValue(newValue);
   }
 
