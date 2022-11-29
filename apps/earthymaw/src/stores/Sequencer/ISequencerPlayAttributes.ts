@@ -7,4 +7,5 @@ export interface ISequencerPlayAttributes {
   lengthSeconds?: number;
   tailSeconds?: number;
   time: any;
+  stop?: boolean;
 }

@@ -269,7 +269,7 @@ export default class ParameterStore {
         userParameterStore: this.rootStore!.userParameterStore,
         name: "Step Pitch Shift Direction",
         key: this.parameterKey("step_pitch_shift_direction", trackID),
-        options: ["up", "down", "either", "none"],
+        options: ["up", "down", "either", "none", "any"],
         default: [
           "either",
           "either",

@@ -80,7 +80,7 @@ export default class TrackPipeline {
       this.beatFeatures
     );
 
-    if (!playAttributes) {
+    if (!playAttributes || playAttributes.stop) {
       return false;
     }
 

@@ -7,4 +7,5 @@ export default interface IPlayAttributes {
   lengthSeconds?: number;
   tailSeconds?: number;
   time: any;
+  stop?: boolean;
 }

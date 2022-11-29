@@ -18,8 +18,7 @@ let key: IMusicKey;
 let chord: IMusicChord;
 let octaves: TrackOctaves;
 let scale: IMusicScale;
-let intervalToPlayDefinition: IntervalToPlayDefinition =
-  new IntervalToPlayDefinition();
+let intervalToPlayDefinition: IntervalToPlayDefinition = new IntervalToPlayDefinition();
 let intervalToPlay: IntervalToPlay;
 let parameters = new Map();
 const userParameterStore = new UserParameterStore();
@@ -98,7 +97,7 @@ test("getIntervalParameterNote for First Note", () => {
     lastParams: undefined,
   });
 
-  expect(retrievedNote.toNote()).toEqual("D4");
+  expect(retrievedNote!.toNote()).toEqual("D4");
 });
 
 test("getIntervalParameterNote for Second Note", () => {
@@ -153,7 +152,7 @@ test("getIntervalParameterNote for Second Note", () => {
     lastParams,
   });
 
-  expect(retrievedNote.toNote()).toEqual("E4");
+  expect(retrievedNote!.toNote()).toEqual("E4");
 
   /* Next Interval */
   measureBeat = 3;
@@ -169,7 +168,7 @@ test("getIntervalParameterNote for Second Note", () => {
     })
   );
 
-  expect(retrievedNote.toNote()).toEqual("F4");
+  expect(retrievedNote!.toNote()).toEqual("F4");
 
   /* Next Interval */
   measureBeat = 4;
@@ -184,7 +183,7 @@ test("getIntervalParameterNote for Second Note", () => {
       measureBeat: measureBeat,
     })
   );
-  expect(retrievedNote.toNote()).toEqual("G4");
+  expect(retrievedNote!.toNote()).toEqual("G4");
   /* Next Interval */
   measureBeat = 5;
 
@@ -198,7 +197,7 @@ test("getIntervalParameterNote for Second Note", () => {
       measureBeat: measureBeat,
     })
   );
-  expect(retrievedNote.toNote()).toEqual("F4");
+  expect(retrievedNote!.toNote()).toEqual("F4");
   /* Next Interval */
   measureBeat = 6;
 
@@ -212,7 +211,7 @@ test("getIntervalParameterNote for Second Note", () => {
       measureBeat: measureBeat,
     })
   );
-  expect(retrievedNote.toNote()).toEqual("E4");
+  expect(retrievedNote!.toNote()).toEqual("E4");
   /* Next Interval */
   measureBeat = 7;
 
@@ -226,7 +225,7 @@ test("getIntervalParameterNote for Second Note", () => {
       measureBeat: measureBeat,
     })
   );
-  expect(retrievedNote.toNote()).toEqual("D4");
+  expect(retrievedNote!.toNote()).toEqual("D4");
   /* Next Interval */
   measureBeat = 8;
 
@@ -240,7 +239,7 @@ test("getIntervalParameterNote for Second Note", () => {
       measureBeat: measureBeat,
     })
   );
-  expect(retrievedNote.toNote()).toEqual("C4");
+  expect(retrievedNote!.toNote()).toEqual("C4");
 });
 
 test("getArrayStep returns right value", () => {
@@ -262,4 +261,54 @@ test("getArrayStep returns right value", () => {
   expect(intervalParameterNoteToPlayRunner.getArrayStep(2, 2)).toEqual(0);
   expect(intervalParameterNoteToPlayRunner.getArrayStep(4, 2)).toEqual(1);
   expect(intervalParameterNoteToPlayRunner.getArrayStep(9, 3)).toEqual(2);
+});
+
+test("direction none", () => {
+  let parameterMap = new Map();
+
+  let stepPitchShiftDirectionDirectionNone = new StringEnumArrayParameter({
+    userParameterStore,
+    name: "Waveform",
+    key: "track.1.synthesizer.step_pitch_shift_direction",
+    options: ["up", "down", "either", "none", "any"],
+    default: ["none", "none", "none", "none", "none", "none", "none", "none"],
+    description: "description",
+  });
+
+  parameterMap.set("step_pitch_shift", stepPitchShift);
+  parameterMap.set(
+    "step_pitch_shift_direction",
+    stepPitchShiftDirectionDirectionNone
+  );
+
+  let intervalParameterNoteToPlayRunner = new IntervalParameterNoteToPlayRunner(
+    toneFeatures,
+    intervalToPlay,
+    parameterMap,
+    4
+  );
+
+  let measureBeat = 1;
+
+  let lastParams = {
+    note: Tone.Frequency("D4"),
+  };
+
+  let getIntervalParameterNoteParams = {
+    key: key,
+    scale: scale,
+    octaves: octaves,
+    measureBeat: measureBeat,
+    intervalToPlay: intervalToPlay,
+    parameters: parameters,
+    lastParams: lastParams,
+  };
+
+  let retrievedNote = intervalParameterNoteToPlayRunner.getNote(
+    Object.assign(getIntervalParameterNoteParams, {
+      lastParams: lastParams,
+      measureBeat: measureBeat,
+    })
+  );
+  expect(retrievedNote).toBeUndefined();
 });

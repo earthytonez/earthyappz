@@ -34,6 +34,10 @@ export default class IntervalParameterNoteToPlayRunner {
     return Math.floor(Math.random() * 2) === 0;
   }
 
+  oneThird() {
+    return Math.floor(Math.random() * 3) === 0;
+  }
+
   arraySteps() {
     return this.parameters.get("step_pitch_shift")?.val.length;
   }
@@ -108,6 +112,25 @@ export default class IntervalParameterNoteToPlayRunner {
     return interval + pitchShift;
   }
 
+  calcShouldStop(direction: string): boolean {
+    switch (direction) {
+      case "up":
+        return false;
+      case "down":
+        return false;
+      case "none":
+        return true;
+      case "either":
+        return false;
+      case "any":
+        if (this.oneThird()) {
+          return true;
+        }
+    }
+
+    return false;
+  }
+
   getParameter(parameter: string) {
     if (this.parameters.has(parameter)) {
       debug(
@@ -133,7 +156,7 @@ export default class IntervalParameterNoteToPlayRunner {
   }: {
     measureBeat: number;
     lastParams: any;
-  }): Tone.FrequencyClass<number> {
+  }): Tone.FrequencyClass<number> | undefined {
     let retVal = Tone.Frequency("C4");
     let octaveToPlay = this.toneFeatures.getOctave();
     let stepInterval = this.stepInterval();
@@ -179,6 +202,10 @@ export default class IntervalParameterNoteToPlayRunner {
       "NOTE_TO_PLAY::call::getScaleInterval",
       `interval ${this.toneFeatures.scale} ${this.toneFeatures.key} ${interval} ${stepPitchShiftDirection} ${stepPitchShift} ${octaveToPlay}`
     );
+
+    if (this.calcShouldStop(stepPitchShiftDirection)) {
+      return undefined;
+    }
 
     retVal = this.intervalToPlay.getScaleInterval(
       this.toneFeatures.scale,

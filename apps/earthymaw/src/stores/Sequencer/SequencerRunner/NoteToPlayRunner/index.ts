@@ -36,7 +36,7 @@ export default class NoteToPlay {
     intervalToPlay: IntervalToPlay,
     parameters: any,
     lastParams: any
-  ): Tone.FrequencyClass {
+  ): Tone.FrequencyClass | undefined {
     if (intervalToPlay.intervalType === "arpeggiator") {
       this.noteChooser = "interval";
     }
@@ -65,13 +65,12 @@ export default class NoteToPlay {
         );
         return intervalNoteRunner.getNote(measureBeat);
       case "interval_parameter":
-        let intervalParameterNoteToPlayRunner =
-          new IntervalParameterNoteToPlayRunner(
-            this.toneFeatures,
-            intervalToPlay,
-            parameters,
-            this.stepInterval
-          );
+        let intervalParameterNoteToPlayRunner = new IntervalParameterNoteToPlayRunner(
+          this.toneFeatures,
+          intervalToPlay,
+          parameters,
+          this.stepInterval
+        );
         return intervalParameterNoteToPlayRunner.getNote({
           measureBeat,
           lastParams,

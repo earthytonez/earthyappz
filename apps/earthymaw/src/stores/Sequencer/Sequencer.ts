@@ -222,7 +222,7 @@ export default class Sequencer extends SequencerType {
     chord: IMusicChord,
     beatMarker: BeatMarker,
     stepInterval: number
-  ): Tone.FrequencyClass {
+  ): Tone.FrequencyClass | undefined {
     let octaves = this.trackFeatures.octaves;
 
     let toneFeatures = new ToneFeatures(
@@ -283,10 +283,12 @@ export default class Sequencer extends SequencerType {
     time: any,
     stepInterval: number
   ): IPlayAttributes {
+    let note = this.note(key, scale, chord, beatMarker, stepInterval);
     return {
       volume: this.volume(beatMarker),
-      note: this.note(key, scale, chord, beatMarker, stepInterval),
+      note: note,
       time: time,
+      stop: !note,
     };
   }
 
@@ -315,10 +317,9 @@ export default class Sequencer extends SequencerType {
 
     let octave = 4;
     if (this.trackFeatures.octaves) {
-      octave =
-        this.trackFeatures.octaves.val()[
-          Math.floor(Math.random() * this.trackFeatures.octaves.val().length)
-        ];
+      octave = this.trackFeatures.octaves.val()[
+        Math.floor(Math.random() * this.trackFeatures.octaves.val().length)
+      ];
     }
 
     let toneFrequencyChord = chordNotes.map((note: string) => {
@@ -401,10 +402,12 @@ export default class Sequencer extends SequencerType {
     time: any,
     stepInterval: number
   ): ISequencerPlayAttributes {
+    let note = this.note(key, scale, chord, beatMarker, stepInterval);
     return {
       volume: this.volume(beatMarker),
-      note: this.note(key, scale, chord, beatMarker, stepInterval),
+      note: note,
       time: time,
+      stop: !note,
     };
   }
 
