@@ -1,13 +1,13 @@
 {
   "site": {
-    "title": "Statichunt | A Curated Directory Of Jamstack Resources",
-    "base_url": "https://statichunt.com",
+    "title": "EarthyResources | A Curated Directory Of Music Resources",
+    "base_url": "https://earthytonez.com",
     "favicon": "/images/favicon.png",
     "logo": "/images/logo.svg",
     "logo_light": "/images/logo-light.svg",
     "logo_width": "164",
     "logo_height": "32",
-    "logo_text": "Statichunt",
+    "logo_text": "EarthyResources",
     "footer_logo": "/images/logo-light.svg"
   },
 

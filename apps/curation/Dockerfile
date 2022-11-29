@@ -12,7 +12,6 @@ RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linux
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
-RUN ls
 RUN pnpm install
 
 
@@ -32,6 +31,7 @@ RUN apk add curl chromium
 
 RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
 
+RUN pnpm install
 RUN pnpm run build
 
 # If using npm comment out above and use below instead
@@ -52,13 +52,16 @@ COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/ ./
 
 USER nextjs
 
 EXPOSE 3000
-
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+RUN apk update
+RUN apk add curl chromium
+
+RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
+
+CMD ["pnpm", "start"]
