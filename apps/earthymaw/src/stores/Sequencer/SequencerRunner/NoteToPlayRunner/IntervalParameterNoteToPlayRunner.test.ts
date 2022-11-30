@@ -1,7 +1,7 @@
 import { Scale } from "@tonaljs/tonal";
-import NumericArrayParameter from "stores/Parameter/NumericArrayParameter";
-import NumericParameter from "stores/Parameter/NumericParameter";
-import StringEnumArrayParameter from "stores/Parameter/StringEnumArrayParameter";
+import NumericArrayParameter from "stores/Parameter/ParameterTypes/NumericArrayParameter";
+import NumericParameter from "stores/Parameter/ParameterTypes/NumericParameter";
+import StringEnumArrayParameter from "stores/Parameter/ParameterTypes/StringEnumArrayParameter";
 import { IMusicChord, IMusicKey, IMusicScale } from "Types";
 import IntervalToPlayDefinition from "../../SequencerLoader/IntervalToPlayDefinition";
 import IntervalToPlay from "../../SequencerRunner/IntervalToPlay";

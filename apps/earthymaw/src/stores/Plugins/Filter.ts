@@ -2,10 +2,10 @@ import * as Tone from "tone";
 import { Note } from "@tonaljs/tonal";
 
 import BasePlugin, { IPluginNode } from "./Base";
-import StringEnumParameter from "../Parameter/StringEnumParameter";
-import NumericParameter from "../Parameter/NumericParameter";
+import StringEnumParameter from "../Parameter/ParameterTypes/StringEnumParameter";
+import NumericParameter from "../Parameter/ParameterTypes/NumericParameter";
 import UserParameterStore from "../UserParameter.store";
-import BaseParameter from "stores/Parameter/Base";
+import BaseParameter from "stores/Parameter/ParameterTypes/Base";
 
 export default class FilterPlugin extends BasePlugin {
   _node: IPluginNode;

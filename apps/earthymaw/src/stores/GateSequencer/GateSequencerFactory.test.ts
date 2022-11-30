@@ -3,7 +3,7 @@ import GateSequencer from "./GateSequencer";
 
 import UserParameterStore from "../UserParameter.store";
 
-import NumericParameter from "../Parameter/NumericParameter";
+import NumericParameter from "../Parameter/ParameterTypes/NumericParameter";
 import { Note } from "@tonaljs/tonal";
 import { MUSIC_SECTION_LENGTH_DEFAULT } from "config/constants";
 

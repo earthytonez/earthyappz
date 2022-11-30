@@ -1,6 +1,6 @@
 import IOscillatorType from "./IOscillatorType";
 
-import { ParameterFieldTypes } from "stores/Parameter/Base";
+import { ParameterFieldTypes } from "stores/Parameter/ParameterTypes/Base";
 
 export default interface ISynthEditableParams {
   name: string;

@@ -13,7 +13,7 @@ import MusicFeaturesStore from "../MusicFeatures.store";
 import { BeatMarker } from "../MusicFeatures/BeatMarker";
 
 import BaseSynthesizer from "../Synthesizer/SynthesizerTypes/Base";
-import BaseParameter from "../Parameter/Base";
+import BaseParameter from "../Parameter/ParameterTypes/Base";
 
 import { IMusicChord, IMusicKey, IMusicScale, IMusicProgression } from "Types";
 

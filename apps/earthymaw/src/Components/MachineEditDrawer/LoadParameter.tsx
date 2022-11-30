@@ -14,7 +14,7 @@ import ParameterTitle from "./ParameterComponents/ParameterTitle";
 import EnumSelectorComponent from "./ParameterComponents/EnumSelectorComponent";
 import EnumArraySelectorComponent from "./ParameterComponents/EnumArraySelectorComponent";
 import NumericArraySelectorComponent from "./NumericArraySelectorComponent";
-import { ParameterFieldTypes } from "stores/Parameter/Base";
+import { ParameterFieldTypes } from "stores/Parameter/ParameterTypes/Base";
 import GridMiddleFullWidth from "Components/TightBorderedGrid/GridMiddleFullWidth";
 
 import { FormControl } from "@mui/material";

@@ -1,4 +1,4 @@
-import BaseParameter from "stores/Parameter/Base";
+import BaseParameter from "stores/Parameter/ParameterTypes/Base";
 import UserParameterStore from "stores/UserParameter.store";
 
 export interface IPluginNode {

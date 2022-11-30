@@ -1,4 +1,4 @@
-import BaseParameter from "stores/Parameter/Base";
+import BaseParameter from "stores/Parameter/ParameterTypes/Base";
 import { IGateTriggerParameters } from "../../GateSequencerLoader/GateTrigger";
 import SequencerGate from "../SequencerGate";
 /*

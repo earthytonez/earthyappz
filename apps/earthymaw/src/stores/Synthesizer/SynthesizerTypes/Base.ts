@@ -2,7 +2,7 @@ import { observable, makeObservable, action } from "mobx";
 import * as Tone from "tone";
 
 import ISynthDefinition from "../SynthLoader/ISynthDefinition";
-import BaseParameter from "../../Parameter/Base";
+import BaseParameter from "../../Parameter/ParameterTypes/Base";
 import BasePlugin, { IPluginNode } from "../../Plugins/Base";
 import { debug, info } from "../../../Util/logger";
 
@@ -137,10 +137,12 @@ export default class BaseSynthesizer extends Machine {
       return this;
     }
     this.pluginNodes = plugins
-      .map((plugin: BasePlugin): IPluginNode => {
-        this.registerParameters(Array.from(plugin.parameters.values()));
-        return plugin._node!;
-      })
+      .map(
+        (plugin: BasePlugin): IPluginNode => {
+          this.registerParameters(Array.from(plugin.parameters.values()));
+          return plugin._node!;
+        }
+      )
       .filter((plugin: any) => {
         return plugin !== undefined;
       });
@@ -210,7 +212,7 @@ export default class BaseSynthesizer extends Machine {
       } velocity=${triggerAttackReleaseParams.velocity}`
     );
 
-    this.synth.portamento = Tone.Time("1s");
+    this.synth.portamento = Tone.Time(".1s");
 
     this.synth.triggerAttackRelease(
       frequency,

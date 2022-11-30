@@ -95,11 +95,17 @@ export const DEFAULT_DURATION = 1;
 export class Duration {
   constructor(private _val: number) {}
 
+  /* This encodes durations in incremets of 100 milliseconds.  Lesss than that doesn't currently seem possible. */
+  /* ToDo: This should accept 1/32nd, 1/16th, 8th, 1/4, half and whole notes as well. */
+  /* Maybe the step gate array should encode these values */
   value(): Tone.TimeClass {
-    debug("IGatePlayAttributes:", `Duration: ${this._val}`);
     // let lengthArray = ["128n", "64n", "32n", "16n", "8n", "4n", "2n", "1n"];
-    return Tone.Time(`${(1 + this._val) * 0.05}s`);
-    // return Tone.Time(this._val * 0.1);
+    let retVal = Tone.Time(this._val * 0.1);
+    debug(
+      "IGatePlayAttributes:",
+      `Duration=${this._val}, Tone.Time=${retVal.toMilliseconds()}`
+    );
+    return retVal;
   }
 }
 

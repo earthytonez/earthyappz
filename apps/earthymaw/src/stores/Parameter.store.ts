@@ -1,38 +1,19 @@
 import Arranger from "./Arranger";
 
-import NumericParameter from "./Parameter/NumericParameter";
-
-import { Note } from "@tonaljs/tonal";
-
-import { OSCILLATOR_TYPES } from "./Synthesizer/IOscillatorType";
-
 import RootStore from "./Root.store";
 import { SynthesizerDefinition } from "./Synthesizer/SynthLoader/SynthLoader";
-import BaseParameter from "./Parameter/Base";
-import NumericEnumParameter from "./Parameter/NumericEnumParameter";
-import StringEnumParameter from "./Parameter/StringEnumParameter";
-import StringEnumArrayParameter from "./Parameter/StringEnumArrayParameter";
-import NumericArrayParameter from "./Parameter/NumericArrayParameter";
-import {
-  MIDI_NOTE_RANGE_MAX,
-  MIDI_NOTE_RANGE_MIN,
-} from "config/constants/parameters";
+import BaseParameter from "./Parameter/ParameterTypes/Base";
+
 import SequencerDefinition from "./Sequencer/SequencerLoader/SequencerDefinition";
 import GateSequencerDefinition from "./GateSequencer/GateSequencerLoader/GateSequencerDefinition";
 
-const MIN_STEP_PITCH_SHIFT = 0;
-const MAX_STEP_PITCH_SHIFT = 32;
+import GATE_SEQUENCER_PARAMETER_DEFINITIONS from "./Parameter/Definitions/GateSequencer";
+import SEQUENCER_PARAMETER_DEFINITIONS from "./Parameter/Definitions/Sequencer";
+import SYNTHESIZER_PARAMETER_DEFINITIONS from "./Parameter/Definitions/Synthesizer";
 
 /*
  * Defines Parameters not associated with a plugin.
  */
-
-interface IHash {
-  [details: string]: (
-    trackID: string,
-    options: { [key: string]: number | string }
-  ) => BaseParameter;
-}
 
 interface ParameterSlug {
   Slug: string;
@@ -45,317 +26,7 @@ interface ParameterSlug {
 // }
 
 export default class ParameterStore {
-  parameters: IHash = {
-    pitch: (trackID: string, _options: { [key: string]: number | string }) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Pitch",
-        key: this.parameterKey("pitch", trackID),
-        default: Note.midi("C2")!,
-        min: MIDI_NOTE_RANGE_MIN,
-        max: MIDI_NOTE_RANGE_MAX,
-        description:
-          "The pitch of the sound, often for single pitch instruments (Kick Drum)",
-      });
-    },
-    oscillator_pitch: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Oscillator Pitch",
-        title: "Pitch",
-        key: this.parameterKey("oscillator_pitch", trackID),
-        default: 0,
-        min: -36,
-        max: 36,
-        fieldType: "knob",
-        description:
-          "The pitch of the sound, often for single pitch instruments (Kick Drum)",
-      });
-    },
-
-    pitch_decay: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Pitch Decay",
-        key: this.parameterKey("pitch_decay", trackID),
-        default: 0,
-        min: 0,
-        max: 0.5,
-        description: "The amount of time the frequency envelope takes",
-      });
-    },
-
-    // trigger_set: (
-    //   trackID: string,
-    //   _options: { [key: string]: number | string }
-    // ) => {
-    //   return new NumericParameter({
-    //     userParameterStore: this.rootStore!.userParameterStore,
-    //     name: "GateTrigger Set", //  chosenGateTriggerParameterSet
-    //     key: this.parameterKey("trigger_set", trackID),
-    //     default: Note.midi("C2")!,
-    //     // fieldOptions: {
-    //     //   min: 0,
-    //     //   max: this.gateTrigger?.parameterSets.length! - 1,
-    //     //   step: 1,
-    //     //   current: this.chosenGateParameterSet,
-    //     // },
-    //   });
-    // },
-    // gate_set: (
-    //   trackID: string,
-    //   _options: { [key: string]: number | string }
-    // ) => {
-    //   return new NumericParameter({
-    //     userParameterStore: this.rootStore!.userParameterStore,
-    //     name: "Gate Set", // chosenGateParameterSet
-    //     key: this.parameterKey("gate_set", trackID),
-    //     default: Note.midi("C2")!,
-    //     // fieldOptions: {
-    //     //   min: 0,
-    //     //   max: this.gateTrigger?.parameterSets.length! - 1,
-    //     //   step: 1,
-    //     //   current: this.chosenGateParameterSet,
-    //     // },
-    //   });
-    // },
-    min_gate: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Min Gate", // chosenGateParameterSet
-        key: this.parameterKey("min_gate", trackID),
-        default: Note.midi("C2")!,
-        min: 0,
-        max: 100,
-        description:
-          "For random sequencers, the minimum 'gate' or length of a note.",
-      });
-    },
-    max_gate: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Max Gate", // chosenGateParameterSet
-        key: this.parameterKey("max_gate", trackID),
-        default: Note.midi("C2")!,
-        min: 0,
-        max: 100,
-        description:
-          "For random sequencers, the maximum 'gate' or length of a note.",
-      });
-    },
-    min_interval: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Minimum Interval", // chosenGateParameterSet
-        key: this.parameterKey("min_interval", trackID),
-        default: Note.midi("C2")!,
-        min: 0,
-        max: 100,
-        description:
-          "In a random sequencer the minimum amount of time between notes.",
-      });
-    },
-    max_interval: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Max Interval", // chosenGateParameterSet
-        key: this.parameterKey("max_interval", trackID),
-        default: Note.midi("C2")!,
-        min: 0,
-        max: 100,
-        description:
-          "In a random sequencer the maximum amount of time between notes.",
-      });
-    },
-    selected_fill: (
-      trackID: string,
-      options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Selected Fill", // chosenGateParameterSet
-        key: this.parameterKey("selected_fill", trackID),
-        default: 0,
-        min: options.min as number,
-        max: options.max as number,
-        description: "Which fill is used by the sequencer.",
-      });
-    },
-    step_interval: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericEnumParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Step Interval", // chosenGateParameterSet
-        key: this.parameterKey("step_interval", trackID),
-        options: [1, 2, 3, 4, 6, 8, 12, 16],
-        default: 4,
-        description:
-          "The relative speed of the step sequencer.  A Step interval of '4' means that a note will play every 4 ticks of the step sequencer",
-        // fieldOptions: {
-        /* It's a slider. */
-        // min: 0,
-        // max: fill list length,
-        // },
-      });
-    },
-    arpeggiator_type: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new StringEnumParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Arpeggiator Type", // chosenGateParameterSet
-        key: this.parameterKey("arpeggiator_type", trackID),
-        options: ["up", "down", "updown", "downup", "random"],
-        default: "up",
-        description: "description",
-      });
-    },
-    step_pitch_shift: (
-      trackID: string,
-      options: { [key: string]: number | string }
-    ) => {
-      return new /* It's a parameter that has an array of numbers. */
-      NumericArrayParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Step Pitch Shift",
-        key: this.parameterKey("step_pitch_shift", trackID),
-        default: [0, 0, 0, 0, 0, 0, 0, 0],
-        min: (options.min as number) || MIN_STEP_PITCH_SHIFT,
-        max: (options.max as number) || MAX_STEP_PITCH_SHIFT,
-        description:
-          "The number of steps to move up or down in pitch, for interval step sequencers.",
-      });
-    },
-    step_gate_array: (
-      trackID: string,
-      options: { [key: string]: number | string }
-    ) => {
-      return new NumericArrayParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Step Gate Array",
-        key: this.parameterKey("step_gate_array", trackID),
-        default: [0, 0, 0, 0, 0, 0, 0, 0],
-        min: options.min as number,
-        max: options.max as number,
-        description: "The length of a note for fixed-length step sequencers",
-      });
-    },
-    step_pitch_shift_direction: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new StringEnumArrayParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Step Pitch Shift Direction",
-        key: this.parameterKey("step_pitch_shift_direction", trackID),
-        options: ["up", "down", "either", "none", "any"],
-        default: [
-          "either",
-          "either",
-          "either",
-          "either",
-          "either",
-          "either",
-          "either",
-          "either",
-        ],
-        description:
-          "In an interval step sequencer, which direction the current interval should go.",
-      });
-    },
-    oscillator: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new StringEnumParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Oscillator Waveform", // chosenGateParameterSet
-        title: "Osc Wav",
-        key: this.parameterKey("oscillator_type", trackID),
-        options: OSCILLATOR_TYPES,
-        default: OSCILLATOR_TYPES[0]!,
-        description: "description",
-      });
-    },
-    beat_repeat: (
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Beat Repeast", // chosenGateParameterSet
-        key: this.parameterKey("beat_repeat", trackID),
-        default: 0,
-        min: 0,
-        max: 3,
-        description: "How many times will note be repeated.",
-      });
-    },
-    beat_offset: (
-      // Can be reused for Euclidean Sequencer
-      trackID: string,
-      _options: { [key: string]: number | string }
-    ) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Beat Offset", // chosenGateParameterSet
-        key: this.parameterKey("beat_offset", trackID),
-        default: 1,
-        min: 0,
-        max: 3,
-        description: "When will note be played after downbeat.",
-      });
-    },
-    pulses: (trackID: string, _options: { [key: string]: number | string }) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Pulses", // chosenGateParameterSet
-        key: this.parameterKey("pulses", trackID),
-        default: 1,
-        min: 0,
-        max: 64,
-        description: "The numebr of beats to be played in a Euclidean Sequence",
-      });
-    },
-    steps: (trackID: string, _options: { [key: string]: number | string }) => {
-      return new NumericParameter({
-        userParameterStore: this.rootStore!.userParameterStore,
-        name: "Steps", // chosenGateParameterSet
-        key: this.parameterKey("steps", trackID),
-        default: 16,
-        min: 0,
-        max: 64,
-        description: "How many steps in the section.",
-      });
-    },
-  };
-
   constructor(public rootStore: RootStore | undefined) {}
-
-  parameterKey(parameterName: string, trackID: string): string {
-    return `track.${trackID}.synthesizer.${parameterName}`;
-  }
 
   makeSequencerParameterList(sequencer: SequencerDefinition): ParameterSlug[] {
     let retVal: ParameterSlug[] = [];
@@ -475,9 +146,13 @@ export default class ParameterStore {
     let parametersToGet = this.makeSequencerParameterList(sequencer);
 
     let parameters = parametersToGet.map((parameter: ParameterSlug) => {
-      let p = this.parameters[parameter.Slug];
+      let p = SEQUENCER_PARAMETER_DEFINITIONS[parameter.Slug];
       if (p) {
-        return p!(trackID, parameter.Options);
+        return p!(
+          trackID,
+          this.rootStore?.userParameterStore!,
+          parameter.Options
+        );
       } else {
         console.error(`p is undefined parameter.Slug = ${parameter.Slug}`);
         return undefined;
@@ -493,9 +168,13 @@ export default class ParameterStore {
     let parametersToGet = this.makeGateSequencerParameterList(gateSequencer);
 
     let parameters = parametersToGet.map((parameter: ParameterSlug) => {
-      let p = this.parameters[parameter.Slug];
+      let p = GATE_SEQUENCER_PARAMETER_DEFINITIONS[parameter.Slug];
       if (p) {
-        return p!(trackID, parameter.Options);
+        return p!(
+          trackID,
+          this.rootStore?.userParameterStore!,
+          parameter.Options
+        );
       } else {
         console.error(`p is undefined parameter.Slug = ${parameter.Slug}`);
         return undefined;
@@ -511,7 +190,11 @@ export default class ParameterStore {
     let parametersToGet = this.makeSynthParameterList(synthesizer);
 
     let parameters = parametersToGet.map((parameter: ParameterSlug) => {
-      return this.parameters[parameter.Slug]!(trackID, parameter.Options);
+      return SYNTHESIZER_PARAMETER_DEFINITIONS[parameter.Slug]!(
+        trackID,
+        this.rootStore?.userParameterStore!,
+        parameter.Options
+      );
     });
     return parameters!;
   }

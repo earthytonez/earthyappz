@@ -1,5 +1,5 @@
 import { Euclidean } from "@earthytonez/sequencers";
-import BaseParameter from "stores/Parameter/Base";
+import BaseParameter from "stores/Parameter/ParameterTypes/Base";
 import SequencerGate from "../SequencerGate";
 /*
  * Play Every X is used to calculate whether or not a trigger should occur, usually

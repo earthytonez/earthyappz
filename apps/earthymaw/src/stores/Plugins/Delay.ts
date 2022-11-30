@@ -2,8 +2,8 @@ import * as Tone from "tone";
 
 import BasePlugin, { IPluginNode } from "./Base";
 import UserParameterStore from "../UserParameter.store";
-import BaseParameter from "stores/Parameter/Base";
-import NumericParameter from "stores/Parameter/NumericParameter";
+import BaseParameter from "stores/Parameter/ParameterTypes/Base";
+import NumericParameter from "stores/Parameter/ParameterTypes/NumericParameter";
 
 const DEFAULT_DELAY_TIME = 0.25;
 const DEFAULT_FEEDBACK = 1;

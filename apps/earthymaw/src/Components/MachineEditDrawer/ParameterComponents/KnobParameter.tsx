@@ -1,10 +1,11 @@
 import * as React from "react";
 
 import { observer } from "mobx-react-lite";
+import { Donut } from "react-dial-knob";
 
 import Grid from "@mui/material/Grid";
 
-import { Donut } from "react-dial-knob";
+import EditModulationButton from "../ModulationComponents/EditModulationButton";
 
 interface ISliderParameterParams {
   edit: Function;
@@ -64,6 +65,7 @@ export default observer(
           }}
           ariaLabelledBy={"my-label"}
         ></Donut>
+        <EditModulationButton />
       </Grid>
     );
   }

@@ -3,7 +3,7 @@ import * as Tone from "tone";
 
 import UserParameterStore from "stores/UserParameter.store";
 import Track from "../Track";
-import NumericParameter from "stores/Parameter/NumericParameter";
+import NumericParameter from "stores/Parameter/ParameterTypes/NumericParameter";
 
 const DEFAULT_VOLUME = 0;
 

@@ -1,7 +1,7 @@
 import BasePlugin from "./Base";
-import NumericParameter from "../Parameter/NumericParameter";
+import NumericParameter from "../Parameter/ParameterTypes/NumericParameter";
 import UserParameterStore from "../UserParameter.store";
-import BaseParameter from "stores/Parameter/Base";
+import BaseParameter from "stores/Parameter/ParameterTypes/Base";
 
 export default class FilterPlugin extends BasePlugin {
   public name: string = "Filter";

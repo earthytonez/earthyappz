@@ -6,11 +6,11 @@ import RootStore from "./Root.store";
 import { info } from "../Util/logger";
 import { BeatMarker } from "./MusicFeatures/BeatMarker";
 
-import MusicChordParameter from "./Parameter/MusicChordParameter";
-import MusicScaleParameter from "./Parameter/MusicScaleParameter";
-import MusicKeyParameter from "./Parameter/MusicKeyParameter";
-import MusicProgressionParameter from "./Parameter/MusicProgressionParameter";
-import NumericParameter from "./Parameter/NumericParameter";
+import MusicChordParameter from "./Parameter/ParameterTypes/MusicChordParameter";
+import MusicScaleParameter from "./Parameter/ParameterTypes/MusicScaleParameter";
+import MusicKeyParameter from "./Parameter/ParameterTypes/MusicKeyParameter";
+import MusicProgressionParameter from "./Parameter/ParameterTypes/MusicProgressionParameter";
+import NumericParameter from "./Parameter/ParameterTypes/NumericParameter";
 
 export default class MusicFeaturesStore {
   musicChord: MusicChordParameter;

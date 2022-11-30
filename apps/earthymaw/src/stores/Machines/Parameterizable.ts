@@ -1,4 +1,4 @@
-import BaseParameter from "../Parameter/Base";
+import BaseParameter from "../Parameter/ParameterTypes/Base";
 import { debug } from "../../Util/logger";
 
 export default class Parameterizable {

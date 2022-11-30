@@ -1,7 +1,7 @@
 import { makeObservable, computed, action } from "mobx";
 
-import BooleanParameter from "../Parameter/BooleanParameter";
-import NumericSetParameter from "../Parameter/NumericSetParameter";
+import BooleanParameter from "../Parameter/ParameterTypes/BooleanParameter";
+import NumericSetParameter from "../Parameter/ParameterTypes/NumericSetParameter";
 
 import UserParameterStore from "../UserParameter.store";
 
