@@ -47,3 +47,6 @@ Follow us on Twitter: [Statichunt](https://mastodon.social/@mikkergp)<br> Join D
 Based on https://statichunt.com (https://github.com/statichunt/statichunt), an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.
 
 Powered by [Nextjs](https://nextjs.org//), Deployed by [Vercel](https://vercel.com/), and Managed by [Forestry](https://forestry.io/).
+
+## Affiliate Programs:
+https://mynewmicrophone.com/top-best-affiliate-programs-for-music-producers/#FL-Studio
