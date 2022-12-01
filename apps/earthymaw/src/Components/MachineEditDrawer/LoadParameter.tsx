@@ -3,9 +3,11 @@ import { observer } from "mobx-react-lite";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 
 import MachineEditDrawerRadioGroup from "./ParameterComponents/MachineEditDrawerRadioGroup";
 import MachineEditDrawerDial from "./ParameterComponents/MachineEditDrawerDial";
+import MachineEditDrawerButtonGrid from "./ParameterComponents/MachineEditDrawerButtonGrid";
 
 import KnobParameter from "./ParameterComponents/KnobParameter";
 import SliderParameter from "./ParameterComponents/SliderParameter";
@@ -56,6 +58,17 @@ export default observer(
             ></MachineEditDrawerRadioGroup>
           </Grid>
         );
+      case "buttonGrid":
+        return (
+          <Grid item xs={5}>
+            <ParameterTitle name={title} />
+            <MachineEditDrawerButtonGrid
+              edit={edit}
+              field={field}
+              fieldOptions={fieldOptions}
+            ></MachineEditDrawerButtonGrid>
+          </Grid>
+        );
       case "dial":
         return (
           <Grid item xs={5}>
@@ -84,16 +97,25 @@ export default observer(
         );
       case "knob":
         return (
-          <Grid item xs={6}>
-            <KnobParameter
-              min={fieldOptions.min}
-              max={fieldOptions.max}
-              edit={edit}
-              field={field}
-              style={style}
-              parameterValue={parameterValue}
-            />
-            <ParameterTitle name={title} />
+          <Grid
+            item
+            xs={3}
+            alignItems="center"
+            justifyContent="center"
+            textAlign="center"
+            position="relative"
+          >
+            <Paper elevation={2}>
+              <KnobParameter
+                min={fieldOptions.min}
+                max={fieldOptions.max}
+                edit={edit}
+                field={field}
+                style={style}
+                parameterValue={parameterValue}
+              />
+              <ParameterTitle name={title} />
+            </Paper>
           </Grid>
         );
       case "enumSelector":
@@ -126,15 +148,17 @@ export default observer(
       case "enumArraySelector":
         console.log(name);
         return (
-          <GridMiddleFullWidth>
-            <ParameterTitle name={title} />
-            <EnumArraySelectorComponent
-              aria-label={name}
-              selectableValues={fieldOptions.options}
-              currentValue={parameterValue}
-              setValue={(value: any) => edit(field, value)}
-            />
-          </GridMiddleFullWidth>
+          <Grid item xs={6}>
+            <GridMiddleFullWidth>
+              <ParameterTitle name={title} />
+              <EnumArraySelectorComponent
+                aria-label={name}
+                selectableValues={fieldOptions.options}
+                currentValue={parameterValue}
+                setValue={(value: any) => edit(field, value)}
+              />
+            </GridMiddleFullWidth>
+          </Grid>
         );
       case "numericArraySelector":
         return (

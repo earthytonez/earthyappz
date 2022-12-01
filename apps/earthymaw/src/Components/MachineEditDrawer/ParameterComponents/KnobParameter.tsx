@@ -5,7 +5,9 @@ import { Donut } from "react-dial-knob";
 
 import Grid from "@mui/material/Grid";
 
-import EditModulationButton from "../ModulationComponents/EditModulationButton";
+// import Grid from "@mui/material/Grid";
+
+// import EditModulationButton from "../ModulationComponents/EditModulationButton";
 
 interface ISliderParameterParams {
   edit: Function;
@@ -46,7 +48,12 @@ export default observer(
     };
 
     return (
-      <Grid container sx={{ mr: 0, ml: 0, pr: 0, pl: 0 }}>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        textAlign="center"
+      >
         <Donut
           diameter={75}
           min={min}
@@ -65,7 +72,7 @@ export default observer(
           }}
           ariaLabelledBy={"my-label"}
         ></Donut>
-        <EditModulationButton />
+        {/* <EditModulationButton /> */}
       </Grid>
     );
   }
