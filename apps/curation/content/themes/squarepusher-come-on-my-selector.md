@@ -1,5 +1,5 @@
 ---
-title: Wintergatan - Marble Machine (music instrument using 2000 marbles)
+title: Squarepusher - Come on my Selector
 github: https://github.com/earthytonez/earthyappz
 website_url: https://www.youtube.com/watch?v=MWCSw_cNxKc
 demo: https://www.youtube.com/watch?v=MWCSw_cNxKc
@@ -7,7 +7,7 @@ author: Squarepusher
 author_link: https://squarepusher.net/
 author_twitter: https://twitter.com/squarepusher
 date: 2022-08-31T11:44:50.000Z
-description: Resource short description, it will be the meta description for the theme also.
+description: An 8 minute sci-fi movie as music video for IDM Artist' Squarepusher
 ssg:
   - Undefined
 css:

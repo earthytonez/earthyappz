@@ -1,3 +1,3 @@
-interface ISequencerRunner {
-    rhythm_length: number;
+export default interface ISequencerRunner {
+  rhythmLength: number;
 }

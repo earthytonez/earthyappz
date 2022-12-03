@@ -58,10 +58,6 @@ export default class UserParameterStore {
   }
 
   checkLocalStorage() {
-    info(
-      "LOAD_SAVE_USER_PARAMETER_STORE",
-      "Loading User Paramters from Local Storage"
-    );
     let _user_parameters = localStorage.getItem("user_parameters");
     let user_parameters: any;
     if (_user_parameters && _user_parameters !== "undefined") {

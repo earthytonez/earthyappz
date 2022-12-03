@@ -9,3 +9,5 @@ export interface ISequencerPlayAttributes {
   time: any;
   stop?: boolean;
 }
+
+export type NoteInterval = number;

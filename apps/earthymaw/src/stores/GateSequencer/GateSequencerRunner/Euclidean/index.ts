@@ -21,7 +21,6 @@ export default class EuclideanRunner implements ISequencerRunner {
     let offset = gateSequencerParameters.get("beat_offset")?.val || 0;
 
     let stepCount = beatMarker % steps;
-    console.log(`GateSequencer Euclidean: ${beatMarker} ${steps} ${stepCount}`);
     let euclidean = new Euclidean(pulses, steps, offset);
     let isGateTriggered = euclidean.gate(stepCount);
 
