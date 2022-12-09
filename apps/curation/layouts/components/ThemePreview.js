@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ImageFallback from "./ImageFallback";
 
 const ThemePreview = ({ theme, slug }) => {
-  const { demo } = theme[0].frontmatter;
+  const { demo, youtube_id } = theme[0].frontmatter;
 
   useEffect(() => {
     let bwsHeader = document.querySelector(".bwsHeader");
@@ -30,6 +30,13 @@ const ThemePreview = ({ theme, slug }) => {
 
   // device toggle
   const [mobilePreview, setMobilePreview] = useState(false);
+
+  function demoURL(youtube_id, demo) {
+    if (youtube_id) {
+      return `https://img.youtube.com/vi/${youtube_id}/0.jpg`;
+    }
+    return demo;
+  }
 
   return (
     <>
@@ -58,7 +65,7 @@ const ThemePreview = ({ theme, slug }) => {
               <a
                 className={`bwsActionLink`}
                 target="blank"
-                href={`${demo}?ref=statichunt.com`}
+                href={`${demoURL(youtube_id, demo)}?ref=earthytonez.com`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -84,13 +91,13 @@ const ThemePreview = ({ theme, slug }) => {
               id={slug}
               sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               loading="lazy"
-              src={demo}
+              src={demoURL(demo)}
               key={demo}
             ></iframe>
             <span className={`bwsThumbnailStyle bwsThumbnail`}>
               <ImageFallback
                 src={`/themes/${slug}.png`}
-                fallback={`https://teamosis-sg.vercel.app/api/img?url=${demo}`}
+                fallback={`https://teamosis-sg.vercel.app/api/img?url=${demoURL(youtube_id, demo)}`}
                 height={250}
                 width={750}
                 alt={theme[0].frontmatter.title}
@@ -102,7 +109,7 @@ const ThemePreview = ({ theme, slug }) => {
         <div className={`rounded-3 lh-0 shadowLg overflow-hidden md:hidden`}>
           <ImageFallback
             src={`/themes/${slug}.png`}
-            fallback={`https://teamosis-sg.vercel.app/api/img?url=${demo}`}
+            fallback={`https://teamosis-sg.vercel.app/api/img?url=${demoURL(youtube_id, demo)}`}
             height="100"
             width="500"
             alt={theme[0].frontmatter.title}

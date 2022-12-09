@@ -2,6 +2,7 @@
 title: Squarepusher - Come on my Selector
 github: https://github.com/earthytonez/earthyappz
 website_url: https://www.youtube.com/watch?v=MWCSw_cNxKc
+youtube_id: MWCSw_cNxKc
 demo: https://www.youtube.com/watch?v=MWCSw_cNxKc
 author: Squarepusher
 author_link: https://squarepusher.net/

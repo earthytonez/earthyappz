@@ -1,5 +1,5 @@
 ---
-title: Phillip Glass -- Einstein on the Beach
+title: The Disintegration Loops
 github: https://github.com/earthytonez/earthyappz
 website_url:  https://www.youtube.com/watch?v=mjnAE5go9dI&authuser=0
 youtube_id: mjnAE5go9dI
@@ -25,7 +25,3 @@ draft: false
 publish_date: "2022-05-03T15:17:26Z"
 update_date: "2022-08-10T18:31:45Z"
 ---
-
-New Song: https://www.youtube.com/watch?v=ZddqSR1wXkE&t=9335s
-
-https://www.youtube.com/watch?v=mf3bhAayHaw&list=RDLVoCYHMVlQezA&index=48
