@@ -33,7 +33,7 @@ const Resource = ({ resource, slug }) => {
               <div className="mt-5">
                 <a
                   className="btn btn-demo w-full border border-primary"
-                  href={`${website}?ref=statichunt.com`}
+                  href={`${website}?ref=earthytonez.com`}
                   target="_blank"
                   rel="nofollow noreferrer"
                 >

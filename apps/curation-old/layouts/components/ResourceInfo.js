@@ -42,7 +42,7 @@ const ResourceInfo = ({ theme, slug, tools }) => {
 
             <a
               className="btn btn-fill sm:px-10 lg:px-7 xl:px-10"
-              href={`${github ? github : download}?ref=statichunt.com`}
+              href={`${github ? github : download}?ref=earthytonez.com`}
               target="_blank"
               rel="nofollow noopener noreferrer"
             >

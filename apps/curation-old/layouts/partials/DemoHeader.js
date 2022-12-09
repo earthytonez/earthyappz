@@ -108,7 +108,7 @@ const DemoHeader = ({
             </Link>
             <a
               className="btn btn-outline-primary svg-block has-tooltip tooltip-bottom text-lg !leading-none"
-              href={`${demo}?ref=statichunt.com`}
+              href={`${demo}?ref=earthytonez.com`}
               target="_blank"
               rel="nofollow noopener noreferrer"
               data-tooltip="Preview Externally"
@@ -117,7 +117,7 @@ const DemoHeader = ({
             </a>
             <a
               className="btn btn-outline-primary svg-align-bottom has-tooltip tooltip-bottom text-lg !leading-none"
-              href={`${github}?ref=statichunt.com`}
+              href={`${github}?ref=earthytonez.com`}
               target="_blank"
               rel="nofollow noopener noreferrer"
               data-tooltip="Download"

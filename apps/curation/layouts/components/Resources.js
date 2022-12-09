@@ -21,7 +21,7 @@ const Resources = ({ resources }) => {
               <h3 className="h5 mb-[4px] flex items-center pt-2 font-medium">
                 {resource.frontmatter.title}
                 <a
-                  href={`${resource.frontmatter.website}?ref=statichunt.com`}
+                  href={`${resource.frontmatter.website}?ref=earthytonez.com`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >

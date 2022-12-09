@@ -210,7 +210,7 @@ const Resources = ({ resources, tools, customRowClass, customColClass }) => {
                     resource.frontmatter.github
                       ? resource.frontmatter.github
                       : resource.frontmatter.download
-                  }?ref=statichunt.com`}
+                  }?ref=earthytonez.com`}
                 >
                   <a
                     className="btn btn-sm btn-download svg-align-bottom mb-2 pr-2 leading-none"

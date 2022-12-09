@@ -58,7 +58,7 @@ const ResourcePreview = ({ theme, slug }) => {
               <a
                 className={`bwsActionLink`}
                 target="blank"
-                href={`${demo}?ref=statichunt.com`}
+                href={`${demo}?ref=earthytonez.com`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

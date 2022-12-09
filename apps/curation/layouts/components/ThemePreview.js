@@ -91,8 +91,8 @@ const ThemePreview = ({ theme, slug }) => {
               id={slug}
               sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               loading="lazy"
-              src={demoURL(demo)}
-              key={demo}
+              src={demoURL(youtube_id, demo)}
+              key={demoURL(youtube_id, demo)}
             ></iframe>
             <span className={`bwsThumbnailStyle bwsThumbnail`}>
               <ImageFallback

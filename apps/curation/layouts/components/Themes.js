@@ -215,7 +215,7 @@ const Themes = ({ themes, tools, customRowClass, customColClass }) => {
                     theme.frontmatter.github
                       ? theme.frontmatter.github
                       : theme.frontmatter.download
-                  }?ref=statichunt.com`}
+                  }?ref=earthytonez.com`}
                 >
                   <a
                     className="btn btn-sm btn-download svg-align-bottom mb-2 pr-2 leading-none"
