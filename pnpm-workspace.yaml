@@ -1,6 +1,7 @@
 packages:
   # executable/launchable applications
   - 'apps/earthymaw'
+  - "apps/earthytrees"
   - 'apps/curation'
   # all packages in direct subdirs of packages/
   - 'packages/*'

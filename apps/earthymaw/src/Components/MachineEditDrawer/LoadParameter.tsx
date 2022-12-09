@@ -146,9 +146,8 @@ export default observer(
           </Grid>
         );
       case "enumArraySelector":
-        console.log(name);
         return (
-          <Grid item xs={6}>
+          <Grid item>
             <GridMiddleFullWidth>
               <ParameterTitle name={title} />
               <EnumArraySelectorComponent

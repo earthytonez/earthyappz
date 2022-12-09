@@ -1,0 +1,35 @@
+FROM node:19-alpine as build
+
+WORKDIR /opt/build
+
+ADD . /opt/build
+
+RUN apk update
+RUN apk add curl
+
+RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
+
+RUN npm install -g typescript
+RUN pnpm --filter "@earthytonez/earthyutilz" install
+RUN pnpm --filter "@earthytonez/earthyutilz" build
+RUN pnpm --filter "@earthytonez/earthytypez" install
+RUN pnpm --filter "@earthytonez/earthytypez" build
+RUN pnpm --filter "@earthytonez/maw-manifests" install
+RUN pnpm --filter "@earthytonez/maw-manifests" build
+RUN pnpm --filter "@earthytonez/react-juce" install
+RUN pnpm --filter "@earthytonez/react-juce" build
+RUN pnpm --filter "@earthytonez/sequencers" install
+RUN pnpm --filter "@earthytonez/sequencers" build
+
+RUN pnpm --filter "earthytrees" install
+RUN pnpm --filter "earthytrees" build
+
+
+FROM nginx:1.17.8-alpine
+COPY --from=build /opt/build/apps/earthytrees/build /opt/app
+# RUN rm /etc/nginx/conf.d/default.conf
+COPY /apps/earthytrees/devops/nginx.conf /etc/nginx/conf.d
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
