@@ -26,10 +26,19 @@ function Player() {
   );
 }
 
+function Destination() {
+  return (
+    <span>
+      <b style={{ color: "red" }}>X</b>
+    </span>
+  );
+}
+
 const Grove = observer((params: any) => {
   let groveMatrix = params.map;
   const rootStore = useStore();
   let playerLocation = rootStore.playerStore.currentLocation;
+  let playerDestination = rootStore.playerStore.currentDestination;
   // for (let y = 0; y < MAP_HEIGHT; y++) {
   //   for (let x = 0; x < MAP_WIDTH; x++) {
   //     if (groveMatrix[y][x].type !== "nothing") {
@@ -53,6 +62,13 @@ const Grove = observer((params: any) => {
               {groveColumn.map((groveCell: MapSquare, j: number) => {
                 if (playerLocation.Y === i && playerLocation.X === j) {
                   return <Player key={`player-${i}-${j}`}></Player>;
+                }
+                if (
+                  playerDestination &&
+                  playerDestination.Y === i &&
+                  playerDestination.X === j
+                ) {
+                  return <Destination key={`player-${i}-${j}`}></Destination>;
                 }
                 return <Tree key={`${i}-${j}`} treeInfo={groveCell}></Tree>;
               })}
