@@ -19,7 +19,11 @@ function Tree(params: any) {
 }
 
 function Player() {
-  return <span>@</span>;
+  return (
+    <span>
+      <b>@</b>
+    </span>
+  );
 }
 
 const Grove = observer((params: any) => {
