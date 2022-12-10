@@ -20,7 +20,7 @@ const Footer = observer(
           color="primary"
           sx={{ top: "auto", bottom: 0 }}
         >
-          <Toolbar>Player is: {params.playerAction}</Toolbar>
+          <Toolbar>Person is {params.playerAction}</Toolbar>
         </AppBar>
       </React.Fragment>
     );

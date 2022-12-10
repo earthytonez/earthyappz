@@ -13,6 +13,12 @@ export const PLAYER_ACTION_NONE = "NONE";
 export const PLAYER_ACTION_MOVE = "MOVE";
 export const PLAYER_ACTION_PLANT_TREE = "PLANT_TREE";
 
+const PLAYER_ACTION_NAMES = {
+  NONE: "resting",
+  MOVE: "moving",
+  PLANT_TREE: "planting a tree",
+};
+
 function rand(max: number) {
   return Math.floor(Math.random() * max);
 }
@@ -26,7 +32,7 @@ class PlayerAction {
   turnsSinceStarting: number = 0;
 
   get name() {
-    return this.actionName;
+    return PLAYER_ACTION_NAMES[this.actionName];
   }
 
   passTurn() {
