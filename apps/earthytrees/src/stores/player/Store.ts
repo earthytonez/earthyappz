@@ -45,6 +45,7 @@ class PlayerAction {
 
   set(actionName: PlayerActionName) {
     this.actionName = actionName;
+    this.turnsSinceStarting = 0;
   }
 
   incrementTurn() {
@@ -86,6 +87,8 @@ export default class PlayerStore {
       possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
 
     if (movePlace) {
+      console.log(possibleDirections);
+      console.log(movePlace);
       this.setPlayerLocation(new Coordinates(movePlace.X, movePlace.Y));
     } else {
       this.setPlayerLocation(
@@ -96,10 +99,10 @@ export default class PlayerStore {
 
   startPlayerAction() {
     if (this.mapStore.squareIs(this.currentLocation, "nothing")) {
-      this.setCurrentAction(PLAYER_ACTION_PLANT_TREE);
+      this.currentAction.set(PLAYER_ACTION_PLANT_TREE);
     } else {
       this.movePlayer();
-      this.setCurrentAction(PLAYER_ACTION_MOVE);
+      this.currentAction.set(PLAYER_ACTION_MOVE);
     }
   }
 
@@ -141,6 +144,8 @@ export default class PlayerStore {
       currentLocation: observable,
       currentAction: observable,
       checkLocalStorage: action.bound,
+      initializePlayer: action.bound,
+      setPlayerLocation: action.bound,
       savePlayer: action.bound,
     });
   }

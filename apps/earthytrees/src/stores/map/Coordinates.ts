@@ -9,7 +9,7 @@ export default class Coordinates {
   }
 
   south() {
-    if (this.Y - 1 > 0) {
+    if (this.Y - 1 >= 0) {
       return new Coordinates(this.X, this.Y - 1);
     }
     return undefined;
@@ -23,7 +23,7 @@ export default class Coordinates {
   }
 
   west() {
-    if (this.X + 1 < MAP_WIDTH) {
+    if (this.X - 1 >= 0) {
       return new Coordinates(this.X - 1, this.Y);
     }
     return undefined;

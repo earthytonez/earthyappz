@@ -4,6 +4,11 @@ import App from "./App";
 
 import { StoreProvider } from "./stores/useStore";
 
+import mixpanel from "mixpanel-browser";
+
+mixpanel.init("71c4f2e2d7bce2d394dec58b19a14a88", { debug: true });
+mixpanel.track("EarthyMaw Landing Page");
+
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <StoreProvider>
