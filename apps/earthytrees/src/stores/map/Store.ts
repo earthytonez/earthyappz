@@ -16,6 +16,7 @@ export default class MapStore {
   }
 
   saveMap() {
+    console.log("Saving Map");
     localStorage.setItem("map", JSON.stringify(this.map));
   }
 
@@ -44,11 +45,13 @@ export default class MapStore {
   }
 
   checkLocalStorage() {
-    let _map = localStorage.getItem("map");
+    let rawLocalStorage = localStorage.getItem("map");
 
-    if (_map !== "undefined" && _map !== "") {
-      if (this._map.length == MAP_HEIGHT + 1) {
-        this._map = JSON.parse(_map!);
+    console.log("Checking Local Storage For Map");
+    if (rawLocalStorage !== undefined && rawLocalStorage !== "") {
+      let _map = JSON.parse(rawLocalStorage!);
+      if (_map?.length === MAP_HEIGHT) {
+        this._map = _map;
         return;
       }
     }
@@ -62,6 +65,7 @@ export default class MapStore {
 
   setMapSquare(coordinates: Coordinates, squareType: MapSquareType) {
     this._map[coordinates.Y]![coordinates.X] = new MapSquare(squareType);
+    this.saveMap();
   }
 
   squareIs(coordinate: Coordinates, squareType: string): boolean {
@@ -90,6 +94,7 @@ export default class MapStore {
       _map: observable,
       map: computed,
       checkLocalStorage: action.bound,
+      setMapSquare: action.bound,
       saveMap: action.bound,
     });
   }

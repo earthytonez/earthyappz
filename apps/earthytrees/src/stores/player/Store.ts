@@ -34,7 +34,7 @@ class PlayerAction {
   }
 
   is(actionName: string) {
-    return actionName == this.actionName;
+    return actionName === this.actionName;
   }
 
   set(actionName: PlayerActionName) {
@@ -108,7 +108,7 @@ export default class PlayerStore {
         this.currentAction.actionName as keyof typeof PLAYER_ACTION_TURNS
       ]
     ) {
-      if (this.currentAction.actionName == PLAYER_ACTION_PLANT_TREE) {
+      if (this.currentAction.actionName === PLAYER_ACTION_PLANT_TREE) {
         console.log("Planting Tree!");
 
         this.rootStore.mapStore.setMapSquare(this.currentLocation, "tree");
