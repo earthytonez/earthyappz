@@ -167,11 +167,18 @@ export default class PlayerStore {
 
     if (rawLocalStorage !== undefined && rawLocalStorage !== "") {
       let _player = JSON.parse(rawLocalStorage!);
-      this.plantingStrategy = _player.plantingStrategy;
-      this.currentLocation = new Coordinates(
-        _player.currentLocation.X,
-        _player.currentLocation.Y
-      );
+      if (!_player) {
+        return undefined;
+      }
+      if (_player.plantingStrategy) {
+        this.plantingStrategy = _player.plantplantingStrategy;
+      }
+      if (_player.currentLocation) {
+        this.currentLocation = new Coordinates(
+          _player.currentLocation.X,
+          _player.currentLocation.Y
+        );
+      }
       if (_player.currentDestination) {
         this.playerMover.setDestination(
           new Coordinates(
