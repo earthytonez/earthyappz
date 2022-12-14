@@ -189,14 +189,14 @@ export default class PlayerStore {
       }
     }
 
-    console.log(this.currentLocation);
-
     if (!this.currentLocation) {
       console.log(
         `Initializing Player because ethis.currentLocation ${this.currentLocation}`
       );
       this.initializePlayer();
     }
+
+    return;
   }
 
   savePlayer() {
