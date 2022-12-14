@@ -2,7 +2,7 @@ import RootStore from "stores/Root.store";
 
 import { MAP_WIDTH, MAP_HEIGHT, LAKE_RADIUS } from "./constants";
 
-import MapSquare, { MapSquareType } from "./MapSquare";
+import MapSquare, { MapSquareType, MOVABLE_MAP_TYPES } from "./MapSquare";
 import { action, autorun, computed, observable, makeObservable } from "mobx";
 import Coordinates from "./Coordinates";
 
@@ -16,7 +16,6 @@ export default class MapStore {
   }
 
   saveMap() {
-    console.log("Saving Map");
     localStorage.setItem("map", JSON.stringify(this.map));
   }
 
@@ -66,6 +65,46 @@ export default class MapStore {
   setMapSquare(coordinates: Coordinates, squareType: MapSquareType) {
     this._map[coordinates.Y]![coordinates.X] = new MapSquare(squareType);
     this.saveMap();
+  }
+
+  squareType(coordinate: Coordinates): MapSquareType | undefined {
+    let mapRow = this._map[coordinate.Y];
+    if (mapRow === undefined) {
+      return undefined;
+    }
+    let mapSquare = mapRow[coordinate.X];
+    if (mapSquare === undefined) {
+      return undefined;
+    }
+    return mapSquare.type;
+  }
+
+  squareMovable(coordinate: Coordinates): boolean {
+    let mapRow = this._map[coordinate.Y];
+    if (mapRow === undefined) {
+      return false;
+    }
+    let mapSquare = mapRow[coordinate.X];
+    if (mapSquare === undefined) {
+      return false;
+    }
+
+    if (mapSquare.type == "lake") {
+      return false;
+    }
+
+    return true;
+  }
+
+  getMapMovableMatrix() {
+    return this._map.map((mapRows: MapSquare[]) => {
+      return mapRows.map((mapSquare: MapSquare) => {
+        if (MOVABLE_MAP_TYPES.includes(mapSquare.type)) {
+          return 0;
+        }
+        return 1;
+      });
+    });
   }
 
   squareIs(coordinate: Coordinates, squareType: string): boolean {

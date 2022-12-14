@@ -236,6 +236,7 @@ importers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
       '@types/testing-library__jest-dom': ^5.14.5
+      astar-typescript: ^1.2.5
       mixpanel-browser: ^2.45.0
       mobx: ^6.6.0
       mobx-react-lite: ^3.4.0
@@ -259,6 +260,7 @@ importers:
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       '@types/testing-library__jest-dom': 5.14.5
+      astar-typescript: 1.2.5
       mixpanel-browser: 2.45.0
       mobx: 6.6.2
       mobx-react-lite: 3.4.0_qrr2ojv4n7h7ey2xj7njerqqr4
@@ -4864,6 +4866,12 @@ packages:
 
   /ast-types-flow/0.0.7:
     resolution: {integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==}
+
+  /astar-typescript/1.2.5:
+    resolution: {integrity: sha512-1ESY+q//Ous6QtW68woigdt5e0hI1DJJ4WtST1r14BuchUBUKKYlq6qLQCy1S8/IWMDnqNp/h79YUVXIlNPwkw==}
+    dependencies:
+      lodash: 4.17.20
+    dev: false
 
   /astral-regex/2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
@@ -10536,6 +10544,10 @@ packages:
   /lodash/3.10.1:
     resolution: {integrity: sha512-9mDDwqVIma6OZX79ZlDACZl8sBm0TEnkf99zV3iMA4GzkIT/9hiqP5mY0HoT1iNLCrKc/R1HByV+yJfRWVJryQ==}
     dev: true
+
+  /lodash/4.17.20:
+    resolution: {integrity: sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==}
+    dev: false
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
