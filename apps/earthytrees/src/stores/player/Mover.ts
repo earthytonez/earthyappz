@@ -85,7 +85,7 @@ export default class PlayerMover {
   }
 
   oneStepCloserMovementDirection(xDiff: number, yDiff: number) {
-    if (!this.squareMovable(1, 0) && (xDiff == 1 || yDiff == -1)) {
+    if (!this.squareMovable(1, 0) && (xDiff === 1 || yDiff === -1)) {
       return this.moveNorth();
     }
 
@@ -137,8 +137,6 @@ export default class PlayerMover {
     // const movePlace:
     //   | Coordinates
     //   | undefined = this.oneStepCloserMovementDirection(xDiff, yDiff);
-
-    console.log("LALALLALALALALA");
 
     const aStarInstance = new AStarFinder({
       grid: {
@@ -195,9 +193,8 @@ export default class PlayerMover {
     plantingStrategy: "DENSE" | "SPARSE"
   ): Coordinates {
     this.currentLocation = currentLocation;
-    let possibleDirections: Coordinates[] = this.getPossibleDirections() as Coordinates[];
-
-    console.log(`Moving Player according to strategy ${plantingStrategy}`);
+    let possibleDirections: Coordinates[] =
+      this.getPossibleDirections() as Coordinates[];
 
     switch (plantingStrategy) {
       case SPARSE_PLANTING_STRATEGY:

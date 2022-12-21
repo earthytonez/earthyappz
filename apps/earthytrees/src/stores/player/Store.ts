@@ -63,6 +63,7 @@ class PlayerAction {
     makeObservable(this, {
       actionName: observable,
       name: computed,
+      set: action.bound,
     });
   }
 }
@@ -84,7 +85,7 @@ export default class PlayerStore {
   }
 
   togglePlantingStrategy() {
-    if (this.plantingStrategy == DENSE_PLANTING_STRATEGY) {
+    if (this.plantingStrategy === DENSE_PLANTING_STRATEGY) {
       this.plantingStrategy = SPARSE_PLANTING_STRATEGY;
     } else {
       this.plantingStrategy = DENSE_PLANTING_STRATEGY;

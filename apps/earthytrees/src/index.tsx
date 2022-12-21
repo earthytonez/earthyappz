@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App";
 
 import { StoreProvider } from "./stores/useStore";
+import { UIStoreProvider } from "./stores/useUIStore";
 
 import mixpanel from "mixpanel-browser";
 
@@ -12,7 +13,9 @@ mixpanel.track("EarthyTrees Landing Page");
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <StoreProvider>
-    <App />{" "}
+    <UIStoreProvider>
+      <App />{" "}
+    </UIStoreProvider>
   </StoreProvider>
 );
 

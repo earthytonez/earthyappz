@@ -1,4 +1,4 @@
-export type MapSquareType = "tree" | "lake" | "nothing";
+export type MapSquareType = "tree" | "house" | "lake" | "nothing";
 
 export const MOVABLE_MAP_TYPES = ["tree", "nothing"];
 

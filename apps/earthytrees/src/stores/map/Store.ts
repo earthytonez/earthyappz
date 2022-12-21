@@ -62,6 +62,10 @@ export default class MapStore {
     );
   }
 
+  clearMapSquare(coordinates: Coordinates) {
+    this.setMapSquare(coordinates, "nothing");
+  }
+
   setMapSquare(coordinates: Coordinates, squareType: MapSquareType) {
     this._map[coordinates.Y]![coordinates.X] = new MapSquare(squareType);
     this.saveMap();
@@ -89,7 +93,7 @@ export default class MapStore {
       return false;
     }
 
-    if (mapSquare.type == "lake") {
+    if (mapSquare.type === "lake") {
       return false;
     }
 
@@ -105,6 +109,67 @@ export default class MapStore {
         return 1;
       });
     });
+  }
+
+  squarePlaceable(coordinate: Coordinates): boolean {
+    let mapRow = this._map[coordinate.Y];
+    if (mapRow === undefined) {
+      return false;
+    }
+    let mapSquare = mapRow[coordinate.X];
+    if (mapSquare === undefined) {
+      return false;
+    }
+
+    if (mapSquare.type === "lake") {
+      return false;
+    }
+
+    return true;
+  }
+
+  doSquareAction(
+    action: "BUILD",
+    dimensions: Coordinates | undefined,
+    location: Coordinates
+  ) {
+    console.log(`Taking Action ${action}`);
+    if (!dimensions) {
+      return;
+    }
+
+    let placeable = true;
+    for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
+      for (let y = location.Y; y <= location.Y + dimensions.Y - 1; y++) {
+        console.log(`Check Map Square ${x} ${y}, house`);
+        if (!this.squarePlaceable(new Coordinates(x, y))) {
+          placeable = false;
+        }
+      }
+    }
+
+    if (placeable) {
+      this.clearAllSquares("house");
+
+      for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
+        for (let y = location.Y; y <= location.Y + dimensions.Y - 1; y++) {
+          console.log(`Set Map Square ${x} ${y}, house`);
+          this.setMapSquare(new Coordinates(x, y), "house");
+        }
+      }
+    }
+
+    return placeable;
+  }
+
+  clearAllSquares(squareType: MapSquareType) {
+    for (let y = 0; y <= MAP_HEIGHT; y++) {
+      for (let x = 0; x <= MAP_WIDTH; x++) {
+        if (this.squareIs(new Coordinates(x, y), squareType)) {
+          this.clearMapSquare(new Coordinates(x, y));
+        }
+      }
+    }
   }
 
   squareIs(coordinate: Coordinates, squareType: string): boolean {
