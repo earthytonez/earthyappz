@@ -9,7 +9,13 @@ export const toolsArray = (theme) => {
     css = theme.frontmatter?.css;
   }
 
-  const tool = [...theme.frontmatter?.ssg, ...cms, ...css];
+  var ssg = [];
+  if (theme.frontmatter?.ssg) {
+    ssg = theme.frontmatter?.ssg;
+  }
+
+  console.log(theme.frontmatter);
+  return [...ssg, ...cms, ...css];
 
   return tool;
 };

@@ -1,5 +1,9 @@
-import { parseMDX } from "@lib/utils/mdxParser";
-import { slugify } from "@lib/utils/textConverter";
+import {
+  parseMDX
+} from "@lib/utils/mdxParser";
+import {
+  slugify
+} from "@lib/utils/textConverter";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
@@ -36,7 +40,11 @@ export const getSinglePages = (folder) => {
     const content = pageDataParsed.content;
     const url = frontmatter.url ? frontmatter.url.replace("/", "") : slug;
 
-    return { frontmatter: frontmatter, slug: url, content: content };
+    return {
+      frontmatter: frontmatter,
+      slug: url,
+      content: content
+    };
   });
 
   const publishedPages = singlePages.filter(
@@ -55,44 +63,54 @@ export const getRegularPage = async (slug) => {
   const publishedTheme = getSinglePages("content/themes");
 
   // filter by css
-  const ssgData = publishedTheme.filter((theme) =>
-    theme.frontmatter.ssg.map((ssg) => slugify(ssg)).includes(slug)
-  );
+
+  const ssgData = publishedTheme.filter((theme) => {
+
+    let ssg = [];
+    if (theme.frontmatter?.ssg) {
+      ssg = theme.frontmatter.ssg;
+    }
+
+    return ssg?.map((ssg) => slugify(ssg)).includes(slug);
+  });
   //  filter by cms
   const cmsData = publishedTheme.filter(
     (theme) =>
-      theme.frontmatter.cms &&
-      theme.frontmatter.cms.map((cms) => slugify(cms)).includes(slug)
+    theme.frontmatter.cms &&
+    theme.frontmatter.cms.map((cms) => slugify(cms)).includes(slug)
   );
   //  filter by css
   const cssData = publishedTheme.filter(
     (theme) =>
-      theme.frontmatter.css &&
-      theme.frontmatter.css.map((css) => slugify(css)).includes(slug)
+    theme.frontmatter.css &&
+    theme.frontmatter.css.map((css) => slugify(css)).includes(slug)
   );
 
   // filter by archtype
   const categoryData = publishedTheme.filter(
     (theme) =>
-      theme.frontmatter.category &&
-      theme.frontmatter.category
-        .map((category) => slugify(category))
-        .includes(slug)
+    theme.frontmatter.category &&
+    theme.frontmatter.category
+    .map((category) => slugify(category))
+    .includes(slug)
   );
 
   const pageData = publishedPages.filter((data) => data.slug === slug);
-  const regulerData = ssgData.length
-    ? ssgData
-    : cssData.length
-    ? cssData
-    : cmsData.length
-    ? cmsData
-    : categoryData.length
-    ? categoryData
-    : pageData;
+  const regulerData = ssgData.length ?
+    ssgData :
+    cssData.length ?
+    cssData :
+    cmsData.length ?
+    cmsData :
+    categoryData.length ?
+    categoryData :
+    pageData;
 
   const allRegulerData = regulerData.map((data) => {
-    const { frontmatter, content } = data;
+    const {
+      frontmatter,
+      content
+    } = data;
     const slug = data.slug;
 
     return {

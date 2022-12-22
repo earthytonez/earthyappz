@@ -1,11 +1,10 @@
 ---
 title: Ableton Live
-github: https://github.com/markteekman/accessible-astro-starter
 demo: https://ableton.com/
 website_url: https://ableton.com/
-author: Mark Teekman
-author_link: https://github.com/markteekman
-author_twitter: MarkTeekman
+author: Ableton
+author_link: https://ableton.com/
+author_twitter: ableton
 date: 2022-08-31T11:44:50.000Z
 description: >-
   A DAW designed for Live 
@@ -20,6 +19,4 @@ category:
 draft: false
 publish_date: "2021-08-01T07:37:35Z"
 update_date: "2022-11-06T10:10:58Z"
-github_star: 101
-github_fork: 10
 ---

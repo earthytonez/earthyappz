@@ -1,6 +1,6 @@
-# EarthyResources
+# EarthyTonez
 
-[EarthyResources](https://statichunt.com/) is an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.
+[EarthyTonez](https://earthytonez.com/) is an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.
 
 ## Submit A Resource
 

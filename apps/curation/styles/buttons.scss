@@ -14,8 +14,8 @@
   @apply btn-sm border border-primary/25 bg-transparent from-primary to-secondary hover:bg-gradient-to-r hover:text-white;
 }
 
-.btn-follow {
-  @apply ml-3 rounded-full bg-[#2aa1f2] px-3 py-1 text-center text-xs text-white transition hover:bg-[#248fdb] sm:ml-5;
+.btn-follow { //#6364ff
+  @apply ml-3 rounded-full bg-[#6364ff] px-3 py-1 text-center text-xs text-white transition hover:bg-[#4a4bff] sm:ml-5;
 }
 
 .btn-demo {

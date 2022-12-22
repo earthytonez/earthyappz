@@ -1,14 +1,14 @@
 {
   "site": {
-    "title": "EarthyResources | A Curated Directory Of Music Resources",
+    "title": "EarthyTonez | A Curated Directory Of Music Resources",
     "base_url": "https://earthytonez.com",
     "favicon": "/images/favicon.png",
-    "logo": "/images/logo.svg",
-    "logo_light": "/images/logo-light.svg",
+    "logo": "/images/logo-et.svg",
+    "logo_light": "/images/logo-light-et.svg",
     "logo_width": "164",
     "logo_height": "32",
-    "logo_text": "EarthyResources",
-    "footer_logo": "/images/logo-light.svg"
+    "logo_text": "EarthyTonez",
+    "footer_logo": "/images/logo-light-et.svg"
   },
 
   "settings": {

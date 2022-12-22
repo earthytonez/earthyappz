@@ -1,6 +1,7 @@
 ---
 title: Phillip Glass -- Einstein on the Beach
 github: https://github.com/earthytonez/earthyappz
+youtube_id: a8kgAkTS7oM
 website_url: https://www.youtube.com/watch?v=a8kgAkTS7oM&t=189s
 demo: https://www.youtube.com/watch?v=a8kgAkTS7oM&t=189s
 author: Phillip Glass
