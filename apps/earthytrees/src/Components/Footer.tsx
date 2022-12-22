@@ -143,12 +143,12 @@ const Footer = observer((): React.ReactElement => {
                 </FormGroup>
               </Stack>
             </Grid>
-            <Grid item xs={3} justifyContent="flex-end">
+            <Grid item xs={2} justifyContent="flex-end">
               <Grid item>
                 <BuildMenu />
               </Grid>
             </Grid>
-            <Grid item xs={3} justifyContent="flex-end">
+            <Grid item xs={2} justifyContent="flex-end">
               <Grid item>
                 <a href="https://mastodon.social/@mikkergp">
                   <img src="/mastodon-32.png" alt="Mastodon Icon" />
