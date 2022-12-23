@@ -119,7 +119,7 @@ export default class PlayerStore {
       }
     }
 
-    if (this.mapStore.squareIs(this.currentLocation, "nothing")) {
+    if (this.mapStore.squareIs(this.currentLocation, "flat_land")) {
       this.currentAction.set(PLAYER_ACTION_PLANT_TREE);
     } else {
       this.movePlayer();
@@ -141,7 +141,7 @@ export default class PlayerStore {
       if (this.currentAction.actionName === PLAYER_ACTION_PLANT_TREE) {
         console.log("Planting Tree!");
 
-        this.rootStore.mapStore.setMapSquare(this.currentLocation, "tree");
+        this.rootStore.mapStore.improveMapSquare(this.currentLocation, "tree");
       }
       this.currentAction.set(PLAYER_ACTION_NONE);
     }

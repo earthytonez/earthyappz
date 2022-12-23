@@ -6,7 +6,7 @@ import Menu from "@mui/material/Menu";
 
 import { observer } from "mobx-react-lite";
 import { useUIStore } from "stores/useUIStore";
-import { TBuilding } from "stores/UI.store";
+import { TBuildingSlug } from "../../stores/buildings/buildings";
 
 const BuildMenu = observer((): React.ReactElement => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -14,12 +14,17 @@ const BuildMenu = observer((): React.ReactElement => {
   const uiStore = useUIStore();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    if (uiStore.isBuilding) {
+      uiStore.clearActions();
+      setAnchorEl(null);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = (
     ev: React.MouseEvent<HTMLElement>,
-    building: TBuilding
+    building: TBuildingSlug
   ) => {
     console.log(ev);
     uiStore.setBuilding(building);
@@ -37,7 +42,7 @@ const BuildMenu = observer((): React.ReactElement => {
         onClick={handleMenu}
         color="inherit"
       >
-        Build
+        {uiStore.isBuilding ? "Cancel" : "Build"}
       </Button>
       <Menu
         id="menu-appbar"
@@ -56,10 +61,17 @@ const BuildMenu = observer((): React.ReactElement => {
       >
         <MenuItem
           onClick={(ev) => {
-            handleClose(ev, "HOUSE");
+            handleClose(ev, "house");
           }}
         >
           House
+        </MenuItem>
+        <MenuItem
+          onClick={(ev) => {
+            handleClose(ev, "dock");
+          }}
+        >
+          Dock
         </MenuItem>
       </Menu>
     </Box>

@@ -11,6 +11,10 @@ export default class RootStore {
     this.startTicker();
   }
 
+  sendNotification(notification: string) {
+    console.log(notification);
+  }
+
   startTicker() {
     setInterval(() => {
       this.playerStore.tick();

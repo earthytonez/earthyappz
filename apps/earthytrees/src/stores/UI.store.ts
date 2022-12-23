@@ -1,11 +1,11 @@
 import Coordinates from "./map/Coordinates";
 import { makeObservable, computed, action, observable } from "mobx";
 
-export type TBuilding = "HOUSE";
+import BUILDINGS, { TBuildingSlug } from "./buildings/buildings";
 
 export default class UIStore {
   _isBuilding: boolean = false;
-  _isBuildingType: TBuilding | undefined;
+  _isBuildingType: TBuildingSlug | undefined;
   _isBuildingDimensions: Coordinates | undefined;
 
   constructor() {
@@ -33,25 +33,15 @@ export default class UIStore {
     return this._isBuildingDimensions;
   }
 
-  get isBuildingType(): string {
-    switch (this._isBuildingType) {
-      case "HOUSE":
-        return "house";
-      default:
-        return "";
-    }
+  get isBuildingType(): TBuildingSlug | undefined {
+    return this._isBuildingType;
   }
 
-  getBuildingDimensions(building: TBuilding) {
-    switch (building) {
-      case "HOUSE":
-        return new Coordinates(3, 2);
-      default:
-        return new Coordinates(3, 2);
-    }
+  getBuildingDimensions(building: TBuildingSlug) {
+    return BUILDINGS[building]!.dimensions;
   }
 
-  setBuilding(building: TBuilding) {
+  setBuilding(building: TBuildingSlug) {
     console.log(`Starting Building, ${building}`);
     this._isBuilding = true;
     this._isBuildingType = building;

@@ -12,6 +12,8 @@ import Coordinates from "stores/map/Coordinates";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
+import { TBuildingSlug } from "stores/buildings/buildings";
+
 const Tree = observer((params: any) => {
   let mapSquareStyle: any = {};
 
@@ -21,6 +23,11 @@ const Tree = observer((params: any) => {
   //   console.log(params.border);
   // }
 
+  let squareType = params.treeInfo.type;
+  if (params.border.includes("not-buildable")) {
+    squareType = "warning";
+  }
+
   if (params.isBuilding) {
     TreeMapBlock = styled(Box)`
       :hover {
@@ -28,6 +35,7 @@ const Tree = observer((params: any) => {
         cursor: pointer;
       }
       box-sizing: border-box;
+      ${params.border.includes("not-buildable") ? `content: "X";` : null}
 
       ${params.border.includes("top") ? "border-top: 1px solid brown;" : null}
       ${params.border.includes("bottom")
@@ -40,11 +48,11 @@ const Tree = observer((params: any) => {
     `;
   }
 
-  switch (params.treeInfo.type) {
-    case "nothing":
+  switch (squareType) {
+    case "flat_land":
       return (
         <TreeMapBlock
-          onMouseEnter={() => {
+          onMouseOver={() => {
             params.setHoverCoordinates(new Coordinates(params.x, params.y));
           }}
           onClick={params.doSquareAction}
@@ -57,7 +65,7 @@ const Tree = observer((params: any) => {
     case "lake":
       return (
         <TreeMapBlock
-          onMouseEnter={() => {
+          onMouseOver={() => {
             params.setHoverCoordinates(new Coordinates(params.x, params.y));
           }}
           onClick={params.doSquareAction}
@@ -70,7 +78,7 @@ const Tree = observer((params: any) => {
     case "tree":
       return (
         <TreeMapBlock
-          onMouseEnter={() => {
+          onMouseOver={() => {
             params.setHoverCoordinates(new Coordinates(params.x, params.y));
           }}
           onClick={params.doSquareAction}
@@ -83,7 +91,7 @@ const Tree = observer((params: any) => {
     case "house":
       return (
         <TreeMapBlock
-          onMouseEnter={() => {
+          onMouseOver={() => {
             params.setHoverCoordinates(new Coordinates(params.x, params.y));
           }}
           onClick={params.doSquareAction}
@@ -95,6 +103,38 @@ const Tree = observer((params: any) => {
           }}
         >
           &#9608;
+        </TreeMapBlock>
+      );
+    case "dock":
+      return (
+        <TreeMapBlock
+          onMouseOver={() => {
+            params.setHoverCoordinates(new Coordinates(params.x, params.y));
+          }}
+          onClick={params.doSquareAction}
+          component="span"
+          style={{
+            color: "brown",
+            border: "1px solid brown",
+            backgroundColor: "brown",
+          }}
+        >
+          &#9617;
+        </TreeMapBlock>
+      );
+    case "warning":
+      return (
+        <TreeMapBlock
+          onMouseOver={() => {
+            params.setHoverCoordinates(new Coordinates(params.x, params.y));
+          }}
+          onClick={params.doSquareAction}
+          component="span"
+          style={{
+            color: "red",
+          }}
+        >
+          X
         </TreeMapBlock>
       );
   }
@@ -129,16 +169,38 @@ const Grove = observer((params: any) => {
   let playerLocation = rootStore.playerStore.currentLocation;
   let playerDestination = rootStore.playerStore.currentDestination;
 
-  const borderType = function (
-    isBuilding: boolean,
+  const inHoverSquare = function (
     x: number,
     y: number,
     hoverCoordinates: Coordinates,
-    isBuildingDimensions: Coordinates | undefined
+    buildingDimensions: Coordinates
+  ): boolean {
+    return (
+      x >= hoverCoordinates.X &&
+      x < hoverCoordinates.X + buildingDimensions.X &&
+      y >= hoverCoordinates.Y &&
+      y < hoverCoordinates.Y + buildingDimensions.Y
+    );
+  };
+
+  const borderType = function (
+    isBuilding: boolean,
+    isBuildingType: TBuildingSlug | undefined,
+    isBuildingDimensions: Coordinates | undefined,
+    x: number,
+    y: number,
+    hoverCoordinates: Coordinates
   ): Array<string> {
     let retVal: Array<string> = [];
-    if (!isBuilding || !isBuildingDimensions) {
+    if (!isBuilding || !isBuildingDimensions || !isBuildingType) {
       return retVal;
+    }
+
+    if (
+      !rootStore.mapStore.isBuildable(new Coordinates(x, y), isBuildingType) &&
+      inHoverSquare(x, y, hoverCoordinates, isBuildingDimensions)
+    ) {
+      retVal.push("not-buildable");
     }
 
     const verticalWall =
@@ -150,32 +212,14 @@ const Grove = observer((params: any) => {
       x < hoverCoordinates.X + isBuildingDimensions.X;
 
     if (x === hoverCoordinates.X && verticalWall) {
-      console.log(
-        `Left when X = ${hoverCoordinates.X} and y is > ${
-          hoverCoordinates.Y
-        } and < ${hoverCoordinates.Y + isBuildingDimensions.Y}`
-      );
       retVal.push("left");
     }
 
     if (y === hoverCoordinates.Y && horizontalWall) {
-      console.log(
-        `Top when Y = ${hoverCoordinates.Y} and x is > ${
-          hoverCoordinates.X
-        } and < ${hoverCoordinates.X + isBuildingDimensions.X}`
-      );
       retVal.push("top");
     }
 
     if (x === hoverCoordinates.X + isBuildingDimensions.X - 1 && verticalWall) {
-      console.log(
-        `Right when X = ${
-          hoverCoordinates.X + isBuildingDimensions.X
-        } and y is > ${hoverCoordinates.Y} and < ${
-          hoverCoordinates.Y + isBuildingDimensions.Y
-        }`
-      );
-
       retVal.push("right");
     }
 
@@ -183,20 +227,9 @@ const Grove = observer((params: any) => {
       y === hoverCoordinates.Y + isBuildingDimensions.Y - 1 &&
       horizontalWall
     ) {
-      console.log(
-        `Bottom when y = ${
-          hoverCoordinates.Y + isBuildingDimensions.Y
-        } and x is > ${hoverCoordinates.X} and < ${
-          hoverCoordinates.X + isBuildingDimensions.X
-        }`
-      );
-
       retVal.push("bottom");
     }
 
-    if (retVal.length > 0) {
-      console.log(`Space [${x}, ${y}] has borders ${retVal}`);
-    }
     return retVal;
   };
 
@@ -225,8 +258,12 @@ const Grove = observer((params: any) => {
                     isBuilding={uiStore.isBuilding}
                     isBuildingDimensions={uiStore.isBuildingDimensions}
                     doSquareAction={() => {
+                      if (!uiStore.isBuilding) {
+                        return;
+                      }
                       rootStore.mapStore.doSquareAction(
                         "BUILD",
+                        uiStore.isBuildingType,
                         uiStore.isBuildingDimensions,
                         new Coordinates(j, i)
                       );
@@ -236,10 +273,11 @@ const Grove = observer((params: any) => {
                     treeInfo={groveCell}
                     border={borderType(
                       uiStore.isBuilding,
+                      uiStore.isBuildingType,
+                      uiStore.isBuildingDimensions,
                       j,
                       i,
-                      hoverCoordinates,
-                      uiStore.isBuildingDimensions
+                      hoverCoordinates
                     )}
                     x={j}
                     y={i}

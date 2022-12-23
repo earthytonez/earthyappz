@@ -1,59 +1,65 @@
 import RootStore from "stores/Root.store";
 
-import { MAP_WIDTH, MAP_HEIGHT, LAKE_RADIUS } from "./constants";
+import { MAP_WIDTH, MAP_HEIGHT } from "./constants";
 
-import MapSquare, { MapSquareType, MOVABLE_MAP_TYPES } from "./MapSquare";
+import { MapSquareImprovementType, MapSquareType } from "./MapSquare";
 import { action, autorun, computed, observable, makeObservable } from "mobx";
 import Coordinates from "./Coordinates";
 
+import BUILDINGS from "../buildings/buildings";
+import { TBuildingSlug } from "../buildings/buildings";
+import { IPlacementRules } from "./Placement";
+import { MapSquareFeatures } from "./MapSquare";
+
+import MapSquare from "./MapSquare";
+import MapMatrix from "./MapMatrix";
+import MapGenerator from "./MapGenerator";
+
 export default class MapStore {
   rootStore: RootStore;
-  _map: MapSquare[][] = [];
+  _map: MapMatrix = new MapMatrix();
 
   get map() {
-    console.log(this._map);
-    return this._map;
+    return this._map.map;
   }
 
   saveMap() {
     localStorage.setItem("map", JSON.stringify(this.map));
   }
 
-  generateNewMap(): MapSquare[][] {
-    const retVal: MapSquare[][] = [];
+  isBuildable(coordinates: Coordinates, buildingType: TBuildingSlug): boolean {
+    return this._map.squareBuildable(coordinates, buildingType);
+  }
 
-    var lakeX =
-      Math.floor(Math.random() * (MAP_WIDTH - LAKE_RADIUS * 2)) + LAKE_RADIUS;
-    var lakeY =
-      Math.floor(Math.random() * (MAP_HEIGHT - LAKE_RADIUS * 2)) + LAKE_RADIUS;
-    for (var y = 0; y < MAP_HEIGHT; y++) {
-      retVal[y] = [];
-      for (var x = 0; x < MAP_WIDTH; x++) {
-        var distance = Math.sqrt(
-          Math.pow(x - lakeX, 2) + Math.pow(y - lakeY, 2)
-        );
-        if (distance < LAKE_RADIUS) {
-          retVal![y]![x] = { type: "lake" };
-        } else {
-          retVal![y]![x] = { type: "nothing" };
-        }
-      }
-    }
+  generateNewMap(): MapMatrix {
+    let mapGenerator = new MapGenerator(this._map);
+    return mapGenerator.generate();
+  }
 
-    return retVal;
+  validMap(_map: MapSquare[][]) {
+    if (_map?.length !== MAP_HEIGHT) return false;
+    if (_map[0]?.length !== MAP_WIDTH) return false;
+
+    return true;
   }
 
   checkLocalStorage() {
     let rawLocalStorage = localStorage.getItem("map");
 
     console.log("Checking Local Storage For Map");
-    if (rawLocalStorage !== undefined && rawLocalStorage !== "") {
+    if (
+      rawLocalStorage !== undefined &&
+      rawLocalStorage !== "" &&
+      rawLocalStorage !== "undefined"
+    ) {
       let _map = JSON.parse(rawLocalStorage!);
-      if (_map?.length === MAP_HEIGHT) {
-        this._map = _map;
+      if (this.validMap(_map)) {
+        this._map.setMap(_map);
         return;
       }
     }
+
+    console.log("MAP_LOADER, Generating New Map");
     this._map = this.generateNewMap();
 
     console.log(
@@ -63,98 +69,92 @@ export default class MapStore {
   }
 
   clearMapSquare(coordinates: Coordinates) {
-    this.setMapSquare(coordinates, "nothing");
-  }
-
-  setMapSquare(coordinates: Coordinates, squareType: MapSquareType) {
-    this._map[coordinates.Y]![coordinates.X] = new MapSquare(squareType);
+    this._map.clearImprovements(coordinates);
     this.saveMap();
   }
 
-  squareType(coordinate: Coordinates): MapSquareType | undefined {
-    let mapRow = this._map[coordinate.Y];
-    if (mapRow === undefined) {
-      return undefined;
-    }
-    let mapSquare = mapRow[coordinate.X];
-    if (mapSquare === undefined) {
-      return undefined;
-    }
-    return mapSquare.type;
+  squareType(coordinates: Coordinates): MapSquareType | undefined {
+    return this._map.squareType(coordinates);
   }
 
-  squareMovable(coordinate: Coordinates): boolean {
-    let mapRow = this._map[coordinate.Y];
-    if (mapRow === undefined) {
-      return false;
-    }
-    let mapSquare = mapRow[coordinate.X];
-    if (mapSquare === undefined) {
-      return false;
-    }
-
-    if (mapSquare.type === "lake") {
-      return false;
-    }
-
-    return true;
+  squareMovable(coordinates: Coordinates): boolean {
+    return this._map.squareMovable(coordinates);
   }
 
   getMapMovableMatrix() {
-    return this._map.map((mapRows: MapSquare[]) => {
-      return mapRows.map((mapSquare: MapSquare) => {
-        if (MOVABLE_MAP_TYPES.includes(mapSquare.type)) {
-          return 0;
-        }
-        return 1;
-      });
-    });
+    return this._map.movableMatrix();
   }
 
-  squarePlaceable(coordinate: Coordinates): boolean {
-    let mapRow = this._map[coordinate.Y];
-    if (mapRow === undefined) {
-      return false;
-    }
-    let mapSquare = mapRow[coordinate.X];
-    if (mapSquare === undefined) {
-      return false;
+  checkPlacementRules(
+    placementRules: IPlacementRules,
+    squares: Coordinates[]
+  ): boolean {
+    let allPlacementRulesPassed = true;
+    let oneOfPlacementRulesPassed = placementRules.one_of === undefined;
+
+    console.log(placementRules);
+
+    squares.forEach((square: Coordinates) => {
+      let squareIsContext = this.squareIsContext(square);
+      if (!squareIsContext.includes(placementRules.all)) {
+        allPlacementRulesPassed = false;
+      }
+
+      if (
+        placementRules.one_of &&
+        squareIsContext.includes(placementRules.one_of)
+      ) {
+        oneOfPlacementRulesPassed = true;
+      }
+    });
+
+    if (!allPlacementRulesPassed) {
+      this.rootStore.sendNotification(
+        `Sorry, couldn't place here, failed placement rule, all squares must be ${placementRules.all}`
+      );
     }
 
-    if (mapSquare.type === "lake") {
-      return false;
+    if (!oneOfPlacementRulesPassed) {
+      this.rootStore.sendNotification(
+        `Sorry, couldn't place here, failed placement rule, at least one square must be: ${placementRules.one_of}`
+      );
     }
 
-    return true;
+    return allPlacementRulesPassed && oneOfPlacementRulesPassed;
   }
 
   doSquareAction(
     action: "BUILD",
+    target: TBuildingSlug | undefined,
     dimensions: Coordinates | undefined,
     location: Coordinates
   ) {
-    console.log(`Taking Action ${action}`);
-    if (!dimensions) {
-      return;
+    if (!target || !dimensions) {
+      throw new Error("Must provide target and dimensions");
     }
 
-    let placeable = true;
+    if (action === "BUILD" && !BUILDINGS[target]) {
+      throw new Error("Building Type doesn't exist");
+    }
+
+    let squares = [];
     for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
       for (let y = location.Y; y <= location.Y + dimensions.Y - 1; y++) {
-        console.log(`Check Map Square ${x} ${y}, house`);
-        if (!this.squarePlaceable(new Coordinates(x, y))) {
-          placeable = false;
-        }
+        squares.push(new Coordinates(x, y));
       }
     }
 
+    let placeable = this.checkPlacementRules(
+      BUILDINGS[target]!.placementRules,
+      squares
+    );
+
     if (placeable) {
-      this.clearAllSquares("house");
+      this.clearAllSquares(target);
 
       for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
         for (let y = location.Y; y <= location.Y + dimensions.Y - 1; y++) {
-          console.log(`Set Map Square ${x} ${y}, house`);
-          this.setMapSquare(new Coordinates(x, y), "house");
+          this._map.improveSquare(new Coordinates(x, y), target);
         }
       }
     }
@@ -163,8 +163,8 @@ export default class MapStore {
   }
 
   clearAllSquares(squareType: MapSquareType) {
-    for (let y = 0; y <= MAP_HEIGHT; y++) {
-      for (let x = 0; x <= MAP_WIDTH; x++) {
+    for (let y = 0; y < MAP_HEIGHT; y++) {
+      for (let x = 0; x < MAP_WIDTH; x++) {
         if (this.squareIs(new Coordinates(x, y), squareType)) {
           this.clearMapSquare(new Coordinates(x, y));
         }
@@ -172,17 +172,55 @@ export default class MapStore {
     }
   }
 
-  squareIs(coordinate: Coordinates, squareType: string): boolean {
-    let mapRow = this._map[coordinate.Y];
-    if (mapRow === undefined) {
-      return false;
+  /*
+   * Square Is Context tells you the features the square has based on it's adjacencies.
+   * For example, water near land or land near water.
+   */
+  squareIsContext(coordinate: Coordinates): MapSquareFeatures[] {
+    let thisSquareType = this.squareType(coordinate);
+    let mapSquareFeatures: MapSquareFeatures[] = ["LAND"];
+    if (thisSquareType === "lake") {
+      mapSquareFeatures = ["WATER"];
     }
-    let mapSquare = mapRow[coordinate.X];
-    if (mapSquare === undefined) {
-      return false;
-    }
-    let mapSquareType = mapSquare.type;
-    return mapSquareType === squareType;
+
+    let mapSquareType: MapSquareType | undefined;
+
+    let tX = coordinate.X;
+    let tY = coordinate.Y;
+    [
+      [tX + 0, tY + 1],
+      [tX + 1, tY + 0],
+      [tX + 0, tY - 1],
+      [tX - 1, tY + 0],
+    ].forEach((c: any) => {
+      if (c[0] >= 0 && c[1] >= 0) {
+        mapSquareType = this.squareType(new Coordinates(c[0], c[1]));
+      }
+
+      if (!mapSquareType) return;
+
+      if (mapSquareType !== "lake") {
+        mapSquareFeatures.push("ADJACENT_TO_LAND");
+      }
+
+      if (mapSquareType === "lake") {
+        mapSquareFeatures.push("ADJACENT_TO_WATER");
+      }
+    });
+
+    return this.uniqByFilter<MapSquareFeatures>(mapSquareFeatures);
+  }
+
+  uniqByFilter<T>(array: T[]) {
+    return array.filter((value, index) => array.indexOf(value) === index);
+  }
+
+  squareIs(coordinates: Coordinates, squareType: MapSquareType): boolean {
+    return this._map.squareIs(coordinates, squareType);
+  }
+
+  improveMapSquare(c: Coordinates, type: MapSquareImprovementType) {
+    this._map.improveSquare(c, type);
   }
 
   constructor(rootStore: RootStore) {
@@ -198,7 +236,6 @@ export default class MapStore {
       _map: observable,
       map: computed,
       checkLocalStorage: action.bound,
-      setMapSquare: action.bound,
       saveMap: action.bound,
     });
   }
