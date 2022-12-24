@@ -40,7 +40,16 @@ export default class MapStore {
     if (_map?.length !== MAP_HEIGHT) return false;
     if (_map[0]?.length !== MAP_WIDTH) return false;
 
-    return true;
+    let valid = true;
+    _map.forEach((mapColumn: any[]) => {
+      mapColumn.forEach((mapSquare: any[]) => {
+        if (!("immutableType" in mapSquare)) {
+          valid = false;
+        }
+      });
+    });
+
+    return valid;
   }
 
   checkLocalStorage() {
