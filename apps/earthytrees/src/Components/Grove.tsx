@@ -261,13 +261,16 @@ const Grove = observer((params: any) => {
                       if (!uiStore.isBuilding) {
                         return;
                       }
-                      rootStore.mapStore.doSquareAction(
-                        "BUILD",
-                        uiStore.isBuildingType,
-                        uiStore.isBuildingDimensions,
-                        new Coordinates(j, i)
-                      );
-                      uiStore.clearActions();
+                      if (
+                        rootStore.mapStore.doSquareAction(
+                          "BUILD",
+                          uiStore.isBuildingType,
+                          uiStore.isBuildingDimensions,
+                          new Coordinates(j, i)
+                        )
+                      ) {
+                        uiStore.clearActions();
+                      }
                     }}
                     key={`${i}-${j}`}
                     treeInfo={groveCell}

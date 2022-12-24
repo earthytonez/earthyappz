@@ -8,7 +8,7 @@ import Coordinates from "./Coordinates";
 
 import BUILDINGS from "../buildings/buildings";
 import { TBuildingSlug } from "../buildings/buildings";
-import { IPlacementRules } from "./Placement";
+import { IPlacementRules, placementRuleText } from "./Placement";
 import { MapSquareFeatures } from "./MapSquare";
 
 import MapSquare from "./MapSquare";
@@ -110,17 +110,31 @@ export default class MapStore {
 
     if (!allPlacementRulesPassed) {
       this.rootStore.sendNotification(
-        `Sorry, couldn't place here, failed placement rule, all squares must be ${placementRules.all}`
+        `Sorry, couldn't place here, all squares must be ${placementRuleText(
+          placementRules.all
+        )}`
       );
     }
 
-    if (!oneOfPlacementRulesPassed) {
+    if (!oneOfPlacementRulesPassed && placementRules.one_of) {
       this.rootStore.sendNotification(
-        `Sorry, couldn't place here, failed placement rule, at least one square must be: ${placementRules.one_of}`
+        `Sorry, couldn't place here, at least one square must be ${placementRuleText(
+          placementRules.one_of
+        )}`
       );
     }
 
     return allPlacementRulesPassed && oneOfPlacementRulesPassed;
+  }
+
+  buildingFootprint(location: Coordinates, dimensions: Coordinates) {
+    let squares = [];
+    for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
+      for (let y = location.Y; y <= location.Y + dimensions.Y - 1; y++) {
+        squares.push(new Coordinates(x, y));
+      }
+    }
+    return squares;
   }
 
   doSquareAction(
@@ -137,16 +151,11 @@ export default class MapStore {
       throw new Error("Building Type doesn't exist");
     }
 
-    let squares = [];
-    for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
-      for (let y = location.Y; y <= location.Y + dimensions.Y - 1; y++) {
-        squares.push(new Coordinates(x, y));
-      }
-    }
+    let buildingFootprint = this.buildingFootprint(location, dimensions);
 
     let placeable = this.checkPlacementRules(
       BUILDINGS[target]!.placementRules,
-      squares
+      buildingFootprint
     );
 
     if (placeable) {
@@ -157,6 +166,7 @@ export default class MapStore {
           this._map.improveSquare(new Coordinates(x, y), target);
         }
       }
+      this.saveMap();
     }
 
     return placeable;

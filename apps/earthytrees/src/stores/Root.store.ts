@@ -1,6 +1,8 @@
 import MapStore from "./map/Store";
 import PlayerStore from "./player/Store";
 
+import { toast } from "react-toastify";
+
 export default class RootStore {
   mapStore: MapStore;
   playerStore: PlayerStore;
@@ -12,7 +14,7 @@ export default class RootStore {
   }
 
   sendNotification(notification: string) {
-    console.log(notification);
+    toast(notification);
   }
 
   startTicker() {
