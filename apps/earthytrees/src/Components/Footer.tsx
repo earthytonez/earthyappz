@@ -2,13 +2,11 @@ import * as React from "react";
 
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
-import Toolbar from "@mui/material/Toolbar";
 import FormGroup from "@mui/material/FormGroup";
-
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-
 import Switch from "@mui/material/Switch";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
 import BuildMenu from "./Footer/BuildMenu";
 
@@ -17,6 +15,8 @@ import { styled } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../stores/useStore";
 import { useUIStore } from "stores/useUIStore";
+
+import About from "./Footer/About";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -72,9 +72,9 @@ const Footer = observer((): React.ReactElement => {
     <React.Fragment>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>
-          <Grid container>
-            <Grid item xs={6}>
-              <Stack direction="row" spacing={3} alignItems="center">
+          <Stack direction="row" spacing={3} alignItems="center" flexGrow={1}>
+            <Grid container>
+              <Grid xs={2}>
                 <Typography
                   style={{ fontFamily: "Courier New", fontSize: "12px" }}
                 >
@@ -83,79 +83,84 @@ const Footer = observer((): React.ReactElement => {
                     ? `and trying to place a ${uiStore.isBuildingType}`
                     : ""}
                 </Typography>
-                <Stack direction="column" spacing={0} alignItems="center">
+              </Grid>
+              <Stack direction="column" spacing={0} alignItems="center">
+                <Typography
+                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                >
+                  <b>Location</b>: [{playerStore.currentLocation.X},{" "}
+                  {playerStore.currentLocation.Y}]{" "}
+                </Typography>
+                <Typography
+                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                >
+                  <b>Destination</b>:{" "}
+                  {playerStore.currentDestination ? (
+                    <span>
+                      [{playerStore.currentDestination.X},{" "}
+                      {playerStore.currentDestination.Y}]
+                    </span>
+                  ) : (
+                    <span>None</span>
+                  )}
+                </Typography>
+              </Stack>
+              <FormGroup>
+                <Stack direction="row" spacing={1} alignItems="center">
                   <Typography
-                    style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                    style={{
+                      fontWeight: "bold",
+                      fontFamily: "Courier New",
+                      fontSize: "12px",
+                    }}
                   >
-                    <b>Location</b>: [{playerStore.currentLocation.X},{" "}
-                    {playerStore.currentLocation.Y}]{" "}
+                    Dense
                   </Typography>
+                  <AntSwitch
+                    onChange={(
+                      _ev: React.ChangeEvent<HTMLInputElement>,
+                      _checked: boolean
+                    ) => {
+                      playerStore.togglePlantingStrategy();
+                    }}
+                    defaultChecked={playerStore.plantingStrategy === "SPARSE"}
+                    inputProps={{ "aria-label": "ant design" }}
+                  />
                   <Typography
-                    style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                    style={{
+                      fontWeight: "bold",
+                      fontFamily: "Courier New",
+                      fontSize: "12px",
+                    }}
                   >
-                    <b>Destination</b>:{" "}
-                    {playerStore.currentDestination ? (
-                      <span>
-                        [{playerStore.currentDestination.X},{" "}
-                        {playerStore.currentDestination.Y}]
-                      </span>
-                    ) : (
-                      <span>None</span>
-                    )}
+                    Sparse
                   </Typography>
                 </Stack>
-                <FormGroup>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Typography
-                      style={{
-                        fontWeight: "bold",
-                        fontFamily: "Courier New",
-                        fontSize: "12px",
-                      }}
-                    >
-                      Dense
-                    </Typography>
-                    <AntSwitch
-                      onChange={(
-                        _ev: React.ChangeEvent<HTMLInputElement>,
-                        _checked: boolean
-                      ) => {
-                        playerStore.togglePlantingStrategy();
-                      }}
-                      defaultChecked={playerStore.plantingStrategy === "SPARSE"}
-                      inputProps={{ "aria-label": "ant design" }}
-                    />
-                    <Typography
-                      style={{
-                        fontWeight: "bold",
-                        fontFamily: "Courier New",
-                        fontSize: "12px",
-                      }}
-                    >
-                      Sparse
-                    </Typography>
-                  </Stack>
-                  <Typography
-                    style={{ fontFamily: "Courier New", fontSize: "12px" }}
-                  >
-                    Tree Planting Strategy
-                  </Typography>
-                </FormGroup>
-              </Stack>
+                <Typography
+                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                >
+                  Tree Planting Strategy
+                </Typography>
+              </FormGroup>
+              <BuildMenu />
             </Grid>
-            <Grid item xs={2} justifyContent="flex-end">
-              <Grid item>
-                <BuildMenu />
-              </Grid>
-            </Grid>
-            <Grid item xs={2} justifyContent="flex-end">
-              <Grid item>
-                <a href="https://mastodon.social/@mikkergp">
-                  <img src="/mastodon-32.png" alt="Mastodon Icon" />
-                </a>
-              </Grid>
-            </Grid>
-          </Grid>
+          </Stack>
+          <Stack direction="row">
+            <Stack direction="column" spacing={0} alignItems="center">
+              <About />
+              <Typography
+                style={{ fontFamily: "Courier New", fontSize: "12px" }}
+              >
+                <b>Game is Alpha</b>
+                <br />
+                Saves may be lost
+              </Typography>
+            </Stack>
+
+            <a href="https://mastodon.social/@mikkergp">
+              <img src="/mastodon-32.png" alt="Mastodon Icon" />
+            </a>
+          </Stack>
         </Toolbar>
       </AppBar>
     </React.Fragment>

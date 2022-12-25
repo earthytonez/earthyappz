@@ -1,5 +1,4 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -22,6 +21,10 @@ const BuildMenu = observer((): React.ReactElement => {
     }
   };
 
+  const handleBlurClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleClose = (
     ev: React.MouseEvent<HTMLElement>,
     building: TBuildingSlug
@@ -32,10 +35,10 @@ const BuildMenu = observer((): React.ReactElement => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <React.Fragment>
       <Button
         variant="outlined"
-        size="large"
+        size="small"
         aria-label="account of current user"
         aria-controls="menu-appbar"
         aria-haspopup="true"
@@ -56,8 +59,8 @@ const BuildMenu = observer((): React.ReactElement => {
           vertical: "top",
           horizontal: "right",
         }}
+        onClose={handleBlurClose}
         open={Boolean(anchorEl)}
-        // onClose={handleClose}
       >
         <MenuItem
           onClick={(ev) => {
@@ -74,7 +77,7 @@ const BuildMenu = observer((): React.ReactElement => {
           Dock
         </MenuItem>
       </Menu>
-    </Box>
+    </React.Fragment>
   );
 });
 
