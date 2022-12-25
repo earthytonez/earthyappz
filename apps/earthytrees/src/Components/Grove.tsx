@@ -237,7 +237,6 @@ const Grove = observer((params: any) => {
 
   return (
     <div className="Grove">
-      {hoverCoordinates.X}, {hoverCoordinates.Y}
       {groveMatrix.map((groveColumn: MapSquare[], i: number) => {
         if (Array.isArray(groveColumn)) {
           return (
@@ -294,6 +293,7 @@ const Grove = observer((params: any) => {
         }
         return <div key={`grove-map-y-${i}`}></div>;
       })}
+      {hoverCoordinates.X}, {hoverCoordinates.Y}
     </div>
   );
 });
