@@ -14,6 +14,8 @@ import Box from "@mui/material/Box";
 
 import { TBuildingSlug } from "stores/buildings/buildings";
 
+import { blue, green } from "@mui/material/colors";
+
 const Tree = observer((params: any) => {
   let mapSquareStyle: any = {};
 
@@ -70,7 +72,7 @@ const Tree = observer((params: any) => {
           }}
           onClick={params.doSquareAction}
           component="span"
-          style={{ color: "blue" }}
+          style={{ color: blue[900] }}
         >
           ~
         </TreeMapBlock>
@@ -83,7 +85,7 @@ const Tree = observer((params: any) => {
           }}
           onClick={params.doSquareAction}
           component="span"
-          style={{ color: "green" }}
+          style={{ color: green[900] }}
         >
           t
         </TreeMapBlock>

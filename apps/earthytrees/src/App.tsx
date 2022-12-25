@@ -33,7 +33,7 @@ declare module "@mui/material/styles" {
 const theme = createTheme({
   palette: {
     primary: {
-      main: green[500],
+      main: green[900],
     },
     secondary: {
       main: brown[300],
