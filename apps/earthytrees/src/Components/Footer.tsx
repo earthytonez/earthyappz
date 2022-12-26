@@ -9,6 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 import BuildMenu from "./Footer/BuildMenu";
+import DateTime from "./Footer/DateTime";
 
 import { styled } from "@mui/material/styles";
 
@@ -74,7 +75,7 @@ const Footer = observer((): React.ReactElement => {
         <Toolbar>
           <Stack direction="row" spacing={3} alignItems="center" flexGrow={1}>
             <Grid container>
-              <Grid xs={2}>
+              <Grid item xs={2}>
                 <Typography
                   style={{ fontFamily: "Courier New", fontSize: "12px" }}
                 >
@@ -143,6 +144,7 @@ const Footer = observer((): React.ReactElement => {
                 </Typography>
               </FormGroup>
               <BuildMenu />
+              <DateTime timeStore={rootStore.timeStore} />
             </Grid>
           </Stack>
           <Stack direction="row">
