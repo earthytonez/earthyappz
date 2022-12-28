@@ -45,7 +45,7 @@ const theme = createTheme({
   typography: {
     button: {
       fontSize: "12px",
-      fontFamily: "Courier New",
+      fontFamily: "Cutive Mono",
       fontWeight: "bold",
       borderRadius: 0,
     },

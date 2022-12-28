@@ -77,7 +77,7 @@ const Footer = observer((): React.ReactElement => {
             <Grid container>
               <Grid item xs={2}>
                 <Typography
-                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                  style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
                 >
                   You are {playerAction.name}{" "}
                   {uiStore.isBuilding
@@ -87,13 +87,13 @@ const Footer = observer((): React.ReactElement => {
               </Grid>
               <Stack direction="column" spacing={0} alignItems="center">
                 <Typography
-                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                  style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
                 >
                   <b>Location</b>: [{playerStore.currentLocation.X},{" "}
                   {playerStore.currentLocation.Y}]{" "}
                 </Typography>
                 <Typography
-                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                  style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
                 >
                   <b>Destination</b>:{" "}
                   {playerStore.currentDestination ? (
@@ -111,7 +111,7 @@ const Footer = observer((): React.ReactElement => {
                   <Typography
                     style={{
                       fontWeight: "bold",
-                      fontFamily: "Courier New",
+                      fontFamily: "Cutive Mono",
                       fontSize: "12px",
                     }}
                   >
@@ -130,7 +130,7 @@ const Footer = observer((): React.ReactElement => {
                   <Typography
                     style={{
                       fontWeight: "bold",
-                      fontFamily: "Courier New",
+                      fontFamily: "Cutive Mono",
                       fontSize: "12px",
                     }}
                   >
@@ -138,7 +138,7 @@ const Footer = observer((): React.ReactElement => {
                   </Typography>
                 </Stack>
                 <Typography
-                  style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                  style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
                 >
                   Tree Planting Strategy
                 </Typography>
@@ -152,7 +152,7 @@ const Footer = observer((): React.ReactElement => {
             <Stack direction="column" spacing={0} alignItems="center">
               <About />
               <Typography
-                style={{ fontFamily: "Courier New", fontSize: "12px" }}
+                style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
               >
                 <b>Game is Alpha</b>
                 <br />

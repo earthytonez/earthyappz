@@ -1,9 +1,7 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
+import { Box, Button, Grid, Modal, Popover, Typography } from "@mui/material";
 
+import { HelpOutline } from "@mui/icons-material";
 import { observer } from "mobx-react-lite";
 import { useStore } from "stores/useStore";
 
@@ -11,6 +9,7 @@ import { ScheduleSlot } from "stores/schedule/Store";
 import { Table, TableRow, TableCell, TableBody } from "@mui/material";
 
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { SCHEDULE_POPOVER_TEXT } from "HelpText/schedules";
 
 const grid = 8;
 
@@ -34,6 +33,12 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   borderBottom: undefined,
 });
 
+const absoluteTopRightStyle = {
+  position: "absolute" as "absolute",
+  top: "1%",
+  right: "1%",
+};
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -48,7 +53,7 @@ const style = {
 
 const tableCellStyle = {
   padding: 2,
-  fontFamily: "Courier New",
+  fontFamily: "Cutive Mono",
   fontSize: "12px",
 };
 
@@ -58,6 +63,18 @@ const Activity = observer((): React.ReactElement => {
   const handleClose = () => setOpen(false);
 
   const rootStore = useStore();
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
 
   const onBeforeCapture = (_props: any) => {
     console.log("onBeforeCapture");
@@ -183,6 +200,38 @@ const Activity = observer((): React.ReactElement => {
                 </Table>
               </Grid>
             </Grid>
+            <Box style={absoluteTopRightStyle}>
+              <Typography
+                aria-owns={open ? "mouse-over-popover" : undefined}
+                aria-haspopup="true"
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+              >
+                <HelpOutline />
+              </Typography>
+              <Popover
+                id="mouse-over-popover"
+                sx={{
+                  pointerEvents: "none",
+                }}
+                open={openPopover}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+              >
+                <Typography sx={{ fontFamily: "Cutive Mono", p: 1 }}>
+                  {SCHEDULE_POPOVER_TEXT}
+                </Typography>
+              </Popover>
+            </Box>
           </Box>
         </Modal>
       </DragDropContext>
