@@ -5,7 +5,6 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 
 import { observer } from "mobx-react-lite";
-import { useTheme } from "@mui/material/styles";
 
 const style = {
   position: "absolute" as "absolute",
@@ -23,12 +22,6 @@ const About = observer((): React.ReactElement => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const theme = useTheme();
-  console.log(theme);
-  console.log(theme);
-  console.log(theme);
-  console.log(theme);
 
   return (
     <React.Fragment>

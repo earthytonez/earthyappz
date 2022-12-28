@@ -10,6 +10,7 @@ import { MAP_HEIGHT, MAP_WIDTH } from "stores/map";
 import { PLAYER_ACTION_TURNS } from "./constants";
 
 import PlayerMover from "./Mover";
+import { Activity } from "stores/schedule/Store";
 
 export const PLAYER_ACTION_NONE = "NONE";
 export const PLAYER_ACTION_MOVE = "MOVE";
@@ -98,6 +99,10 @@ export default class PlayerStore {
     this.currentLocation = coordinates;
   }
 
+  get actionFromSchedule(): Activity | undefined {
+    return this.rootStore.scheduleStore.getCurrentActivity();
+  }
+
   movePlayer() {
     let newLocation = this.playerMover.getNewLocation(
       this.currentLocation,
@@ -119,11 +124,21 @@ export default class PlayerStore {
       }
     }
 
-    if (this.mapStore.squareIs(this.currentLocation, "flat_land")) {
-      this.currentAction.set(PLAYER_ACTION_PLANT_TREE);
-    } else {
-      this.movePlayer();
-      this.currentAction.set(PLAYER_ACTION_MOVE);
+    switch (this.actionFromSchedule) {
+      case "PLANT_TREE":
+        if (this.mapStore.squareIs(this.currentLocation, "flat_land")) {
+          this.currentAction.set(PLAYER_ACTION_PLANT_TREE);
+        } else {
+          this.movePlayer();
+          this.currentAction.set(PLAYER_ACTION_MOVE);
+        }
+        break;
+      case "REST":
+        this.currentAction.set(PLAYER_ACTION_NONE);
+        break;
+      default:
+        this.currentAction.set(PLAYER_ACTION_NONE);
+        break;
     }
   }
 

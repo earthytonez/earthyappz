@@ -8,9 +8,6 @@ import Switch from "@mui/material/Switch";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import BuildMenu from "./Footer/BuildMenu";
-import DateTime from "./Footer/DateTime";
-
 import { styled } from "@mui/material/styles";
 
 import { observer } from "mobx-react-lite";
@@ -18,6 +15,9 @@ import { useStore } from "../stores/useStore";
 import { useUIStore } from "stores/useUIStore";
 
 import About from "./Footer/About";
+import Activity from "./Footer/Activity";
+import BuildMenu from "./Footer/BuildMenu";
+import DateTime from "./Footer/DateTime";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -144,6 +144,7 @@ const Footer = observer((): React.ReactElement => {
                 </Typography>
               </FormGroup>
               <BuildMenu />
+              <Activity />
               <DateTime timeStore={rootStore.timeStore} />
             </Grid>
           </Stack>
