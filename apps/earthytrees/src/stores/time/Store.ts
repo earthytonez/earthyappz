@@ -79,7 +79,7 @@ export default class TimeStore {
   }
 
   twentyFourHour(): number {
-    if (this.ampm == "pm") {
+    if (this.ampm === "pm") {
       return this.hour + 12;
     }
     return this.hour;

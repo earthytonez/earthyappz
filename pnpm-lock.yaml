@@ -234,6 +234,7 @@ importers:
       '@types/mixpanel-browser': ^2.38.0
       '@types/node': ^17.0.35
       '@types/react': ^18.0.9
+      '@types/react-beautiful-dnd': ^13.1.2
       '@types/react-dom': ^18.0.4
       '@types/testing-library__jest-dom': ^5.14.5
       astar-typescript: ^1.2.5
@@ -241,6 +242,7 @@ importers:
       mobx: ^6.6.0
       mobx-react-lite: ^3.4.0
       react: ^18.2.0
+      react-beautiful-dnd: ^13.1.0
       react-dom: ^18.2.0
       react-scripts: 5.0.1
       react-toastify: ^9.1.1
@@ -259,6 +261,7 @@ importers:
       '@types/mixpanel-browser': 2.38.0
       '@types/node': 17.0.45
       '@types/react': 18.0.24
+      '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 18.0.8
       '@types/testing-library__jest-dom': 5.14.5
       astar-typescript: 1.2.5
@@ -266,6 +269,7 @@ importers:
       mobx: 6.6.2
       mobx-react-lite: 3.4.0_qrr2ojv4n7h7ey2xj7njerqqr4
       react: 18.2.0
+      react-beautiful-dnd: 13.1.1_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
       react-scripts: 5.0.1_eetduzquwu67aqoq5644t6dxzu
       react-toastify: 9.1.1_biqbaboplfbrettd7655fr4n2y
@@ -4049,7 +4053,6 @@ packages:
     resolution: {integrity: sha512-+OvPkB8CdE/bGdXKyIhc/Lm2U7UAYCCJgsqmopFmh9gbAudmslkI8eOrPDjg4JhwSE6wytz4a3/wRjKtovHVJg==}
     dependencies:
       '@types/react': 18.0.24
-    dev: true
 
   /@types/react-dom/18.0.8:
     resolution: {integrity: sha512-C3GYO0HLaOkk9dDAz3Dl4sbe4AKUGTCfFIZsz3n/82dPNN8Du533HzKatDxeUYWu24wJgMP1xICqkWk1YOLOIw==}
