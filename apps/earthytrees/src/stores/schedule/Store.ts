@@ -35,7 +35,7 @@ export default class ScheduleStore {
   schedule: ScheduleSlot[];
 
   getCurrentActivity() {
-    return this.schedule[this.timeStore.twentyFourHour() - 1]?.activity;
+    return this.schedule[this.timeStore.twentyFourHour()]?.activity;
   }
 
   get activities() {

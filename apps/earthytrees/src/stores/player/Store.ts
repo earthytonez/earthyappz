@@ -80,7 +80,7 @@ export default class PlayerStore {
   playerMover: PlayerMover;
 
   mapStore: MapStore;
-  stats: PlayerStats = new PlayerStats();
+  stats: PlayerStats;
 
   plantingStrategy:
     | typeof DENSE_PLANTING_STRATEGY
@@ -239,8 +239,18 @@ export default class PlayerStore {
           )
         );
       }
-    }
 
+      if (_player.stats) {
+        console.log(_player.stats);
+        Object.keys(_player.stats).forEach((stat: any) => {
+          console.log(stat);
+          this.stats.set(
+            _player.stats[stat].name,
+            _player.stats[stat]._current
+          );
+        });
+      }
+    }
     if (!this.currentLocation) {
       console.log(
         `Initializing Player because ethis.currentLocation ${this.currentLocation}`
@@ -266,6 +276,7 @@ export default class PlayerStore {
   constructor(private rootStore: RootStore) {
     this.mapStore = this.rootStore.mapStore;
     this.playerMover = new PlayerMover(this.mapStore, new Coordinates(0, 0));
+    this.stats = new PlayerStats();
 
     this.checkLocalStorage();
 
@@ -276,6 +287,7 @@ export default class PlayerStore {
     makeObservable(this, {
       currentLocation: observable,
       currentAction: observable,
+      stats: observable,
       checkLocalStorage: action.bound,
       initializePlayer: action.bound,
       setPlayerLocation: action.bound,

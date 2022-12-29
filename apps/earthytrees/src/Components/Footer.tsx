@@ -19,6 +19,8 @@ import Activity from "./Footer/Activity";
 import BuildMenu from "./Footer/BuildMenu";
 import DateTime from "./Footer/DateTime";
 
+import { lightGreen, yellow, red } from "@mui/material/colors";
+
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
   height: 16,
@@ -65,14 +67,14 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 
 const getColor = (stat: number): string => {
   if (stat > 75) {
-    return "green";
+    return lightGreen[100];
   }
 
   if (stat > 25) {
-    return "yellow";
+    return yellow[100];
   }
 
-  return "red";
+  return red[100];
 };
 
 const Footer = observer((): React.ReactElement => {
