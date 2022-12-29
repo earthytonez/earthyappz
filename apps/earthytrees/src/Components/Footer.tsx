@@ -63,6 +63,18 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
+const getColor = (stat: number): string => {
+  if (stat > 75) {
+    return "green";
+  }
+
+  if (stat > 25) {
+    return "yellow";
+  }
+
+  return "red";
+};
+
 const Footer = observer((): React.ReactElement => {
   const rootStore = useStore();
   const uiStore = useUIStore();
@@ -85,6 +97,66 @@ const Footer = observer((): React.ReactElement => {
                     : ""}
                 </Typography>
               </Grid>
+              <Stack direction="column" spacing={0} alignItems="center">
+                <Stack direction="row">
+                  <Typography
+                    style={{
+                      fontFamily: "Cutive Mono",
+                      fontSize: "12px",
+                    }}
+                  >
+                    <b>Sta:</b>{" "}
+                  </Typography>
+                  <Typography
+                    style={{
+                      color: getColor(playerStore.stats.stamina.val),
+                      fontFamily: "Cutive Mono",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {playerStore.stats.stamina.val}
+                  </Typography>
+                </Stack>
+                <Stack direction="row">
+                  <Typography
+                    style={{
+                      fontFamily: "Cutive Mono",
+                      fontSize: "12px",
+                    }}
+                  >
+                    <b>Hun</b>{" "}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      color: getColor(playerStore.stats.hunger.val),
+                      fontFamily: "Cutive Mono",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {playerStore.stats.hunger.val}
+                  </Typography>
+                </Stack>
+                <Stack direction="row">
+                  <Typography
+                    style={{
+                      fontFamily: "Cutive Mono",
+                      fontSize: "12px",
+                    }}
+                  >
+                    <b>Thi</b>:{" "}
+                  </Typography>
+                  <Typography
+                    style={{
+                      color: getColor(playerStore.stats.thirst.val),
+                      fontFamily: "Cutive Mono",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {playerStore.stats.thirst.val}
+                  </Typography>
+                </Stack>
+              </Stack>
               <Stack direction="column" spacing={0} alignItems="center">
                 <Typography
                   style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}

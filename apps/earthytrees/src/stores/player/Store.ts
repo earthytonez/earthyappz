@@ -10,11 +10,15 @@ import { MAP_HEIGHT, MAP_WIDTH } from "stores/map";
 import { PLAYER_ACTION_TURNS } from "./constants";
 
 import PlayerMover from "./Mover";
+import PlayerStats from "./Stats";
 import { Activity } from "stores/schedule/Store";
 
 export const PLAYER_ACTION_NONE = "NONE";
 export const PLAYER_ACTION_MOVE = "MOVE";
 export const PLAYER_ACTION_PLANT_TREE = "PLANT_TREE";
+
+export const PLAYER_ACTION_DRINK = "DRINK";
+export const PLAYER_ACTION_EAT = "EAT";
 
 const DENSE_PLANTING_STRATEGY = "DENSE";
 const SPARSE_PLANTING_STRATEGY = "SPARSE";
@@ -76,6 +80,7 @@ export default class PlayerStore {
   playerMover: PlayerMover;
 
   mapStore: MapStore;
+  stats: PlayerStats = new PlayerStats();
 
   plantingStrategy:
     | typeof DENSE_PLANTING_STRATEGY
@@ -142,7 +147,38 @@ export default class PlayerStore {
     }
   }
 
+  tickStats() {
+    if (this.currentAction.is(PLAYER_ACTION_NONE)) {
+      this.stats.stamina.incr();
+    } else {
+      this.stats.stamina.decr();
+    }
+
+    if (this.currentAction.is(PLAYER_ACTION_DRINK)) {
+      this.stats.thirst.incr();
+    } else {
+      this.stats.thirst.decr();
+    }
+
+    if (this.currentAction.is(PLAYER_ACTION_EAT)) {
+      this.stats.hunger.incr();
+    } else {
+      this.stats.hunger.decr();
+    }
+  }
+
   tick() {
+    this.tickStats();
+
+    /*
+     * Rest if stamina is too low.
+     *
+     */
+    if (this.stats.stamina.val <= 10) {
+      this.currentAction.set(PLAYER_ACTION_NONE);
+      return;
+    }
+
     if (this.currentAction.is(PLAYER_ACTION_NONE)) {
       this.startPlayerAction();
     }
@@ -222,6 +258,7 @@ export default class PlayerStore {
         plantingStrategy: this.plantingStrategy,
         currentLocation: this.currentLocation,
         currentDestination: this.currentDestination,
+        stats: this.stats,
       })
     );
   }
