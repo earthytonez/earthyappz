@@ -12,7 +12,7 @@ const ACTIVITY_DESCRIPTION = {
 };
 
 const ACTIVITIES = [
-  // { name: "Gather Water", slug: "GATHER_WATER" },
+  { name: "Gather Water", slug: "GATHER_WATER" },
   { name: "Rest", slug: "REST" },
   { name: "Plant a tree", slug: "PLANT_TREE" },
   // { name: "Build", slug: "BUILD" },

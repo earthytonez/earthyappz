@@ -23,8 +23,6 @@ class MapGenerator {
       }
     }
 
-    console.log(this.mapMatrix);
-
     if (this.mapMatrix.map![0]!.length !== MAP_WIDTH) {
       throw new Error("Map generation Failed");
     }

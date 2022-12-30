@@ -24,9 +24,11 @@ export default class RootStore {
   }
 
   startTicker() {
+    let x = 0;
     setInterval(() => {
-      this.playerStore.tick();
+      this.playerStore.tick(x);
       this.timeStore.tick();
+      x++;
     }, 100);
   }
 }

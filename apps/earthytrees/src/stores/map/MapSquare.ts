@@ -9,6 +9,8 @@ export type MapSquareType = MapSquareImmutableType | MapSquareImprovementType;
 
 const MOVABLE_MAP_TYPES = ["flat_land"];
 
+export interface IMapSquare {}
+
 export default class MapSquare {
   public improvementType: MapSquareImprovementType;
 
@@ -30,6 +32,18 @@ export default class MapSquare {
     }
 
     return features;
+  }
+
+  hasFeature(feature: MapSquareFeatures) {
+    return this.features.includes(feature);
+  }
+
+  hasImmutableType(immutableType: MapSquareImmutableType) {
+    return this.immutableType == immutableType;
+  }
+
+  hasImprovementType(improvementType: MapSquareImprovementType) {
+    return this.improvementType == improvementType;
   }
 
   improve(improvementType: MapSquareImprovementType) {

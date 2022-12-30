@@ -22,6 +22,7 @@ export default class PlayerMover {
     console.log("MoveWest");
     return this.currentLocation.west();
   }
+
   setCurrentDestinationRandom() {
     let y = rand(MAP_HEIGHT);
     let x = rand(MAP_WIDTH);
@@ -125,24 +126,16 @@ export default class PlayerMover {
       return this.currentLocation;
     }
 
-    // const xDiff = this.currentDestination.X - this.currentLocation.X;
-    // const yDiff = this.currentDestination.Y - this.currentLocation.Y;
-
-    // console.log(
-    //   `movePlayerOneStepCloserToDestination ${xDiff / MAP_WIDTH} ${
-    //     yDiff / MAP_HEIGHT
-    //   }`
-    // );
-
-    // const movePlace:
-    //   | Coordinates
-    //   | undefined = this.oneStepCloserMovementDirection(xDiff, yDiff);
-
     const aStarInstance = new AStarFinder({
       grid: {
         matrix: this.mapStore.getMapMovableMatrix(),
       },
     });
+
+    console.log(this.mapStore.getMapMovableMatrix());
+    console.log(
+      `Moving from CurrentLocation: ${this.currentLocation.X}, ${this.currentLocation.Y} to ${this.currentDestination.X}, ${this.currentDestination.Y}`
+    );
 
     let startPos = { x: this.currentLocation.X, y: this.currentLocation.Y };
     let goalPos = {
@@ -152,6 +145,7 @@ export default class PlayerMover {
 
     let myPathway = aStarInstance.findPath(startPos, goalPos);
 
+    console.log("My Pathway: ");
     console.log(myPathway);
 
     if (myPathway && myPathway[0] && myPathway[1]) {
@@ -174,7 +168,8 @@ export default class PlayerMover {
     if (!this.currentDestination) {
       this.setCurrentDestination(RANDOM_DESTINATION_STRATEGY);
     }
-    return this.movePlayerOneStepCloserToDestination();
+    let destination = this.movePlayerOneStepCloserToDestination();
+    return destination;
   }
 
   movePlayerDense(possibleDirections: Coordinates[]) {
@@ -195,6 +190,14 @@ export default class PlayerMover {
     this.currentLocation = currentLocation;
     let possibleDirections: Coordinates[] =
       this.getPossibleDirections() as Coordinates[];
+
+    if (this.currentDestination) {
+      console.log(`Moving Player One Step Closer to Destination`);
+      console.log(this.currentLocation);
+      console.log(this.currentDestination);
+      let destination = this.movePlayerOneStepCloserToDestination();
+      return destination;
+    }
 
     switch (plantingStrategy) {
       case SPARSE_PLANTING_STRATEGY:

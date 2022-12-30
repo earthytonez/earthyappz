@@ -11,7 +11,7 @@ import { TBuildingSlug } from "../buildings/buildings";
 import { IPlacementRules, placementRuleText } from "./Placement";
 import { MapSquareFeatures } from "./MapSquare";
 
-import MapSquare from "./MapSquare";
+import { IMapSquare } from "./MapSquare";
 import MapMatrix from "./MapMatrix";
 import MapGenerator from "./MapGenerator";
 
@@ -36,7 +36,7 @@ export default class MapStore {
     return mapGenerator.generate();
   }
 
-  validMap(_map: MapSquare[][]) {
+  validMap(_map: IMapSquare[][]) {
     if (_map?.length !== MAP_HEIGHT) return false;
     if (_map[0]?.length !== MAP_WIDTH) return false;
 
@@ -71,10 +71,7 @@ export default class MapStore {
     console.log("MAP_LOADER, Generating New Map");
     this._map = this.generateNewMap();
 
-    console.log(
-      "MAP_STORE_LOAD",
-      `Loading Map from Local Storage - Map = ${this.map}`
-    );
+    console.log("MAP_STORE_LOAD", `Loading Map from Local Storage - Map`);
   }
 
   clearMapSquare(coordinates: Coordinates) {
@@ -100,8 +97,6 @@ export default class MapStore {
   ): boolean {
     let allPlacementRulesPassed = true;
     let oneOfPlacementRulesPassed = placementRules.one_of === undefined;
-
-    console.log(placementRules);
 
     squares.forEach((square: Coordinates) => {
       let squareIsContext = this.squareIsContext(square);
@@ -196,38 +191,18 @@ export default class MapStore {
    * For example, water near land or land near water.
    */
   squareIsContext(coordinate: Coordinates): MapSquareFeatures[] {
-    let thisSquareType = this.squareType(coordinate);
-    let mapSquareFeatures: MapSquareFeatures[] = ["LAND"];
-    if (thisSquareType === "lake") {
-      mapSquareFeatures = ["WATER"];
-    }
+    return this._map.squareIsContext(coordinate);
+  }
 
-    let mapSquareType: MapSquareType | undefined;
-
-    let tX = coordinate.X;
-    let tY = coordinate.Y;
-    [
-      [tX + 0, tY + 1],
-      [tX + 1, tY + 0],
-      [tX + 0, tY - 1],
-      [tX - 1, tY + 0],
-    ].forEach((c: any) => {
-      if (c[0] >= 0 && c[1] >= 0) {
-        mapSquareType = this.squareType(new Coordinates(c[0], c[1]));
-      }
-
-      if (!mapSquareType) return;
-
-      if (mapSquareType !== "lake") {
-        mapSquareFeatures.push("ADJACENT_TO_LAND");
-      }
-
-      if (mapSquareType === "lake") {
-        mapSquareFeatures.push("ADJACENT_TO_WATER");
-      }
-    });
-
-    return this.uniqByFilter<MapSquareFeatures>(mapSquareFeatures);
+  /*
+   * Square Is Context tells you the features the square has based on it's adjacencies.
+   * For example, water near land or land near water.
+   */
+  checkSquareContext(
+    coordinate: Coordinates,
+    mapSquareFeatures: MapSquareFeatures
+  ): boolean {
+    return this.squareIsContext(coordinate).includes(mapSquareFeatures);
   }
 
   uniqByFilter<T>(array: T[]) {
@@ -240,6 +215,13 @@ export default class MapStore {
 
   improveMapSquare(c: Coordinates, type: MapSquareImprovementType) {
     this._map.improveSquare(c, type);
+    this.saveMap();
+  }
+
+  overrideMap(map: IMapSquare[][]) {
+    if (this.validMap(map)) {
+      this._map.setMap(map);
+    }
   }
 
   constructor(rootStore: RootStore) {
