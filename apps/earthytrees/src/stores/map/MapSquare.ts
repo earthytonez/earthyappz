@@ -4,6 +4,7 @@ import { TBuildingSlug } from "stores/buildings/buildings";
 
 export type MapSquareImmutableType = "lake" | "flat_land";
 export type MapSquareImprovementType = "tree" | "house" | "dock" | undefined;
+export type MapSquareImprovementState = "IN_PROGRESS" | "COMPLETE" | "DAMAGED";
 
 export type MapSquareType = MapSquareImmutableType | MapSquareImprovementType;
 
@@ -11,8 +12,27 @@ const MOVABLE_MAP_TYPES = ["flat_land"];
 
 export interface IMapSquare {}
 
+interface ImprovementResources {
+  wood?: number;
+}
+
+class MapSquareImprovement {
+  name() {}
+  state: MapSquareImprovementState = "COMPLETE";
+  age: number = 0;
+  percentComplete = 0;
+  resourcesApplied: ImprovementResources = {};
+  resourcesRequired: ImprovementResources = {};
+
+  constructor(public type: MapSquareImprovementType, metadata?: any) {
+    if (metadata && metadata.state) {
+      this.state = metadata.state;
+    }
+  }
+}
+
 export default class MapSquare {
-  public improvementType: MapSquareImprovementType;
+  public improvement?: MapSquareImprovement;
 
   constructor(public immutableType: MapSquareImmutableType) {}
 
@@ -43,11 +63,15 @@ export default class MapSquare {
   }
 
   hasImprovementType(improvementType: MapSquareImprovementType) {
-    return this.improvementType == improvementType;
+    return this.improvement?.type == improvementType;
   }
 
-  improve(improvementType: MapSquareImprovementType) {
-    this.improvementType = improvementType;
+  newImprovement(improvementType: MapSquareImprovementType) {
+    this.improvement = new MapSquareImprovement(improvementType);
+  }
+
+  improve(improvement: MapSquareImprovement) {
+    this.improvement = new MapSquareImprovement(improvement.type, improvement);
   }
 
   terraform(immutableType: MapSquareImmutableType) {
@@ -55,7 +79,7 @@ export default class MapSquare {
   }
 
   clearImprovements() {
-    this.improvementType = undefined;
+    this.improvement = undefined;
   }
 
   get isMovable(): boolean {
@@ -63,8 +87,8 @@ export default class MapSquare {
   }
 
   get type(): MapSquareType {
-    if (this.improvementType) {
-      return this.improvementType;
+    if (this.improvement?.type) {
+      return this.improvement.type;
     }
     return this.immutableType;
   }

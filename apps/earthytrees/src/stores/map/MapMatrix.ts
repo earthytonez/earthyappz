@@ -214,7 +214,9 @@ export default class MapMatrix {
       return mapColumns.map((mS: any) => {
         let mapSquare = new MapSquare(mS.immutableType);
         if (mS.improvementType) {
-          mapSquare.improve(mS.improvementType);
+          mapSquare.newImprovement(mS.improvementType);
+        } else if (mS.improvement && mS.improvement.type) {
+          mapSquare.improve(mS.improvement);
         }
         return mapSquare;
       });
@@ -233,7 +235,7 @@ export default class MapMatrix {
     coordinates: Coordinates,
     improvementType: MapSquareImprovementType
   ) {
-    this._map[coordinates.Y]![coordinates.X]!.improve(improvementType);
+    this._map[coordinates.Y]![coordinates.X]!.newImprovement(improvementType);
   }
 
   squareIs(coordinates: Coordinates, squareType: MapSquareType) {
