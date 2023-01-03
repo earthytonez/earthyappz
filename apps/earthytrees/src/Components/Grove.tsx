@@ -52,6 +52,9 @@ const Tree = observer((params: any) => {
 
   switch (squareType) {
     case "flat_land":
+      mapSquareStyle = {
+        fontWeight: 100,
+      };
       return (
         <TreeMapBlock
           onMouseOver={() => {
@@ -100,8 +103,8 @@ const Tree = observer((params: any) => {
           component="span"
           style={{
             color: "brown",
-            border: "1px solid brown",
             backgroundColor: "brown",
+            borderBottom: "1px solid brown",
           }}
         >
           &#9608;
@@ -117,8 +120,8 @@ const Tree = observer((params: any) => {
           component="span"
           style={{
             color: "brown",
-            border: "1px solid brown",
             backgroundColor: "brown",
+            borderBottom: "1px solid brown",
           }}
         >
           &#9617;

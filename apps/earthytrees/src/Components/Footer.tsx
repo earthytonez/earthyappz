@@ -18,6 +18,7 @@ import About from "./Footer/About";
 import Activity from "./Footer/Activity";
 import BuildMenu from "./Footer/BuildMenu";
 import DateTime from "./Footer/DateTime";
+import Debug from "./Footer/Debug";
 
 import { lightGreen, yellow, red } from "@mui/material/colors";
 
@@ -90,6 +91,13 @@ const Footer = observer((): React.ReactElement => {
           <Stack direction="row" spacing={3} alignItems="center" flexGrow={1}>
             <Grid container>
               <Grid item xs={2}>
+                <Typography
+                  style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
+                >
+                  Your plan is to{" "}
+                  {rootStore.scheduleStore.getCurrentActivityName()}
+                </Typography>{" "}
+                <br />
                 <Typography
                   style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
                 >
@@ -228,7 +236,9 @@ const Footer = observer((): React.ReactElement => {
               <Typography
                 style={{ fontFamily: "Cutive Mono", fontSize: "12px" }}
               >
-                <b>Game is Alpha</b>
+                <b>
+                  Game is <Debug>Alpha</Debug>
+                </b>
                 <br />
                 Saves may be lost
               </Typography>

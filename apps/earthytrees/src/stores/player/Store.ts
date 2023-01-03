@@ -1,25 +1,20 @@
 import RootStore from "../Root.store";
 
-import { makeObservable, observable, computed, action } from "mobx";
+import { makeObservable, observable, action } from "mobx";
 
 import Coordinates from "../map/Coordinates";
 import MapStore from "stores/map/Store";
 
 import { MAP_HEIGHT, MAP_WIDTH } from "stores/map";
 
-import { PLAYER_ACTION_TURNS } from "./constants";
-
 import PlayerMover from "./Mover";
 import PlayerStats from "./Stats";
+import PlayerStatus from "./Status";
+import PlayerTask from "./Task";
+import PlayerAction, { PlayerActionName, PLAYER_ACTION_NONE } from "./Action";
 import { Activity } from "stores/schedule/Store";
-
-export const PLAYER_ACTION_NONE = "NONE";
-export const PLAYER_ACTION_FIND_WATER = "FIND_WATER";
-export const PLAYER_ACTION_MOVE = "MOVE";
-export const PLAYER_ACTION_FORCE_REST = "FORCE_REST";
-export const PLAYER_ACTION_FORCE_EAT = "FORCE_EAT";
-export const PLAYER_ACTION_FORCE_DRINK = "FORCE_DRINK";
-export const PLAYER_ACTION_PLANT_TREE = "PLANT_TREE";
+import { PLAYER_ACTION_MOVE } from ".";
+import TaskSelector from "./TaskSelector";
 
 export const PLAYER_ACTION_DRINK = "DRINK";
 export const PLAYER_ACTION_EAT = "EAT";
@@ -27,91 +22,37 @@ export const PLAYER_ACTION_EAT = "EAT";
 const DENSE_PLANTING_STRATEGY = "DENSE";
 const SPARSE_PLANTING_STRATEGY = "SPARSE";
 
-const PLAYER_ACTION_NAMES = {
-  NONE: "resting",
-  MOVE: "moving",
-  PLANT_TREE: "planting a tree",
-  FIND_WATER: "looking for water",
-  DRINK: "drinking",
-  EAT: "eating",
-  FORCE_REST: "fatigued",
-  FORCE_DRINK: "parched",
-  FORCE_EAT: "starving",
-};
-
-const OCCUPIED_ACTIONS = [
-  PLAYER_ACTION_MOVE,
-  PLAYER_ACTION_FORCE_REST,
-  PLAYER_ACTION_FORCE_EAT,
-  PLAYER_ACTION_FORCE_DRINK,
-  PLAYER_ACTION_PLANT_TREE,
-];
-
 function rand(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-type PlayerActionName =
-  | typeof PLAYER_ACTION_DRINK
-  | typeof PLAYER_ACTION_EAT
-  | typeof PLAYER_ACTION_FIND_WATER
-  | typeof PLAYER_ACTION_MOVE
-  | typeof PLAYER_ACTION_PLANT_TREE
-  | typeof PLAYER_ACTION_NONE
-  | typeof PLAYER_ACTION_FORCE_REST
-  | typeof PLAYER_ACTION_FORCE_EAT
-  | typeof PLAYER_ACTION_FORCE_DRINK;
-
-class PlayerAction {
-  turnsSinceStarting: number = 0;
-
-  get name() {
-    return PLAYER_ACTION_NAMES[this.actionName];
-  }
-
-  passTurn() {
-    this.turnsSinceStarting++;
-  }
-
-  is(actionName: string) {
-    return actionName === this.actionName;
-  }
-
-  set(actionName: PlayerActionName) {
-    this.actionName = actionName;
-    this.turnsSinceStarting = 0;
-  }
-
-  incrementTurn() {
-    this.turnsSinceStarting++;
-  }
-
-  constructor(public actionName: PlayerActionName) {
-    this.turnsSinceStarting = 0;
-
-    makeObservable(this, {
-      actionName: observable,
-      name: computed,
-      set: action.bound,
-    });
-  }
-}
-
 export default class PlayerStore {
-  currentAction: PlayerAction = new PlayerAction(PLAYER_ACTION_NONE);
+  /* The action is the current thing you are doing this turn, the task is the over 
+  task you are working on that has to be completed before you can move on */
+  stats: PlayerStats;
+
+  currentAction: PlayerAction;
+  currentTask: PlayerTask;
   currentLocation: Coordinates = new Coordinates(0, 0);
+  currentStatus: PlayerStatus = new PlayerStatus(undefined);
+
+  taskSelector: TaskSelector = new TaskSelector();
 
   playerMover: PlayerMover;
 
   mapStore: MapStore;
-  stats: PlayerStats;
 
   plantingStrategy:
     | typeof DENSE_PLANTING_STRATEGY
     | typeof SPARSE_PLANTING_STRATEGY = DENSE_PLANTING_STRATEGY;
 
   setCurrentAction(playerActionName: PlayerActionName) {
-    this.currentAction = new PlayerAction(playerActionName);
+    this.currentAction = new PlayerAction(
+      playerActionName,
+      this.stats,
+      this,
+      this.mapStore
+    );
   }
 
   togglePlantingStrategy() {
@@ -127,96 +68,25 @@ export default class PlayerStore {
     this.currentLocation = coordinates;
   }
 
-  get actionFromSchedule(): Activity | undefined {
-    return this.rootStore.scheduleStore.getCurrentActivity();
-  }
-
   movePlayer() {
     let newLocation = this.playerMover.getNewLocation(
       this.currentLocation,
       this.plantingStrategy
+    );
+    console.log(
+      `PlayerStore: movePlayer to newLocation ${JSON.stringify(newLocation)}`
     );
     if (newLocation) {
       this.setPlayerLocation(newLocation);
     }
   }
 
-  startPlayerAction() {
-    switch (this.actionFromSchedule) {
-      case "PLANT_TREE":
-        if (this.mapStore.squareIs(this.currentLocation, "flat_land")) {
-          this.currentAction.set(PLAYER_ACTION_PLANT_TREE);
-        } else {
-          this.movePlayer();
-          this.currentAction.set(PLAYER_ACTION_MOVE);
-        }
-        break;
-      case "REST":
-        this.currentAction.set(PLAYER_ACTION_NONE);
-        break;
-      case "GATHER_WATER":
-        if (
-          this.mapStore.checkSquareContext(
-            this.currentLocation,
-            "ADJACENT_TO_WATER"
-          )
-        ) {
-          this.currentAction.set(PLAYER_ACTION_DRINK);
-          break;
-        }
-        this.currentAction.set(PLAYER_ACTION_FIND_WATER);
-        let destination = this.rootStore.mapStore._map.breadthFirstSearch(
-          "Feature",
-          "ADJACENT_TO_WATER"
-        );
-        if (destination) {
-          this.playerMover.setDestination(destination);
-          this.currentAction.set(PLAYER_ACTION_MOVE);
-        } else {
-          console.log("Warning: Could not find water destination");
-        }
-        break;
-      default:
-        this.currentAction.set(PLAYER_ACTION_NONE);
-        break;
-    }
+  atCurrentDestination(): boolean {
+    return this.playerMover.atCurrentDestination();
   }
 
-  tickStats() {
-    if (
-      this.currentAction.is(PLAYER_ACTION_NONE) ||
-      this.currentAction.is(PLAYER_ACTION_FORCE_REST) ||
-      this.currentAction.is(PLAYER_ACTION_DRINK) ||
-      this.currentAction.is(PLAYER_ACTION_EAT)
-    ) {
-      this.stats.stamina.incr();
-    } else {
-      this.stats.stamina.decr();
-    }
-
-    if (
-      this.currentAction.is(PLAYER_ACTION_DRINK) ||
-      this.currentAction.is(PLAYER_ACTION_FORCE_DRINK)
-    ) {
-      this.stats.thirst.incr();
-      this.currentAction.set(PLAYER_ACTION_NONE);
-    } else {
-      this.stats.thirst.decr();
-    }
-
-    if (
-      this.currentAction.is(PLAYER_ACTION_EAT) ||
-      this.currentAction.is(PLAYER_ACTION_FORCE_EAT)
-    ) {
-      this.stats.hunger.incr();
-      this.currentAction.set(PLAYER_ACTION_NONE);
-    } else {
-      this.stats.hunger.decr();
-    }
-  }
-
-  get occupied(): boolean {
-    return OCCUPIED_ACTIONS.includes(this.currentAction.actionName);
+  unsetCurrentDestination() {
+    this.playerMover.currentDestination = undefined;
   }
 
   tryMovePlayer(): any {
@@ -233,52 +103,53 @@ export default class PlayerStore {
     }
   }
 
-  performOccupiedAction() {
-    switch (this.currentAction.actionName) {
-      case PLAYER_ACTION_MOVE:
-        console.log("PLAYER_ACTION_MOVE tryMovePlayer");
-        this.tryMovePlayer();
-        break;
-      case PLAYER_ACTION_FORCE_REST:
-        console.log(`${this.stats.stamina.val} >= ${this.stats.stamina.max}`);
-        if (this.stats.stamina.val >= this.stats.stamina.max) {
-          this.currentAction.set(PLAYER_ACTION_NONE);
-        }
-        break;
-      case PLAYER_ACTION_FORCE_DRINK:
-        if (this.stats.thirst.val >= this.stats.thirst.max) {
-          this.currentAction.set(PLAYER_ACTION_NONE);
-        }
-        break;
-      case PLAYER_ACTION_FORCE_EAT:
-        if (this.stats.hunger.val >= this.stats.hunger.max) {
-          this.currentAction.set(PLAYER_ACTION_NONE);
-        }
-        break;
-      case PLAYER_ACTION_PLANT_TREE:
-        if (
-          this.currentAction.turnsSinceStarting >
-          PLAYER_ACTION_TURNS[PLAYER_ACTION_PLANT_TREE]
-        ) {
-          console.log("Planting Tree!");
+  // performOccupiedAction() {
+  //   switch (this.currentAction.actionName) {
+  //     case PLAYER_ACTION_MOVE:
+  //       this.tryMovePlayer();
+  //       break;
+  //     case PLAYER_ACTION_FORCE_REST:
+  //       if (this.stats.stamina.val >= this.stats.stamina.max) {
+  //         this.currentAction.set(PLAYER_ACTION_NONE);
+  //       }
+  //       break;
+  //     case PLAYER_ACTION_FORCE_DRINK:
+  //       if (this.stats.thirst.val >= this.stats.thirst.max) {
+  //         this.currentAction.set(PLAYER_ACTION_NONE);
+  //       }
+  //       break;
+  //     case PLAYER_ACTION_FORCE_EAT:
+  //       if (this.stats.hunger.val >= this.stats.hunger.max) {
+  //         this.currentAction.set(PLAYER_ACTION_NONE);
+  //       }
+  //       break;
+  //     case PLAYER_ACTION_PLANT_A_TREE:
+  //       if (
+  //         this.currentAction.turnsSinceStarting >
+  //         PLAYER_ACTION_TURNS[PLAYER_ACTION_PLANT_A_TREE]
+  //       ) {
+  //         console.log("Planting Tree!");
 
-          this.rootStore.mapStore.improveMapSquare(
-            this.currentLocation,
-            "tree"
-          );
-          this.currentAction.set(PLAYER_ACTION_NONE);
-        }
-        break;
-      default:
-        break;
-    }
-  }
+  //         this.rootStore.mapStore.improveMapSquare(
+  //           this.currentLocation,
+  //           "tree"
+  //         );
+  //         this.currentAction.set(PLAYER_ACTION_NONE);
+  //       }
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   tick(turn: number) {
-    /* First update stamina/thirst/hunger stats, then check if you are unhealthy
-     */
-    this.tickStats();
+    /* First update stamina/thirst/hunger stats, then check if you are unhealthy */
+    let playerStatus = this.currentAction.tick(this.currentAction);
+    if (playerStatus) {
+      this.currentStatus.set(playerStatus);
+    }
 
+    /* Save Player every 10 turns */
     if (turn % 10 == 0) {
       this.savePlayer();
     }
@@ -292,20 +163,45 @@ export default class PlayerStore {
     //   return;
     // }
 
-    /* Third, see if you are busy For example, if you are moving and have a destination, you are occupied. */
-    if (this.occupied) {
-      this.performOccupiedAction();
+    if (this.scheduledActivity !== undefined) {
+      this.currentTask.set(
+        this.taskSelector.select(
+          this.scheduledActivity,
+          this.currentStatus,
+          this.hasDestination
+        )
+      );
     }
 
-    /* Finally, Pick a new action if you're not busy */
-
-    if (this.currentAction.is(PLAYER_ACTION_NONE)) {
-      this.startPlayerAction();
+    if (this.currentTask.getAction() !== undefined) {
+      this.currentAction.set(this.currentTask.getAction()!);
     }
+    this.currentAction.perform();
 
-    if (!this.currentAction.is(PLAYER_ACTION_NONE)) {
-      this.currentAction.incrementTurn();
-    }
+    // TO_DELETE: Moved to Action.ts
+    //
+    // if (this.currentAction.actionName == PLAYER_ACTION_FIND_WATER) {
+    //   let destination = this.rootStore.mapStore._map.breadthFirstSearch(
+    //     this.currentLocation,
+    //     "Feature",
+    //     "ADJACENT_TO_WATER"
+    //   );
+    //   if (destination) {
+    //     this.playerMover.setDestination(destination);
+    //     playerAction.set(PLAYER_ACTION_MOVE);
+    //   } else {
+    //     console.log("Warning: Could not find water destination");
+    //   }
+    // }
+    this.currentTask.incrementTurn();
+  }
+
+  get scheduledActivity(): Activity | undefined {
+    return this.rootStore.scheduleStore.getCurrentActivity();
+  }
+
+  get hasDestination(): boolean {
+    return this.playerMover.currentDestination !== undefined;
   }
 
   get currentDestination(): Coordinates | undefined {
@@ -381,9 +277,19 @@ export default class PlayerStore {
 
   constructor(private rootStore: RootStore) {
     this.mapStore = this.rootStore.mapStore;
-    this.playerMover = new PlayerMover(this.mapStore, new Coordinates(0, 0));
+    this.playerMover = new PlayerMover(
+      this.mapStore,
+      new Coordinates(0, 0),
+      this
+    );
     this.stats = new PlayerStats();
-
+    this.currentAction = new PlayerAction(
+      PLAYER_ACTION_NONE,
+      this.stats,
+      this,
+      this.mapStore
+    );
+    this.currentTask = new PlayerTask(undefined, this.mapStore, this);
     this.checkLocalStorage();
 
     makeObservable(this, {

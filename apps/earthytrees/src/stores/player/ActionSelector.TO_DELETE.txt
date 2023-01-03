@@ -1,0 +1,55 @@
+import PlayerAction from "./Action";
+import PlayerTask from "./Task";
+
+type PlayerIntention = "PLANT_A_TREE" | "REST" | "GATHER_WATER";
+
+export default class ActionSelector {
+  select(
+    scheduledIntention: PlayerIntention,
+    playerStatus: PlayerStatus,
+    playerTask: PlayerTask
+    playerAction: PlayerAction
+  ): PlayerAction {
+    switch (scheduledIntention) {
+      case "PLANT_A_TREE":
+        
+        if (this.mapStore.squareIs(this.currentLocation, "flat_land")) {
+          playerAction.set(PLAYER_ACTION_PLANT_A_TREE);
+        } else {
+          this.movePlayer();
+          playerAction.set(PLAYER_ACTION_MOVE);
+        }
+      case "REST":
+        playerAction.set(PLAYER_ACTION_NONE);
+        break;
+      case "GATHER_WATER":
+        if (
+          this.mapStore.checkSquareContext(
+            this.currentLocation,
+            "ADJACENT_TO_WATER"
+          )
+        ) {
+          playerAction.set(PLAYER_ACTION_DRINK);
+          break;
+        }
+        playerAction.set(PLAYER_ACTION_FIND_WATER);
+        let destination = this.rootStore.mapStore._map.breadthFirstSearch(
+          this.currentLocation,
+          "Feature",
+          "ADJACENT_TO_WATER"
+        );
+        if (destination) {
+          this.playerMover.setDestination(destination);
+          playerAction.set(PLAYER_ACTION_MOVE);
+        } else {
+          console.log("Warning: Could not find water destination");
+        }
+        break;
+      default:
+        playerAction.set(PLAYER_ACTION_NONE);
+        break;
+    }
+
+    return playerAction;
+  }
+}

@@ -91,6 +91,10 @@ export default class MapStore {
     return this._map.movableMatrix();
   }
 
+  getAllMapMovableMatrix() {
+    return this._map.allMovableMatrix();
+  }
+
   checkPlacementRules(
     placementRules: IPlacementRules,
     squares: Coordinates[]
@@ -207,6 +211,10 @@ export default class MapStore {
 
   uniqByFilter<T>(array: T[]) {
     return array.filter((value, index) => array.indexOf(value) === index);
+  }
+
+  getSquare(coordinates: Coordinates) {
+    return this._map.mapSquare(coordinates);
   }
 
   squareIs(coordinates: Coordinates, squareType: MapSquareType): boolean {

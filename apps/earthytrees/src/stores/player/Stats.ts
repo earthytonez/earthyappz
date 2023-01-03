@@ -1,5 +1,7 @@
 import { makeAutoObservable, computed, observable } from "mobx";
 
+export type StatName = "stamina" | "thirst" | "hunger";
+
 class Stat {
   private _current: number;
 
@@ -21,7 +23,13 @@ class Stat {
   }
 
   incr(amount: number = 1) {
-    this._current += amount;
+    if (amount < 1) {
+      if (Math.random() < amount) {
+        this._current += 1;
+      }
+    } else {
+      this._current += amount;
+    }
 
     if (this._current >= this.max) {
       this._current = this.max;
@@ -36,7 +44,7 @@ class Stat {
   }
 }
 
-class Stats {
+class PlayerStats {
   thirst: Stat = new Stat("thirst", 100);
   hunger: Stat = new Stat("hunger", 100);
   stamina: Stat = new Stat("stamina", 100);
@@ -55,6 +63,24 @@ class Stats {
     }
   }
 
+  changeStat(stat: string, val: number) {
+    switch (stat) {
+      case "thirst":
+        this.thirst.incr(val);
+        break;
+      case "hunger":
+        this.hunger.incr(val);
+        break;
+      case "stamina":
+        this.stamina.incr(val);
+        break;
+    }
+  }
+
+  get allStats(): StatName[] {
+    return ["thirst", "hunger", "stamina"];
+  }
+
   constructor() {
     makeAutoObservable(this, {
       hunger: observable,
@@ -64,4 +90,4 @@ class Stats {
   }
 }
 
-export default Stats;
+export default PlayerStats;

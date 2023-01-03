@@ -161,7 +161,7 @@ const Activity = observer((): React.ReactElement => {
                                   )}
                                 >
                                   <TableCell style={tableCellStyle}>
-                                    {activity.name}
+                                    {activity.description}
                                   </TableCell>
                                 </TableRow>
                               )}

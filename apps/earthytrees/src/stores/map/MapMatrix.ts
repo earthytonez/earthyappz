@@ -8,6 +8,12 @@ import MapSquare, {
   MapSquareImprovementType,
 } from "./MapSquare";
 
+import { MAP_HEIGHT, MAP_WIDTH } from "./constants";
+
+function rand(max: number) {
+  return Math.floor(Math.random() * max);
+}
+
 export default class MapMatrix {
   _map: MapSquare[][] = [];
   directions: number[][] = [
@@ -17,11 +23,16 @@ export default class MapMatrix {
     [0, -1],
   ];
 
-  get map() {
+  get map(): MapSquare[][] {
     return this._map;
   }
 
+  mapSquare(coordinates: Coordinates): MapSquare | undefined {
+    return this._map[coordinates.Y]![coordinates.X];
+  }
+
   breadthFirstSearch(
+    startingLocation: Coordinates,
     searchType: "Feature" | "ImmutableType" | "ImprovementType",
     searchObject:
       | MapSquareFeatures
@@ -34,15 +45,15 @@ export default class MapMatrix {
     // store all visited element and finally returned this
     const values = [];
     // BFS uses queue to process data, Initially store first element
-    const queue = [[0, 0]];
+    const queue = [[startingLocation.Y, startingLocation.X]];
     // created 2-d matrix same as given matrix with falsy values
     const seen: boolean[][] = new Array(matrix.length)
       .fill("")
       .map(() => new Array(matrix[0]!.length).fill(false));
     while (queue.length) {
       const currentPos = queue.shift();
-      const row: number | undefined = currentPos![0];
-      const col: number | undefined = currentPos![1];
+      const row: number | undefined = currentPos![1];
+      const col: number | undefined = currentPos![0];
 
       if (row === undefined) {
         throw new Error(
@@ -78,7 +89,7 @@ export default class MapMatrix {
       }
 
       if (
-        searchType == "Feature" &&
+        searchType === "Feature" &&
         this.squareIsContext(new Coordinates(row, col)).includes(
           searchObject as MapSquareFeatures
         )
@@ -87,7 +98,7 @@ export default class MapMatrix {
       }
 
       if (
-        searchType == "ImmutableType" &&
+        searchType === "ImmutableType" &&
         this._map[row]![col]!.hasImmutableType(
           searchObject as MapSquareImmutableType
         )
@@ -96,7 +107,7 @@ export default class MapMatrix {
       }
 
       if (
-        searchType == "ImprovementType" &&
+        searchType === "ImprovementType" &&
         this._map[row]![col]!.hasImprovementType(
           searchObject as MapSquareImprovementType
         )
@@ -109,6 +120,47 @@ export default class MapMatrix {
       // Push adjacent item in to queue
       for (let dir of this.directions) {
         queue.push([row + dir[0]!, col + dir[1]!]);
+      }
+    }
+    return new Coordinates(0, 0);
+  }
+
+  randomSearch(
+    searchType: "Feature" | "ImmutableType" | "ImprovementType",
+    searchObject:
+      | MapSquareFeatures
+      | MapSquareImmutableType
+      | MapSquareImprovementType
+  ): Coordinates | undefined {
+    for (let x = 0; x <= 10; x++) {
+      let row = rand(MAP_HEIGHT);
+      let col = rand(MAP_WIDTH);
+
+      if (
+        searchType === "Feature" &&
+        this.squareIsContext(new Coordinates(row, col)).includes(
+          searchObject as MapSquareFeatures
+        )
+      ) {
+        return new Coordinates(row, col);
+      }
+
+      if (
+        searchType === "ImmutableType" &&
+        this._map[row]![col]!.hasImmutableType(
+          searchObject as MapSquareImmutableType
+        )
+      ) {
+        return new Coordinates(row, col);
+      }
+
+      if (
+        searchType === "ImprovementType" &&
+        this._map[row]![col]!.hasImprovementType(
+          searchObject as MapSquareImprovementType
+        )
+      ) {
+        return new Coordinates(row, col);
       }
     }
     return new Coordinates(0, 0);
@@ -203,6 +255,14 @@ export default class MapMatrix {
     });
   }
 
+  allMovableMatrix(): number[][] {
+    return this._map.map((mapRows: MapSquare[]) => {
+      return mapRows.map(() => {
+        return 0;
+      });
+    });
+  }
+
   squareBuildable(
     coordinates: Coordinates,
     buildingType: TBuildingSlug
@@ -215,6 +275,18 @@ export default class MapMatrix {
   }
 
   squareType(coordinates: Coordinates): MapSquareType | undefined {
+    if (this._map[coordinates.Y] === undefined) {
+      console.warn(`Map Row ${coordinates.Y} is undefined`);
+      return;
+    }
+
+    if (this._map[coordinates.Y]![coordinates.X] === undefined) {
+      console.warn(
+        `Map Square [${coordinates.Y}, ${coordinates.X}] is undefined`
+      );
+      return;
+    }
+
     return this._map[coordinates.Y]![coordinates.X]!.type;
   }
 

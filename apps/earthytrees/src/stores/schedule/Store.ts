@@ -2,19 +2,25 @@ import TimeStore from "stores/time/Store";
 import RootStore from "../Root.store";
 import { autorun, action, makeAutoObservable, observable } from "mobx";
 
-export type Activity = "GATHER_WATER" | "REST" | "PLANT_TREE" | "BUILD";
+export type Activity =
+  | "GATHER_WATER"
+  | "REST"
+  | "PLANT_A_TREE"
+  | "BUILD"
+  | "PLANT_TREE"; // PLANT_TREE here for backwards compatibility
 
 const ACTIVITY_DESCRIPTION = {
   GATHER_WATER: "Gather water",
   REST: "Rest",
-  PLANT_TREE: "Plant a tree",
+  PLANT_A_TREE: "Plant a tree",
   BUILD: "Build",
+  PLANT_TREE: "Deprecated, should not see this",
 };
 
 const ACTIVITIES = [
-  { name: "Gather Water", slug: "GATHER_WATER" },
-  { name: "Rest", slug: "REST" },
-  { name: "Plant a tree", slug: "PLANT_TREE" },
+  { description: "Gather Water", slug: "GATHER_WATER" },
+  { description: "Rest", slug: "REST" },
+  { description: "Plant a tree", slug: "PLANT_A_TREE" },
   // { name: "Build", slug: "BUILD" },
 ];
 
@@ -38,6 +44,10 @@ export default class ScheduleStore {
     return this.schedule[this.timeStore.twentyFourHour()]?.activity;
   }
 
+  getCurrentActivityName() {
+    return this.schedule[this.timeStore.twentyFourHour()]?.activityDesc;
+  }
+
   get activities() {
     return ACTIVITIES;
   }
@@ -51,7 +61,12 @@ export default class ScheduleStore {
         return undefined;
       }
       this.schedule = _schedule.schedule.map((scheduleSlot: IScheduleSlot) => {
-        return new ScheduleSlot(scheduleSlot.activity);
+        /* Backwards Compatibility */
+        let scheduleSlotActivity = scheduleSlot.activity;
+        if (scheduleSlot.activity == "PLANT_TREE") {
+          scheduleSlotActivity = "PLANT_A_TREE";
+        }
+        return new ScheduleSlot(scheduleSlotActivity);
       });
     }
     return;
@@ -91,7 +106,7 @@ export default class ScheduleStore {
       if (time < 5 || time > 21) {
         return new ScheduleSlot("REST");
       }
-      return new ScheduleSlot("PLANT_TREE");
+      return new ScheduleSlot("PLANT_A_TREE");
     });
 
     this.checkLocalStorage();

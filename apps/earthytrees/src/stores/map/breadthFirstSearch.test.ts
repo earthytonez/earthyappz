@@ -11,6 +11,7 @@ test("renders learn react link", () => {
   mapStore.overrideMap(testMap);
 
   let destination = mapStore._map.breadthFirstSearch(
+    rootStore.playerStore.currentLocation,
     "Feature",
     "ADJACENT_TO_WATER"
   );

@@ -4,6 +4,7 @@ import MapStore from "stores/map/Store";
 import { MAP_HEIGHT, MAP_WIDTH } from "../map";
 
 import { AStarFinder } from "astar-typescript";
+import PlayerStore from "./Store";
 
 export const RANDOM_DESTINATION_STRATEGY = "RANDOM";
 
@@ -126,9 +127,14 @@ export default class PlayerMover {
       return this.currentLocation;
     }
 
+    let mapMatrix = this.mapStore.getMapMovableMatrix();
+    if (this.playerStore.currentStatus.isDrowning()) {
+      mapMatrix = this.mapStore.getAllMapMovableMatrix();
+    }
+
     const aStarInstance = new AStarFinder({
       grid: {
-        matrix: this.mapStore.getMapMovableMatrix(),
+        matrix: mapMatrix,
       },
     });
 
@@ -143,10 +149,10 @@ export default class PlayerMover {
       y: this.currentDestination.Y,
     };
 
+    console.log(startPos);
+    console.log(goalPos);
+    console.log(mapMatrix);
     let myPathway = aStarInstance.findPath(startPos, goalPos);
-
-    console.log("My Pathway: ");
-    console.log(myPathway);
 
     if (myPathway && myPathway[0] && myPathway[1]) {
       console.log(
@@ -156,7 +162,9 @@ export default class PlayerMover {
       );
       let newX = myPathway[1][0];
       let newY = myPathway[1][1];
-      if (newX && newY) {
+
+      if (newX !== undefined && newY !== undefined) {
+        console.log(`newX: ${newX} newY: ${newY}`);
         return new Coordinates(newX, newY);
       }
     }
@@ -165,6 +173,7 @@ export default class PlayerMover {
   }
 
   movePlayerSparse(): Coordinates {
+    console.log("Moving Player according to Sparse Planting Strategy");
     if (!this.currentDestination) {
       this.setCurrentDestination(RANDOM_DESTINATION_STRATEGY);
     }
@@ -173,6 +182,8 @@ export default class PlayerMover {
   }
 
   movePlayerDense(possibleDirections: Coordinates[]) {
+    console.log("Moving Player according to Dense Planting Strategy");
+
     let movePlace: Coordinates | undefined =
       possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
 
@@ -192,9 +203,6 @@ export default class PlayerMover {
       this.getPossibleDirections() as Coordinates[];
 
     if (this.currentDestination) {
-      console.log(`Moving Player One Step Closer to Destination`);
-      console.log(this.currentLocation);
-      console.log(this.currentDestination);
       let destination = this.movePlayerOneStepCloserToDestination();
       return destination;
     }
@@ -213,6 +221,7 @@ export default class PlayerMover {
 
   constructor(
     private mapStore: MapStore,
-    private currentLocation: Coordinates
+    private currentLocation: Coordinates,
+    private playerStore: PlayerStore
   ) {}
 }
