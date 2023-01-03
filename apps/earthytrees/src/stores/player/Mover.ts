@@ -151,10 +151,14 @@ export default class PlayerMover {
 
     console.log(startPos);
     console.log(goalPos);
-    console.log(mapMatrix);
     let myPathway = aStarInstance.findPath(startPos, goalPos);
+    console.log(myPathway);
 
-    if (myPathway && myPathway[0] && myPathway[1]) {
+    if (
+      myPathway !== undefined &&
+      myPathway[0] !== undefined &&
+      myPathway[1] !== undefined
+    ) {
       console.log(
         `Moving from ${JSON.stringify(
           this.currentLocation

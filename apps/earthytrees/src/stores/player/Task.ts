@@ -86,7 +86,19 @@ class PlayerTaskMoveToDestination implements IPlayerTask {
   name: string = "planting a tree";
 
   getAction(): PlayerActionID {
-    if (this.playerStore.atCurrentDestination()) {
+    /* 
+      If you accidentally select an unmovable square, then unset the current destination 
+      TODO: Make it so you can't select an unmovable square
+    */
+    if (
+      this.playerStore.atCurrentDestination() ||
+      (this.playerStore.currentDestination &&
+        this.playerStore.currentDestination.X !== undefined &&
+        this.playerStore.currentDestination.Y !== undefined &&
+        !this.playerStore.mapStore._map.squareMovable(
+          this.playerStore.currentDestination!
+        ))
+    ) {
       this.playerStore.unsetCurrentDestination();
     }
     return PLAYER_ACTION_MOVE;
