@@ -31,6 +31,8 @@ import {
   PLAYER_ACTION_PLANT_A_TREE,
   PLAYER_ACTION_DIG_A_HOLE,
   PLAYER_ACTION_DRINK,
+  PLAYER_ACTION_FIND_BUILDING_IN_PROGRESS,
+  PLAYER_ACTION_BUILD,
   PLAYER_ACTION_FIND_LAND,
   PLAYER_ACTION_FIND_WATER,
   PLAYER_ACTION_FIND_UNIMPROVED_LAND_DENSE,
@@ -155,12 +157,27 @@ class PlayerTaskFindWater implements IPlayerTask {
         "ADJACENT_TO_WATER"
       )
     ) {
-      console.log("PLAYER_ACTION_DRINK Because Adjacent To Water");
       return PLAYER_ACTION_DRINK;
     }
-
-    console.log("Player Action Find Water");
     return PLAYER_ACTION_FIND_WATER;
+  }
+
+  constructor(private mapStore: MapStore, private playerStore: PlayerStore) {}
+}
+
+class PlayerTaskBuild implements IPlayerTask {
+  name: string = "looking for water";
+
+  getAction(): PlayerActionID {
+    if (
+      this.mapStore.checkSquareContext(
+        this.playerStore.currentLocation,
+        "BUILDING_IN_PROGRESS"
+      )
+    ) {
+      return PLAYER_ACTION_BUILD;
+    }
+    return PLAYER_ACTION_FIND_BUILDING_IN_PROGRESS;
   }
 
   constructor(private mapStore: MapStore, private playerStore: PlayerStore) {}
@@ -225,6 +242,9 @@ class PlayerTask {
           this.playerStore,
           this.turnsSinceStarting
         );
+        break;
+      case "BUILD":
+        this._task = new PlayerTaskBuild(this.mapStore, this.playerStore);
         break;
       case "FIND_WATER":
         this._task = new PlayerTaskFindWater(this.mapStore, this.playerStore);

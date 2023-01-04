@@ -21,7 +21,7 @@ const ACTIVITIES = [
   { description: "Gather Water", slug: "GATHER_WATER" },
   { description: "Rest", slug: "REST" },
   { description: "Plant a tree", slug: "PLANT_A_TREE" },
-  // { name: "Build", slug: "BUILD" },
+  { description: "Build", slug: "BUILD" },
 ];
 
 interface IScheduleSlot {

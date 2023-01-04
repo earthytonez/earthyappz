@@ -11,6 +11,8 @@ export function placementRuleText(feature: MapSquareFeatures) {
       return "adjacent to land";
     case "ADJACENT_TO_WATER":
       return "adjacent to land";
+    case "BUILDING_IN_PROGRESS":
+      return "building in progress";
     case "LAND":
       return "on land";
     case "WATER":

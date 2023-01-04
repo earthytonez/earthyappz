@@ -10,6 +10,8 @@ export const PLAYER_ACTION_NONE = "NONE";
 export const PLAYER_ACTION_REST = "REST";
 export const PLAYER_ACTION_BUILD = "BUILD";
 export const PLAYER_ACTION_FIND_LAND = "FIND_LAND";
+export const PLAYER_ACTION_FIND_BUILDING_IN_PROGRESS =
+  "FIND_BUILDING_IN_PROGRESS";
 export const PLAYER_ACTION_FIND_UNIMPROVED_LAND = "FIND_UNIMPROVED_LAND";
 export const PLAYER_ACTION_FIND_UNIMPROVED_LAND_DENSE =
   "FIND_UNIMPROVED_LAND_DENSE";
@@ -30,6 +32,7 @@ export type PlayerActionID =
   | typeof PLAYER_ACTION_DRINK
   | typeof PLAYER_ACTION_EAT
   | typeof PLAYER_ACTION_FIND_LAND
+  | typeof PLAYER_ACTION_FIND_BUILDING_IN_PROGRESS
   | typeof PLAYER_ACTION_FIND_WATER
   | typeof PLAYER_ACTION_MOVE
   | typeof PLAYER_ACTION_DIG_A_HOLE
@@ -157,7 +160,13 @@ class PlayerActionRest extends BasePlayerAction {
 class PlayerActionBuild extends BasePlayerAction {
   actionName: string = "building";
 
-  perform() {}
+  constructor(protected playerStore: PlayerStore, private mapStore: MapStore) {
+    super(playerStore);
+  }
+
+  perform() {
+    this.mapStore.makeBuildingProgress(this.playerStore.currentLocation);
+  }
 
   get statEffects() {
     return Object.assign(this.baseStatEffects, {
@@ -188,7 +197,10 @@ class PlayerActionPlantATree extends BasePlayerAction {
   }
 
   perform() {
-    this.mapStore.improveMapSquare(this.playerStore.currentLocation, "tree");
+    this.mapStore.improveMapSquareCompleted(
+      this.playerStore.currentLocation,
+      "tree"
+    );
   }
 
   get statEffects() {
@@ -262,7 +274,44 @@ class PlayerActionFindWater extends BasePlayerAction {
 
   get statEffects() {
     return Object.assign(this.baseStatEffects, {
-      stamina: 0.5,
+      stamina: -1,
+    });
+  }
+}
+
+class PlayerActionFindBuildingInProgress extends BasePlayerAction {
+  actionName: string = "finding building in progress";
+
+  constructor(protected playerStore: PlayerStore, private mapStore: MapStore) {
+    super(playerStore);
+  }
+
+  perform() {
+    console.log("Perform Step for Find Building in Progress Action");
+    let destination = this.mapStore._map.breadthFirstSearch(
+      this.playerStore.currentLocation,
+      "Feature",
+      "BUILDING_IN_PROGRESS"
+    );
+
+    console.log(
+      `Found Destination for building in progress, setting to ${JSON.stringify(
+        destination
+      )}`
+    );
+
+    if (destination) {
+      this.playerStore.playerMover.setDestination(destination);
+    } else {
+      console.log(
+        "Warning: Could not find building in progress for destination"
+      );
+    }
+  }
+
+  get statEffects() {
+    return Object.assign(this.baseStatEffects, {
+      stamina: -1,
     });
   }
 }
@@ -391,7 +440,7 @@ class PlayerAction {
         this._action = new PlayerActionDrink(this.playerStore);
         break;
       case "BUILD":
-        this._action = new PlayerActionBuild(this.playerStore);
+        this._action = new PlayerActionBuild(this.playerStore, this.mapStore);
         break;
       case "DIG_A_HOLE":
         this._action = new PlayerActionDiggingAHole(this.playerStore);
@@ -425,6 +474,12 @@ class PlayerAction {
         break;
       case "FIND_WATER":
         this._action = new PlayerActionFindWater(
+          this.playerStore,
+          this.mapStore
+        );
+        break;
+      case "FIND_BUILDING_IN_PROGRESS":
+        this._action = new PlayerActionFindBuildingInProgress(
           this.playerStore,
           this.mapStore
         );

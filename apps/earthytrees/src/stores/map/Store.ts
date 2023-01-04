@@ -135,6 +135,10 @@ export default class MapStore {
     return allPlacementRulesPassed && oneOfPlacementRulesPassed;
   }
 
+  makeBuildingProgress(location: Coordinates) {
+    return this._map.makeBuildingProgress(location);
+  }
+
   buildingFootprint(location: Coordinates, dimensions: Coordinates) {
     let squares = [];
     for (let x = location.X; x <= location.X + dimensions.X - 1; x++) {
@@ -223,6 +227,11 @@ export default class MapStore {
 
   improveMapSquare(c: Coordinates, type: MapSquareImprovementType) {
     this._map.improveSquare(c, type);
+    this.saveMap();
+  }
+
+  improveMapSquareCompleted(c: Coordinates, type: MapSquareImprovementType) {
+    this._map.improveSquareCompleted(c, type);
     this.saveMap();
   }
 

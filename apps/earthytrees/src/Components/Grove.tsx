@@ -50,6 +50,16 @@ const Tree = observer((params: any) => {
     `;
   }
 
+  const getBuildingTransparency = (mapSquareInfo: any) => {
+    console.log(mapSquareInfo);
+    console.log(mapSquareInfo.improvement);
+    console.log(mapSquareInfo.improvement.percentComplete);
+    console.log(mapSquareInfo.improvement.percentComplete / 100);
+    let transparency = (((mapSquareInfo.improvement.percentComplete / 100) * 90) / 100) + 0.1;
+    console.log(transparency);
+    return transparency;
+  };
+
   switch (squareType) {
     case "flat_land":
       mapSquareStyle = {
@@ -102,9 +112,15 @@ const Tree = observer((params: any) => {
           onClick={params.doSquareAction}
           component="span"
           style={{
-            color: "brown",
-            backgroundColor: "brown",
-            borderBottom: "1px solid brown",
+            color: `rgba(165, 42, 42, ${getBuildingTransparency(
+              params.treeInfo
+            )})`,
+            backgroundColor: `rgba(165, 42, 42, ${getBuildingTransparency(
+              params.treeInfo
+            )})`,
+            borderBottom: `1px solid rgba(165, 42, 42, ${getBuildingTransparency(
+              params.treeInfo
+            )})`,
           }}
         >
           &#9608;
@@ -119,9 +135,15 @@ const Tree = observer((params: any) => {
           onClick={params.doSquareAction}
           component="span"
           style={{
-            color: "brown",
-            backgroundColor: "brown",
-            borderBottom: "1px solid brown",
+            color: `rgba(165, 42, 42, ${getBuildingTransparency(
+              params.treeInfo
+            )})`,
+            backgroundColor: `rgba(165, 42, 42, ${getBuildingTransparency(
+              params.treeInfo
+            )})`,
+            borderBottom: `1px solid rgba(165, 42, 42, ${getBuildingTransparency(
+              params.treeInfo
+            )})`,
           }}
         >
           &#9617;

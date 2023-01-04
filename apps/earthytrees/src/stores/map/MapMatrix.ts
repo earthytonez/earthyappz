@@ -14,6 +14,10 @@ function rand(max: number) {
   return Math.floor(Math.random() * max);
 }
 
+class MapLoadError extends Error {}
+
+class MapOutOfBoundsError extends Error {}
+
 export default class MapMatrix {
   _map: MapSquare[][] = [];
   directions: number[][] = [
@@ -52,8 +56,8 @@ export default class MapMatrix {
       .map(() => new Array(matrix[0]!.length).fill(false));
     while (queue.length) {
       const currentPos = queue.shift();
-      const row: number | undefined = currentPos![1];
-      const col: number | undefined = currentPos![0];
+      const row: number | undefined = currentPos![0];
+      const col: number | undefined = currentPos![1];
 
       if (row === undefined) {
         throw new Error(
@@ -88,31 +92,36 @@ export default class MapMatrix {
         console.log(this._map[row]![col]!.features);
       }
 
+      let thisSquare = new Coordinates(col, row);
+
       if (
         searchType === "Feature" &&
-        this.squareIsContext(new Coordinates(row, col)).includes(
+        this.squareIsContext(new Coordinates(col, row)).includes(
           searchObject as MapSquareFeatures
-        )
+        ) &&
+        this.squareMovable(thisSquare)
       ) {
-        return new Coordinates(row, col);
+        return new Coordinates(col, row);
       }
 
       if (
         searchType === "ImmutableType" &&
         this._map[row]![col]!.hasImmutableType(
           searchObject as MapSquareImmutableType
-        )
+        ) &&
+        this.squareMovable(thisSquare)
       ) {
-        return new Coordinates(row, col);
+        return new Coordinates(col, row);
       }
 
       if (
         searchType === "ImprovementType" &&
         this._map[row]![col]!.hasImprovementType(
           searchObject as MapSquareImprovementType
-        )
+        ) &&
+        this.squareMovable(thisSquare)
       ) {
-        return new Coordinates(row, col);
+        return new Coordinates(col, row);
       }
 
       seen[row]![col] = true; // marked true so that not to visit this again
@@ -174,17 +183,27 @@ export default class MapMatrix {
    * Square Is Context tells you the features the square has based on it's adjacencies.
    * For example, water near land or land near water.
    */
-  squareIsContext(coordinate: Coordinates): MapSquareFeatures[] {
-    let thisSquareType = this.squareType(coordinate);
+  squareIsContext(coordinates: Coordinates): MapSquareFeatures[] {
+    let thisSquare = this.getMapSquare(coordinates);
+    let thisSquareType = this.squareType(coordinates);
+
     let mapSquareFeatures: MapSquareFeatures[] = ["LAND"];
     if (thisSquareType === "lake") {
       mapSquareFeatures = ["WATER"];
     }
 
+    /*
+     * TODO: I guess other things could be in progress?  We'll have to
+     * figure that out.
+     */
+    if (thisSquare.improvement && thisSquare.improvement.inProgress()) {
+      mapSquareFeatures.push("BUILDING_IN_PROGRESS");
+    }
+
     let mapSquareType: MapSquareType | undefined;
 
-    let tX = coordinate.X;
-    let tY = coordinate.Y;
+    let tX = coordinates.X;
+    let tY = coordinates.Y;
     [
       [tX + 0, tY + 1],
       [tX + 1, tY + 0],
@@ -231,11 +250,38 @@ export default class MapMatrix {
     this._map[coordinates.Y]![coordinates.X]!.clearImprovements();
   }
 
+  placeBuildingPlans(
+    coordinates: Coordinates,
+    buildingType: MapSquareImprovementType
+  ) {
+    let mapSquare = this.getMapSquare(coordinates);
+    mapSquare.improve({
+      type: buildingType,
+      percentComplete: 0,
+      age: 0,
+      state: "IN_PROGRESS",
+    });
+  }
+
+  makeBuildingProgress(coordinates: Coordinates) {
+    let mapSquare = this.getMapSquare(coordinates);
+    mapSquare.makeBuildingProgress();
+  }
+
   improveSquare(
     coordinates: Coordinates,
     improvementType: MapSquareImprovementType
   ) {
     this._map[coordinates.Y]![coordinates.X]!.newImprovement(improvementType);
+  }
+
+  improveSquareCompleted(
+    coordinates: Coordinates,
+    improvementType: MapSquareImprovementType
+  ) {
+    this._map[coordinates.Y]![coordinates.X]!.newCompleteImprovement(
+      improvementType
+    );
   }
 
   squareIs(coordinates: Coordinates, squareType: MapSquareType) {
@@ -272,8 +318,39 @@ export default class MapMatrix {
     return this._map[coordinates.Y]![coordinates.X]!.isBuildable(buildingType);
   }
 
+  getMapSquare(coordinates: Coordinates): MapSquare {
+    if (coordinates.Y > MAP_HEIGHT) {
+      throw new MapOutOfBoundsError(
+        `Trying to get map square Y (${coordinates.Y}) that exceeds map height: ${MAP_HEIGHT}`
+      );
+    }
+    if (this._map) {
+      if (this._map[coordinates.Y]) {
+        if (this._map[coordinates.Y]![coordinates.X]) {
+          return this._map[coordinates.Y]![coordinates.X]!;
+        } else {
+          console.warn(
+            `this._map Square ${coordinates.Y} ${coordinates.X} undefined`
+          );
+        }
+      } else {
+        console.warn(`this._map row ${coordinates.Y} undefined`);
+      }
+    } else {
+      throw new MapLoadError("this._map undefined");
+    }
+
+    throw new Error(
+      `Could not load map square for coordinates [${coordinates.X}, ${coordinates.Y}]`
+    );
+  }
+
+  /* Square Movable right now checks to see if the square is not water.  This will have to
+   * get more nuanced eventually if we want to add swimming or that you can't move onto walls etc.
+   */
   squareMovable(coordinates: Coordinates): boolean {
-    return this._map[coordinates.Y]![coordinates.X]!.isMovable;
+    let mapSquare = this.getMapSquare(coordinates);
+    return mapSquare.isMovable;
   }
 
   squareType(coordinates: Coordinates): MapSquareType | undefined {

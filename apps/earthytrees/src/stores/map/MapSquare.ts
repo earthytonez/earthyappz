@@ -16,13 +16,37 @@ interface ImprovementResources {
   wood?: number;
 }
 
+interface IMapSquareImprovement {
+  type: MapSquareImprovementType;
+  state: MapSquareImprovementState;
+  age: number;
+  percentComplete: number;
+  resourcesApplied?: ImprovementResources;
+  resourcesRequired?: ImprovementResources;
+}
+
 class MapSquareImprovement {
   name() {}
-  state: MapSquareImprovementState = "COMPLETE";
+  state: MapSquareImprovementState = "IN_PROGRESS";
   age: number = 0;
   percentComplete = 0;
   resourcesApplied: ImprovementResources = {};
   resourcesRequired: ImprovementResources = {};
+
+  inProgress() {
+    return this.state == "IN_PROGRESS" && this.percentComplete < 100;
+  }
+
+  completeImprovement() {
+    this.state = "COMPLETE";
+  }
+
+  makeProgress(percent: number = 1) {
+    this.percentComplete += percent;
+    if (this.percentComplete > 100) {
+      this.completeImprovement();
+    }
+  }
 
   constructor(public type: MapSquareImprovementType, metadata?: any) {
     if (metadata && metadata.state) {
@@ -30,6 +54,8 @@ class MapSquareImprovement {
     }
   }
 }
+
+class InvalidMapSquareError extends Error {}
 
 export default class MapSquare {
   public improvement?: MapSquareImprovement;
@@ -39,6 +65,14 @@ export default class MapSquare {
   isBuildable(buildingType: TBuildingSlug): boolean {
     let allSquarePlacementRules = BUILDINGS[buildingType]!.placementRules.all;
     return this.features.includes(allSquarePlacementRules);
+  }
+
+  makeBuildingProgress() {
+    if (this.improvement?.inProgress) {
+      this.improvement.makeProgress();
+      return;
+    }
+    throw new InvalidMapSquareError("Map Square not in progress");
   }
 
   get features(): MapSquareFeatures[] {
@@ -70,7 +104,19 @@ export default class MapSquare {
     this.improvement = new MapSquareImprovement(improvementType);
   }
 
-  improve(improvement: MapSquareImprovement) {
+  newCompleteImprovement(improvementType: MapSquareImprovementType) {
+    this.improvement = new MapSquareImprovement(improvementType, {
+      state: "COMPLETE",
+    });
+  }
+
+  makeCompleteImprovement(improvement: IMapSquareImprovement) {
+    this.improvement = new MapSquareImprovement(improvement.type, {
+      state: "COMPLETE",
+    });
+  }
+
+  improve(improvement: IMapSquareImprovement) {
     this.improvement = new MapSquareImprovement(improvement.type, improvement);
   }
 
@@ -95,6 +141,7 @@ export default class MapSquare {
 }
 
 export type MapSquareFeatures =
+  | "BUILDING_IN_PROGRESS"
   | "ADJACENT_TO_LAND"
   | "ADJACENT_TO_WATER"
   | "LAND"
