@@ -2,6 +2,7 @@
 title: Educative
 website_url: https://www.educative.io/
 demo: https://www.educative.io/
+youtube_id: undefined
 author: Educative
 author_link: https://www.educative.io/
 author_blog: https://www.educative.io/blog

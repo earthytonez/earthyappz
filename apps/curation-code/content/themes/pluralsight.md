@@ -1,9 +1,10 @@
 ---
-title: Free Code Camp
-demo: https://www.freecodecamp.org/
-website_url: https://www.freecodecamp.org/
-author: Free Code Camp
-author_link: https://www.freecodecamp.org/
+title: PluralSight
+demo: https://www.pluralsight.com/
+website_url: https://www.pluralsight.com/
+youtube_id: undefined
+author: PluralSight
+author_link: https://www.pluralsight.com/
 author_twitter: https://twitter.com/freeCodeCamp
 date: 2022-08-31T11:44:50.000Z
 description: >-

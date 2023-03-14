@@ -1,10 +1,11 @@
 ---
-title: Codecademy
+title: HackerRank
 github: https://github.com/grafana/grafana
-website_url: https://www.codecademy.com/
-demo: https://www.codecademy.com/
+website_url: https://www.https://www.hackerrank.com//
+demo: https://www.https://www.hackerrank.com//
+youtube_id: undefined
 author: Grafana Labs
-author_link: https://www.codecademy.com/
+author_link: https://www.https://www.hackerrank.com//
 author_blog: https://grafana.com/blog/
 author_twitter: https://www.twitter.com/grafana
 date: 2022-08-31T11:44:50.000Z

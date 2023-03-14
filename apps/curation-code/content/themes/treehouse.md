@@ -2,6 +2,7 @@
 title: Treehouse
 github: https://github.com/grafana/grafana
 website_url: https://teamtreehouse.com/
+youtube_id: undefined
 demo: https://teamtreehouse.com/
 author: Grafana Labs
 author_link: https://teamtreehouse.com/

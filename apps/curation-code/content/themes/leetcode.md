@@ -1,8 +1,9 @@
 ---
-title: Codecademy
+title: Leet Code
 website_url: https://leetcode.com/
 demo: https://leetcode.com/
-author: Grafana Labs
+youtube_id: undefined
+author: Leet Code
 author_link: https://leetcode.com/
 author_blog: https://grafana.com/blog/
 author_twitter: https://www.twitter.com/grafana
