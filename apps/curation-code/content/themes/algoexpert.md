@@ -4,7 +4,7 @@ github: https://github.com/grafana/grafana
 website_url: https://algoexpert.io
 demo: https://algoexpert.io
 author: Grafana Labs
-youtube_id: undefined
+youtube_id: youtube
 author_link: https://algoexpert.io
 author_blog: https://grafana.com/blog/
 author_twitter: https://www.twitter.com/grafana

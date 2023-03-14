@@ -3,7 +3,7 @@ title: HackerRank
 github: https://github.com/grafana/grafana
 website_url: https://www.https://www.hackerrank.com//
 demo: https://www.https://www.hackerrank.com//
-youtube_id: undefined
+youtube_id: youtube
 author: Grafana Labs
 author_link: https://www.https://www.hackerrank.com//
 author_blog: https://grafana.com/blog/

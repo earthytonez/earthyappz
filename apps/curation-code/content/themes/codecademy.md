@@ -3,7 +3,7 @@ title: Codecademy
 github: https://github.com/grafana/grafana
 website_url: https://www.codecademy.com/
 demo: https://www.codecademy.com/
-youtube_id: undefined
+youtube_id: youtube
 author: Grafana Labs
 author_link: https://www.codecademy.com/
 author_blog: https://grafana.com/blog/

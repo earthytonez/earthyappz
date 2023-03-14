@@ -2,10 +2,10 @@
 title: PluralSight
 demo: https://www.pluralsight.com/
 website_url: https://www.pluralsight.com/
-youtube_id: undefined
+youtube_id: youtube_id
 author: PluralSight
 author_link: https://www.pluralsight.com/
-author_twitter: https://twitter.com/freeCodeCamp
+author_twitter: https://twitter.com/pluralsight
 date: 2022-08-31T11:44:50.000Z
 description: >-
   Learn to code for free

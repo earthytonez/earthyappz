@@ -2,7 +2,7 @@
 title: Leet Code
 website_url: https://leetcode.com/
 demo: https://leetcode.com/
-youtube_id: undefined
+youtube_id: youtube
 author: Leet Code
 author_link: https://leetcode.com/
 author_blog: https://grafana.com/blog/
