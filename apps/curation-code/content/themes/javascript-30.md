@@ -1,16 +1,18 @@
 ---
-title: HackerRank
+title: Javascript 30
 github: https://github.com/grafana/grafana
-website_url: https://www.hackerrank.com/
-demo: https://www.hackerrank.com/
+website_url: https://javascript30.com/
+demo: https://javascript30.com/
 youtube_id: youtube
-author_twitter: https://twitter.com/hackerrank
-author_blog: https://www.hackerrank.com/blog/
+author: Wes Bos
+author_link: https://wesbos.com/
+author_blog: https://wesbos.com/
+author_twitter: https://twitter.com/wesbos
 date: 2022-08-31T11:44:50.000Z
 description: >-
   Skills speak louder than words
 ssg:
-  - Coding Exercises
+  - Learning
 css:
   - Undefined
 cms:
@@ -25,3 +27,4 @@ github_fork: 10
 ---
 
 (Website) We help companies develop the strongest tech teams around. We help candidates sharpen their tech skills and pursue job opportunities.
+

@@ -1,16 +1,19 @@
 ---
-title: Codecademy
-website_url: https://www.codecademy.com/
-demo: https://www.codecademy.com/
+title: Chingu IO
+github: https://github.com/grafana/grafana
+website_url: chingu.io
+demo: chingu.io
 youtube_id: youtube
-author_twitter: https://twitter.com/Codecademy
+author: Chingu IO
+author_link: chingu.io
+author_twitter: https://twitter.com/ChinguCollabs
 date: 2022-08-31T11:44:50.000Z
 description: >-
   Join the millions learning to code with Codecademy for free
 ssg:
-  - Interactive Classes
-css:
   - Undefined
+css:
+  - Collaborative Learning
 cms:
   - Undefined
 category:

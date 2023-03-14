@@ -72,7 +72,7 @@ const Header = () => {
 
         <div className="ml-auto flex items-center lg:ml-0">
           <ThemeSwitcher />
-          <a
+          {/* <a
             className="btn btn-primary origin-right scale-90 md:scale-100 lg:ml-0"
             href="https://github.com/statichunt/statichunt"
             target="_blank"
@@ -80,7 +80,7 @@ const Header = () => {
           >
             Submit{" "}
             <span className="hidden md:inline-block"> Theme / Resource </span>
-          </a>
+          </a> */}
         </div>
       </nav>
     </header>

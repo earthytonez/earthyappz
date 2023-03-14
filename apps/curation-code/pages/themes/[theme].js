@@ -83,7 +83,7 @@ export const getStaticProps = ({ params }) => {
   const singleTheme = allTheme.filter((data) => data.slug == theme);
   const ssg = getSinglePages("content/ssg");
   const cms = getSinglePages("content/cms");
-  const css = getSinglePages("content/appreciating_music");
+  const css = getSinglePages("content/css");
   const category = getSinglePages("content/category");
   const tools = [...ssg, ...cms, ...css, ...category];
 

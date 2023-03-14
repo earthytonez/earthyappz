@@ -31,9 +31,9 @@
   },
 
   "sidebar": [
-    { "type": "ssg", "title": "Making Music" },
-    { "type": "cms", "title": "Learning Music" },
-    { "type": "css", "title": "Appreciating Music" },
+    { "type": "ssg", "title": "Learning Development" },
+    { "type": "cms", "title": "Practicing Development" },
+    { "type": "css", "title": "Applying Development" },
     { "type": "category", "title": "Category" },
     { "type": "tool", "title": "Tool" }
   ],

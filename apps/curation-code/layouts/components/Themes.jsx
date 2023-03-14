@@ -173,20 +173,24 @@ const Themes = ({ themes, tools, customRowClass, customColClass }) => {
                 </span>
               </div>
               <span className="text-xs text-dark dark:text-light">
-                by{" "}
                 {theme.frontmatter?.author === "Statichunt" ? (
                   <Link href="/theme-by-us" passHref>
+                    by{" "}
                     <a className="bg-gradient-to-r from-primary to-secondary bg-clip-text font-bold text-transparent">
                       Statichunt
                     </a>
                   </Link>
                 ) : theme.frontmatter?.author ? (
-                  theme.frontmatter?.author
+                  `by ${theme.frontmatter?.author}`
                 ) : (
-                  theme.frontmatter?.github?.match(
-                    /github\.com\/([^\/]+)/,
-                    ""
-                  )[0]
+                  theme.frontmatter?.github ? (
+                    `by ${
+                      theme.frontmatter?.github?.match(
+                        /github\.com\/([^\/]+)/,
+                        ""
+                      )[0]
+                    }`
+                  ) : ("")
                 )}
               </span>
             </div>

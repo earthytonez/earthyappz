@@ -1,9 +1,7 @@
 ---
 title: AlgoExpert
-github: https://github.com/grafana/grafana
 website_url: https://algoexpert.io
 demo: https://algoexpert.io
-author: Grafana Labs
 youtube_id: youtube
 author_link: https://algoexpert.io
 author_blog: https://grafana.com/blog/
