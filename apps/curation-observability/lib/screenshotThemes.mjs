@@ -1,4 +1,5 @@
 import fs from "fs-extra";
+import http from "http";
 import ora from "ora";
 import Pageres from "pageres";
 import path from "path";
@@ -12,9 +13,8 @@ const themes = getThemes.map((data) => ({
   slug: data.slug,
 }));
 
-const http = require('http'); // or 'https' for https:// URLs
 
-const captureScreenshot = async (demo, slug, overwrite) => {
+const captureScreenshot = async (demo, slug, youtube_id, overwrite) => {
   const themeImage = `${slug}.png`;
 
   if (!overwrite && fs.existsSync(path.join(imagesFolder, themeImage))) {
@@ -57,7 +57,7 @@ const captureScreenshot = async (demo, slug, overwrite) => {
 const generateScreenshots = async (themes, overwrite) => {
   spinner.start("Capturing Screenshots");
   for (const data of themes) {
-    await captureScreenshot(data.demo, data.youtube_id, data.slug, overwrite);
+    await captureScreenshot(data.demo, data.slug, data.youtube_id, overwrite);
   }
   spinner.succeed("Success - Capturing Screenshots");
 };
