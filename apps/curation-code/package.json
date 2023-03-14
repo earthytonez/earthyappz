@@ -1,6 +1,6 @@
 {
-  "name": "curation",
-  "description": "curation is a music resources directory",
+  "name": "curation-code",
+  "description": "curation-code is a code resources directory",
   "version": "2.0.0",
   "private": true,
   "license": "UNLICENSED",

@@ -5,13 +5,13 @@ website_url: https://teamtreehouse.com/
 demo: https://teamtreehouse.com/
 author: Grafana Labs
 author_link: https://teamtreehouse.com/
-author_blog: https://grafana.com/blog/
-author_twitter: https://www.twitter.com/grafana
+author_blog: https://blog.teamtreehouse.com/
+author_twitter: https://twitter.com/treehouse
 date: 2022-08-31T11:44:50.000Z
 description: >-
-  An Open Source
+  Interactive online coding classes for at-home learning
 ssg:
-  - DAW
+  - Learn
 css:
   - Undefined
 cms:
@@ -24,3 +24,7 @@ update_date: "2022-11-06T10:10:58Z"
 github_star: 101
 github_fork: 10
 ---
+
+Basic: $25 / month
+Plus: $50 / month
+TechDegree: $199 / month

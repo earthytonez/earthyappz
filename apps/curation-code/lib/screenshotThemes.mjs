@@ -2,7 +2,10 @@ import fs from "fs-extra";
 import ora from "ora";
 import Pageres from "pageres";
 import path from "path";
-import getThemes from "../.json/themes.json" assert { type: "json" };
+import getThemes from "../.json/themes.json"
+assert {
+  type: "json"
+};
 const spinner = ora("Loading");
 const imagesFolder = path.join(process.cwd(), "/public/themes");
 
@@ -13,8 +16,6 @@ const themes = getThemes.map((data) => ({
 }));
 
 const http = require('http'); // or 'https' for https:// URLs
-const fs = require('fs');
-
 
 const captureScreenshot = async (demo, slug, overwrite) => {
   const themeImage = `${slug}.png`;
