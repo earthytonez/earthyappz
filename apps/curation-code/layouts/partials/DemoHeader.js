@@ -17,6 +17,7 @@ const DemoHeader = ({
   demo,
   slug,
   github,
+  youtube_id,
   showHeader,
   setShowHeader,
   device,

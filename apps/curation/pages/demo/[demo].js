@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 const Demo = ({ theme, slug }) => {
-  const { demo, title, github } = theme[0].frontmatter;
+  const { demo, title, github, youtube_id } = theme[0].frontmatter;
   const { favicon } = config.site;
   const [showHeader, setShowHeader] = useState(true);
   const [device, setDevice] = useState("desktop");
@@ -54,6 +54,7 @@ const Demo = ({ theme, slug }) => {
         demo={demo}
         slug={slug}
         github={github}
+        youtube_id={youtube_id}
         showHeader={showHeader}
         setShowHeader={setShowHeader}
         device={device}

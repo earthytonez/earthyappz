@@ -12,11 +12,19 @@ import {
   TbInfoCircle,
 } from "react-icons/tb";
 
+function demoURL(youtube_id, demo) {
+  if (youtube_id) {
+    return `https://img.youtube.com/vi/${youtube_id}/0.jpg`;
+  }
+  return demo;
+}
+
 const DemoHeader = ({
   themeTitle,
   demo,
   slug,
   github,
+  youtube_id,
   showHeader,
   setShowHeader,
   device,
@@ -28,13 +36,6 @@ const DemoHeader = ({
   const [mounted, setMounted] = useState(false);
   const { theme, resolvedTheme } = useTheme();
   useEffect(() => setMounted(true), []);
-
-  function demoURL(youtube_id, demo) {
-    if (youtube_id) {
-      return `https://img.youtube.com/vi/${youtube_id}/0.jpg`;
-    }
-    return demo;
-  }
 
 
   return (

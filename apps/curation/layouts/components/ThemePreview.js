@@ -2,6 +2,13 @@
 import { useEffect, useState } from "react";
 import ImageFallback from "./ImageFallback";
 
+function demoURL(youtube_id, demo) {
+  if (youtube_id) {
+    return `https://img.youtube.com/vi/${youtube_id}/0.jpg`;
+  }
+  return demo;
+}
+
 const ThemePreview = ({ theme, slug }) => {
   const { demo, youtube_id } = theme[0].frontmatter;
 
@@ -30,13 +37,6 @@ const ThemePreview = ({ theme, slug }) => {
 
   // device toggle
   const [mobilePreview, setMobilePreview] = useState(false);
-
-  function demoURL(youtube_id, demo) {
-    if (youtube_id) {
-      return `https://img.youtube.com/vi/${youtube_id}/0.jpg`;
-    }
-    return demo;
-  }
 
   return (
     <>
