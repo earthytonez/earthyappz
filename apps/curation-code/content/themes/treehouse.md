@@ -1,10 +1,9 @@
 ---
 title: Treehouse
-github: https://github.com/grafana/grafana
 website_url: https://teamtreehouse.com/
 youtube_id: youtube
 demo: https://teamtreehouse.com/
-author: Grafana Labs
+author: Team Treehouse
 author_link: https://teamtreehouse.com/
 author_blog: https://blog.teamtreehouse.com/
 author_twitter: https://twitter.com/treehouse
