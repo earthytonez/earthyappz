@@ -31,3 +31,18 @@ Pros:
 
 Pricing:
 $35/month or $159/year
+
+Pros:
+
+Focus on interview preparation: LeetCode is specifically designed for preparing for technical interviews, with a large collection of problems from real interviews at top tech companies.
+Quality of problems: LeetCode is known for its high-quality problems, with clear problem statements and well-explained solutions.
+Active community: LeetCode has a large and active community, making it easy to find help, share solutions, and discuss problems with other users.
+Mock interviews and assessments: LeetCode offers mock interviews and assessments to help you gauge your readiness for real interviews and identify areas for improvement.
+Premium features: LeetCode's premium subscription provides additional resources, such as exclusive problems and solutions, to help you prepare more effectively.
+Cons:
+
+Limited variety: LeetCode is primarily focused on data structures and algorithms, so it may not be as suitable for those looking to practice other types of coding challenges.
+User interface: Some users find LeetCode's interface less intuitive and harder to navigate compared to HackerRank's.
+Cost: Some of LeetCode's most valuable resources, like company-specific questions, require a premium subscription.
+
+If you are primarily focused on interview preparation, especially for top tech companies, LeetCode is likely the better choice due to its interview-focused problem set and active community. 

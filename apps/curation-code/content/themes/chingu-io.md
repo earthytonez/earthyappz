@@ -1,11 +1,10 @@
 ---
 title: Chingu IO
-github: https://github.com/grafana/grafana
-website_url: chingu.io
-demo: chingu.io
+website_url: https://chingu.io
+demo: https://chingu.io
 youtube_id: youtube
 author: Chingu IO
-author_link: chingu.io
+author_link: https://chingu.io
 author_twitter: https://twitter.com/ChinguCollabs
 date: 2022-08-31T11:44:50.000Z
 description: >-

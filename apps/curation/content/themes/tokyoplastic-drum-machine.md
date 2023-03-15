@@ -1,5 +1,5 @@
 ---
-title: https://www.albinoblacksheep.com/flash/drum
+title: Drum Machine
 github: https://github.com/earthytonez/earthyappz
 website_url: https://www.albinoblacksheep.com/flash/drum
 demo: https://www.albinoblacksheep.com/flash/drum

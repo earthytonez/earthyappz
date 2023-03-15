@@ -24,4 +24,18 @@ github_star: 101
 github_fork: 10
 ---
 
-(Website) We help companies develop the strongest tech teams around. We help candidates sharpen their tech skills and pursue job opportunities.
+**Pros:**
+
+Variety of challenges: HackerRank offers a wide range of challenges, including data structures, algorithms, artificial intelligence, databases, and more.
+Contests: HackerRank frequently hosts coding contests, which can be a fun way to test your skills and compete with others.
+Company-specific challenges: Many tech companies use HackerRank for their coding challenges, so practicing on the platform can help you become familiar with the types of questions you might face in real interviews.
+User interface: HackerRank's interface is clean and user-friendly, making it easy to navigate and find challenges that interest you.
+Language support: HackerRank supports a wide range of programming languages, allowing you to practice in your preferred language.
+
+**Cons:**
+
+Quality of problems: Some users feel that the quality of problems on HackerRank is not as high as on LeetCode, with some problems having unclear or confusing problem statements.
+Less focused on interview preparation: While HackerRank does offer interview preparation resources, it is not as tailored to this purpose as LeetCode.
+Limited community support: HackerRank's community is not as large or active as LeetCode's, which can make it more challenging to find help or discuss problems.
+
+If you are interested in a wider variety of coding challenges and a more user-friendly interface, HackerRank might be a better fit for your needs.

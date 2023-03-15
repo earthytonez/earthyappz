@@ -4,8 +4,8 @@ website_url: https://algoexpert.io
 demo: https://algoexpert.io
 youtube_id: youtube
 author_link: https://algoexpert.io
-author_blog: https://grafana.com/blog/
-author_twitter: https://www.twitter.com/grafana
+author_blog: https://www.algoexpert.io/blog
+author_twitter: https://twitter.com/algo_expert
 date: 2022-08-31T11:44:50.000Z
 description: >-
   The ultimate resource to prepare for coding interviews.
