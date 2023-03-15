@@ -10,11 +10,11 @@ date: 2022-08-31T11:44:50.000Z
 description: >-
   Skills speak louder than words
 ssg:
-  - Coding Exercises
+  - Undefined
 css:
   - Undefined
 cms:
-  - Undefined
+  - Coding Exercises
 category:
   - Learning
 draft: false

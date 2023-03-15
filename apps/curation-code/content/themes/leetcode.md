@@ -11,11 +11,11 @@ date: 2022-08-31T11:44:50.000Z
 description: >-
   LeetCode is the best platform to help you enhance your skills, expand your knowledge and prepare for technical interviews.
 ssg:
-  - Coding Exercises
+  - Undefined
 css:
   - Undefined
 cms:
-  - Undefined
+  - Coding Exercises
 category:
   - Practice
 draft: false

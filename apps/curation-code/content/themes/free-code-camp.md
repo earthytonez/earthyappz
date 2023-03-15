@@ -10,7 +10,7 @@ date: 2022-08-31T11:44:50.000Z
 description: >-
   Learn to code for free
 ssg:
-  - Learn
+  - Interactive Classes
 css:
   - Undefined
 cms:

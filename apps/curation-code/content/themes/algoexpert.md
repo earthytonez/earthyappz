@@ -10,11 +10,11 @@ date: 2022-08-31T11:44:50.000Z
 description: >-
   The ultimate resource to prepare for coding interviews.
 ssg:
-  - Practice
+  - Undefined
 css:
   - Undefined
 cms:
-  - Undefined
+  - Coding Exercises
 category:
   - Practice
 draft: false
