@@ -1,18 +1,16 @@
 ---
 title: About
-meta_title: About Statichunt
+meta_title: About EarthyTonez
 description: ''
 layout: "default"
 draft: false
 ---
-Statichunt is an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.
+EarthyTonez is a curation website that organizes resources online that you can use to learn to make music.  EarthyTonez was built absed on the open source code of [Statichunt](https://github.com/statichunt/statichunt)*
 
 #### Feedback
 
-We welcome your constructive input. Please tell us what makes this project exceptional. Also, please share your feedback on this project and assist us in upgrading.
+Please reach out to us on [Mastodon](https://mastodon.social/@mikkergp) for constructive feedback, suggest a page, or to be informed of updates.
 
-If you love this project don't forget to click the "Star" button on [Github](https://github.com/statichunt/statichunt).
 
-#### Acknowledgments
 
-This site is powered by <a href="https://nextjs.org/" target="_blank" rel="nofollow noopener noreferrer">Nextjs</a>, Deployed by <a href="https://vercel.com/" target="_blank" rel="nofollow noopener noreferrer">Vercel</a>, and Managed by <a href="https://forestry.io/" target="_blank" rel="nofollow noopener noreferrer">Forestry</a>
+\* StaticHunt is an open-source directory that enlists hundreds of themes, starters, and resources for static site generators submitted by the community.

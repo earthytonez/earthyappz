@@ -1,0 +1,10 @@
+[
+  {
+    "name": "level",
+    "values": ["beginner", "intermediate", "expert"]
+  },
+  {
+    "name": "language",
+    "values": ["typescript", "javascript", "golang"]
+  }
+]

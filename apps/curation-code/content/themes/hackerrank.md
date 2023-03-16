@@ -1,6 +1,5 @@
 ---
 title: HackerRank
-github: https://github.com/grafana/grafana
 website_url: https://www.hackerrank.com/
 demo: https://www.hackerrank.com/
 youtube_id: youtube

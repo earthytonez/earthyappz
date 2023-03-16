@@ -1,7 +1,7 @@
 ---
-title: Javascript 30
-website_url: https://javascript30.com/
-demo: https://javascript30.com/
+title: Golang
+website_url: https://go.dev/
+demo: https://go.dev/
 youtube_id: youtube
 author: Wes Bos
 author_link: https://wesbos.com/
@@ -13,7 +13,7 @@ date: 2022-08-31T11:44:50.000Z
 description: >-
   Skills speak louder than words
 ssg:
-  - Learning
+  - Reference
 css:
   - Undefined
 cms:
@@ -28,4 +28,5 @@ github_fork: 10
 ---
 
 (Website) We help companies develop the strongest tech teams around. We help candidates sharpen their tech skills and pursue job opportunities.
+
 
